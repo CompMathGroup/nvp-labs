@@ -1,0 +1,129 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{"stencil", ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"stencil", ",", 
+       RowBox[{"Table", "[", 
+        RowBox[{"False", ",", 
+         RowBox[{"{", "3", "}"}], ",", 
+         RowBox[{"{", "5", "}"}]}], "]"}]}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M", ",", "101"}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"h", ",", "0.01"}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\[Tau]", ",", "0.005"}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\[Sigma]", ",", "0.5"}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Row", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"Dynamic", "[", 
+       RowBox[{"StencilBox", "[", "stencil", "]"}], "]"}], ",", 
+      RowBox[{"Spacer", "[", "10", "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Dynamic", "[", 
+       RowBox[{"StepsBox", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0", ",", "1", ",", "0", ",", "1"}], "}"}], ",", "M", ",", 
+         "h", ",", "\[Sigma]", ",", "\[Tau]"}], "]"}], "]"}]}], "}"}], 
+    "]"}]}], "\[IndentingNewLine]", "]"}]], "Input"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`h$$ = 0.01, $CellContext`M$$ = 
+    101, $CellContext`stencil$$ = {{False, False, False, False, False}, {
+     1, True, True, False, False}, {
+     False, False, 2, False, False}}, $CellContext`\[Sigma]$$ = 
+    0.5, $CellContext`\[Tau]$$ = 0.005, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`stencil$$], {{False, False, False, False, False}, {
+        False, False, False, False, False}, {
+        False, False, False, False, False}}}}, {{
+       Hold[$CellContext`M$$], 101}}, {{
+       Hold[$CellContext`h$$], 0.01}}, {{
+       Hold[$CellContext`\[Tau]$$], 0.005}}, {{
+       Hold[$CellContext`\[Sigma]$$], 0.5}}, {
+      Hold[
+       Row[{
+         Dynamic[
+          $CellContext`StencilBox[$CellContext`stencil$$]], 
+         Spacer[10], 
+         Dynamic[
+          $CellContext`StepsBox[{0, 1, 0, 
+           1}, $CellContext`M$$, $CellContext`h$$, $CellContext`\[Sigma]$$, \
+$CellContext`\[Tau]$$]]}]], Manipulate`Dump`ThisIsNotAControl}}, 
+    Typeset`size$$ = {421.5, {22., 12.}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = True}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`h$$ = 0.01, $CellContext`M$$ = 
+        101, $CellContext`stencil$$ = {{False, False, False, False, False}, {
+          False, False, False, False, False}, {
+          False, False, False, False, False}}, $CellContext`\[Sigma]$$ = 
+        0.5, $CellContext`\[Tau]$$ = 0.005}, "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> $CellContext`stencil$$, 
+      "Specifications" :> {{{$CellContext`stencil$$, {{
+           False, False, False, False, False}, {
+           False, False, False, False, False}, {
+           False, False, False, False, False}}}, ControlType -> 
+         None}, {{$CellContext`M$$, 101}, ControlType -> 
+         None}, {{$CellContext`h$$, 0.01}, ControlType -> 
+         None}, {{$CellContext`\[Tau]$$, 0.005}, ControlType -> 
+         None}, {{$CellContext`\[Sigma]$$, 0.5}, ControlType -> None}, 
+        Row[{
+          Dynamic[
+           $CellContext`StencilBox[$CellContext`stencil$$]], 
+          Spacer[10], 
+          Dynamic[
+           $CellContext`StepsBox[{0, 1, 0, 
+            1}, $CellContext`M$$, $CellContext`h$$, $CellContext`\[Sigma]$$, \
+$CellContext`\[Tau]$$]]}]}, "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{553., {120., 125.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output"]
+}, Open  ]]
+},
+WindowSize->{707, 647},
+WindowMargins->{{Automatic, 19}, {15, Automatic}},
+FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (October 6, 2011)",
+StyleDefinitions->"Default.nb"
+]
+

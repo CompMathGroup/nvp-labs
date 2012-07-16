@@ -125,159 +125,83 @@ Cell[BoxData[{
                     RowBox[{"2", ",", "#"}], "]"}], ",", "1", ",", "0"}], 
                    "]"}], "&"}], ",", 
                  RowBox[{"Flatten", "[", "stencil", "]"}]}], "]"}]}]}], 
-             ")"}]}]}], ";", "\[IndentingNewLine]", 
-          RowBox[{"Print", "[", 
-           RowBox[{"\"\<Check: \>\"", ",", "v"}], "]"}], ";", 
-          "\[IndentingNewLine]", "v"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"Framed", "[", 
-       RowBox[{
-        RowBox[{"Deploy", "@", 
-         RowBox[{"Column", "[", 
-          RowBox[{
-           RowBox[{"{", "\[IndentingNewLine]", 
-            RowBox[{
-             RowBox[{"Row", "@", 
-              RowBox[{"{", 
-               RowBox[{
-                RowBox[{"StencilPoint", "[", 
-                 RowBox[{"Dynamic", "@", 
-                  RowBox[{"stencil", "\[LeftDoubleBracket]", 
-                   RowBox[{"1", ",", "2"}], "\[RightDoubleBracket]"}]}], 
-                 "]"}], ",", "GrayPoint", ",", 
-                RowBox[{"StencilPoint", "[", 
-                 RowBox[{"Dynamic", "@", 
-                  RowBox[{"stencil", "\[LeftDoubleBracket]", 
-                   RowBox[{"1", ",", "4"}], "\[RightDoubleBracket]"}]}], 
-                 "]"}]}], "}"}]}], ",", "\[IndentingNewLine]", 
-             RowBox[{"Row", "@", 
-              RowBox[{"Table", "[", 
-               RowBox[{
-                RowBox[{"StencilPoint", "[", 
-                 RowBox[{"With", "[", 
-                  RowBox[{
-                   RowBox[{"{", 
-                    RowBox[{"i", "=", "i"}], "}"}], ",", 
-                   RowBox[{"Dynamic", "@", 
-                    RowBox[{"stencil", "\[LeftDoubleBracket]", 
-                    RowBox[{"2", ",", "i"}], "\[RightDoubleBracket]"}]}]}], 
-                  "]"}], "]"}], ",", 
-                RowBox[{"{", 
-                 RowBox[{"i", ",", "5"}], "}"}]}], "]"}]}], ",", 
-             "\[IndentingNewLine]", 
-             RowBox[{"Row", "@", 
-              RowBox[{"Table", "[", 
-               RowBox[{
-                RowBox[{"StencilPoint", "[", 
-                 RowBox[{"With", "[", 
-                  RowBox[{
-                   RowBox[{"{", 
-                    RowBox[{"i", "=", "i"}], "}"}], ",", 
-                   RowBox[{"Dynamic", "@", 
-                    RowBox[{"stencil", "\[LeftDoubleBracket]", 
-                    RowBox[{"3", ",", "i"}], "\[RightDoubleBracket]"}]}]}], 
-                  "]"}], "]"}], ",", 
-                RowBox[{"{", 
-                 RowBox[{"i", ",", "5"}], "}"}]}], "]"}]}], ",", 
-             "\[IndentingNewLine]", 
-             RowBox[{"Row", "@", 
-              RowBox[{"{", 
-               RowBox[{
-                RowBox[{"Spacer", "[", "50", "]"}], ",", 
+             ")"}]}]}], ";", "\[IndentingNewLine]", "v"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Panel", "[", 
+       RowBox[{"Deploy", "@", 
+        RowBox[{"Column", "[", 
+         RowBox[{
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Row", "@", 
+             RowBox[{"{", "\"\<Stencil\>\"", "}"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Row", "@", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"StencilPoint", "[", 
                 RowBox[{"Dynamic", "@", 
-                 RowBox[{"If", "[", 
-                  RowBox[{"Checker", ",", "\[IndentingNewLine]", 
-                   RowBox[{"Framed", "[", 
-                    RowBox[{"\"\<OK\>\"", ",", 
+                 RowBox[{"stencil", "\[LeftDoubleBracket]", 
+                  RowBox[{"1", ",", "2"}], "\[RightDoubleBracket]"}]}], "]"}],
+                ",", "GrayPoint", ",", 
+               RowBox[{"StencilPoint", "[", 
+                RowBox[{"Dynamic", "@", 
+                 RowBox[{"stencil", "\[LeftDoubleBracket]", 
+                  RowBox[{"1", ",", "4"}], "\[RightDoubleBracket]"}]}], 
+                "]"}]}], "}"}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Row", "@", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"StencilPoint", "[", 
+                RowBox[{"With", "[", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"i", "=", "i"}], "}"}], ",", 
+                  RowBox[{"Dynamic", "@", 
+                   RowBox[{"stencil", "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "i"}], "\[RightDoubleBracket]"}]}]}], 
+                 "]"}], "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"i", ",", "5"}], "}"}]}], "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Row", "@", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"StencilPoint", "[", 
+                RowBox[{"With", "[", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"i", "=", "i"}], "}"}], ",", 
+                  RowBox[{"Dynamic", "@", 
+                   RowBox[{"stencil", "\[LeftDoubleBracket]", 
+                    RowBox[{"3", ",", "i"}], "\[RightDoubleBracket]"}]}]}], 
+                 "]"}], "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"i", ",", "5"}], "}"}]}], "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Row", "@", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"Spacer", "[", "50", "]"}], ",", 
+               RowBox[{"Dynamic", "@", 
+                RowBox[{"If", "[", 
+                 RowBox[{"Checker", ",", "\[IndentingNewLine]", 
+                  RowBox[{"Framed", "[", 
+                   RowBox[{"\"\<OK\>\"", ",", 
                     RowBox[{"Background", "\[Rule]", "Green"}]}], "]"}], ",", 
-                   "\[IndentingNewLine]", 
-                   RowBox[{"Framed", "[", 
-                    RowBox[{"\"\<Bad\>\"", ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"Framed", "[", 
+                   RowBox[{"\"\<Bad\>\"", ",", 
                     RowBox[{"Background", "\[Rule]", "Red"}]}], "]"}]}], 
-                  "]"}]}]}], "}"}]}]}], "\[IndentingNewLine]", "}"}], ",", 
-           RowBox[{"Alignment", "\[Rule]", 
-            RowBox[{"{", 
-             RowBox[{"Center", ",", "Top"}], "}"}]}]}], "]"}]}], ",", 
-        RowBox[{"FrameStyle", "\[Rule]", 
-         RowBox[{"Dynamic", "[", 
-          RowBox[{"If", "[", 
-           RowBox[{"Checker", ",", 
-            RowBox[{"Blend", "[", 
-             RowBox[{"{", 
-              RowBox[{"Green", ",", "Black"}], "}"}], "]"}], ",", 
-            RowBox[{"Blend", "[", 
-             RowBox[{"{", 
-              RowBox[{"Red", ",", "Black"}], "}"}], "]"}]}], "]"}], "]"}]}]}],
-        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
-  ";"}]}], "Input"],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
-  RowBox[{"stencil", ",", "\[IndentingNewLine]", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"stencil", ",", 
-       RowBox[{"Table", "[", 
-        RowBox[{"False", ",", 
-         RowBox[{"{", "3", "}"}], ",", 
-         RowBox[{"{", "5", "}"}]}], "]"}]}], "}"}], ",", 
-     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
-   "\[IndentingNewLine]", 
-   RowBox[{"Dynamic", "[", 
-    RowBox[{"StencilBox", "[", "stencil", "]"}], "]"}]}], 
-  "\[IndentingNewLine]", "]"}]], "Input"],
-
-Cell[BoxData[
- TagBox[
-  StyleBox[
-   DynamicModuleBox[{$CellContext`stencil$$ = {{
-     False, False, False, True, False}, {False, 1, True, 2, False}, {
-     False, False, False, False, False}}, Typeset`show$$ = True, 
-    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
-    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
-    "\"untitled\"", Typeset`specs$$ = {{{
-       Hold[$CellContext`stencil$$], {{False, False, False, False, False}, {
-        False, False, False, False, False}, {
-        False, False, False, False, False}}}}, {
-      Hold[
-       Dynamic[
-        $CellContext`StencilBox[$CellContext`stencil$$]]], 
-      Manipulate`Dump`ThisIsNotAControl}}, Typeset`size$$ = {665., {2., 8.}}, 
-    Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = True}, 
-    DynamicBox[Manipulate`ManipulateBoxes[
-     1, StandardForm, 
-      "Variables" :> {$CellContext`stencil$$ = {{
-          False, False, False, False, False}, {
-          False, False, False, False, False}, {
-          False, False, False, False, False}}}, "ControllerVariables" :> {}, 
-      "OtherVariables" :> {
-       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
-        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
-        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
-         Typeset`skipInitDone$$}, "Body" :> $CellContext`stencil$$, 
-      "Specifications" :> {{{$CellContext`stencil$$, {{
-           False, False, False, False, False}, {
-           False, False, False, False, False}, {
-           False, False, False, False, False}}}, ControlType -> None}, 
-        Dynamic[
-         $CellContext`StencilBox[$CellContext`stencil$$]]}, "Options" :> {}, 
-      "DefaultOptions" :> {}],
-     ImageSizeCache->{714., {91., 96.}},
-     SingleEvaluation->True],
-    Deinitialization:>None,
-    DynamicModuleValues:>{},
-    SynchronousInitialization->True,
-    UnsavedVariables:>{Typeset`initDone$$},
-    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
-   Deployed->True,
-   StripOnInput->False],
-  Manipulate`InterpretManipulate[1]]], "Output"]
-}, Open  ]]
+                 "]"}]}]}], "}"}]}]}], "\[IndentingNewLine]", "}"}], ",", 
+          RowBox[{"Alignment", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"Center", ",", "Top"}], "}"}]}]}], "]"}]}], 
+       "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]}], "Input"]
 },
-WindowSize->{1147, 926},
-WindowMargins->{{Automatic, -1241}, {29, Automatic}},
+WindowSize->{980, 803},
+WindowMargins->{{Automatic, 292}, {13, Automatic}},
 ShowSelection->True,
 FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (October 6, 2011)",
 StyleDefinitions->"Default.nb"
