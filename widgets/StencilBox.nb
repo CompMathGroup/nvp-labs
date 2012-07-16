@@ -1,0 +1,285 @@
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"SetAttributes", "[", 
+   RowBox[{"StencilBox", ",", "HoldFirst"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"StencilBox", "[", "stencil_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"StencilPoint", ",", "GrayPoint", ",", "Checker", ",", 
+       RowBox[{"size", "=", "16"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"StencilPoint", "[", "x_", "]"}], ":=", 
+       RowBox[{"Toggler", "[", 
+        RowBox[{"x", ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"False", "\[Rule]", 
+            RowBox[{"Deploy", "[", 
+             RowBox[{"Graphics", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"Circle", "[", "]"}], "}"}], ",", 
+               RowBox[{"ImageSize", "\[Rule]", "size"}]}], "]"}], "]"}]}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"True", "\[Rule]", 
+            RowBox[{"Deploy", "[", 
+             RowBox[{"Graphics", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"Disk", "[", "]"}], "}"}], ",", 
+               RowBox[{"ImageSize", "\[Rule]", "size"}]}], "]"}], "]"}]}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"1", "\[Rule]", 
+            RowBox[{"Deploy", "[", 
+             RowBox[{"Graphics", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"Disk", "[", "]"}], ",", 
+                 RowBox[{"Text", "[", 
+                  RowBox[{
+                   RowBox[{"Style", "[", 
+                    RowBox[{
+                    "\"\<x\>\"", ",", "Medium", ",", "Bold", ",", "White"}], 
+                    "]"}], ",", 
+                   RowBox[{"FormatType", "\[Rule]", "StandardForm"}]}], 
+                  "]"}]}], "}"}], ",", 
+               RowBox[{"ImageSize", "\[Rule]", "size"}]}], "]"}], "]"}]}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"2", "\[Rule]", 
+            RowBox[{"Deploy", "[", 
+             RowBox[{"Graphics", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"Disk", "[", "]"}], ",", 
+                 RowBox[{"Text", "[", 
+                  RowBox[{
+                   RowBox[{"Style", "[", 
+                    RowBox[{
+                    "\"\<y\>\"", ",", "Medium", ",", "Bold", ",", "White"}], 
+                    "]"}], ",", 
+                   RowBox[{"FormatType", "\[Rule]", "StandardForm"}]}], 
+                  "]"}]}], "}"}], ",", 
+               RowBox[{"ImageSize", "\[Rule]", "size"}]}], "]"}], "]"}]}]}], 
+          "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"GrayPoint", "=", 
+       RowBox[{"Deploy", "[", 
+        RowBox[{"Graphics", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"Rotate", "[", 
+            RowBox[{
+             RowBox[{"Rectangle", "[", "]"}], ",", 
+             RowBox[{"45", "Degree"}]}], "]"}], "}"}], ",", 
+          RowBox[{"ImageSize", "\[Rule]", "size"}]}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Checker", ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", "v", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"v", "=", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"4", "==", 
+              RowBox[{"Total", "@", 
+               RowBox[{"Map", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"UnsameQ", "[", 
+                    RowBox[{"False", ",", "#"}], "]"}], ",", "1", ",", "0"}], 
+                   "]"}], "&"}], ",", 
+                 RowBox[{"Flatten", "[", "stencil", "]"}]}], "]"}]}]}], ")"}],
+             "\[IndentingNewLine]", "&&", 
+            RowBox[{"(", 
+             RowBox[{"1", "==", 
+              RowBox[{"Total", "@", 
+               RowBox[{"Map", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"SameQ", "[", 
+                    RowBox[{"1", ",", "#"}], "]"}], ",", "1", ",", "0"}], 
+                   "]"}], "&"}], ",", 
+                 RowBox[{"Flatten", "[", "stencil", "]"}]}], "]"}]}]}], ")"}],
+             "\[IndentingNewLine]", "&&", 
+            RowBox[{"(", 
+             RowBox[{"1", "==", 
+              RowBox[{"Total", "@", 
+               RowBox[{"Map", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"SameQ", "[", 
+                    RowBox[{"2", ",", "#"}], "]"}], ",", "1", ",", "0"}], 
+                   "]"}], "&"}], ",", 
+                 RowBox[{"Flatten", "[", "stencil", "]"}]}], "]"}]}]}], 
+             ")"}]}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"Print", "[", 
+           RowBox[{"\"\<Check: \>\"", ",", "v"}], "]"}], ";", 
+          "\[IndentingNewLine]", "v"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Framed", "[", 
+       RowBox[{
+        RowBox[{"Deploy", "@", 
+         RowBox[{"Column", "[", 
+          RowBox[{
+           RowBox[{"{", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Row", "@", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"StencilPoint", "[", 
+                 RowBox[{"Dynamic", "@", 
+                  RowBox[{"stencil", "\[LeftDoubleBracket]", 
+                   RowBox[{"1", ",", "2"}], "\[RightDoubleBracket]"}]}], 
+                 "]"}], ",", "GrayPoint", ",", 
+                RowBox[{"StencilPoint", "[", 
+                 RowBox[{"Dynamic", "@", 
+                  RowBox[{"stencil", "\[LeftDoubleBracket]", 
+                   RowBox[{"1", ",", "4"}], "\[RightDoubleBracket]"}]}], 
+                 "]"}]}], "}"}]}], ",", "\[IndentingNewLine]", 
+             RowBox[{"Row", "@", 
+              RowBox[{"Table", "[", 
+               RowBox[{
+                RowBox[{"StencilPoint", "[", 
+                 RowBox[{"With", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"i", "=", "i"}], "}"}], ",", 
+                   RowBox[{"Dynamic", "@", 
+                    RowBox[{"stencil", "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "i"}], "\[RightDoubleBracket]"}]}]}], 
+                  "]"}], "]"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"i", ",", "5"}], "}"}]}], "]"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Row", "@", 
+              RowBox[{"Table", "[", 
+               RowBox[{
+                RowBox[{"StencilPoint", "[", 
+                 RowBox[{"With", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"i", "=", "i"}], "}"}], ",", 
+                   RowBox[{"Dynamic", "@", 
+                    RowBox[{"stencil", "\[LeftDoubleBracket]", 
+                    RowBox[{"3", ",", "i"}], "\[RightDoubleBracket]"}]}]}], 
+                  "]"}], "]"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"i", ",", "5"}], "}"}]}], "]"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Row", "@", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Spacer", "[", "50", "]"}], ",", 
+                RowBox[{"Dynamic", "@", 
+                 RowBox[{"If", "[", 
+                  RowBox[{"Checker", ",", "\[IndentingNewLine]", 
+                   RowBox[{"Framed", "[", 
+                    RowBox[{"\"\<OK\>\"", ",", 
+                    RowBox[{"Background", "\[Rule]", "Green"}]}], "]"}], ",", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"Framed", "[", 
+                    RowBox[{"\"\<Bad\>\"", ",", 
+                    RowBox[{"Background", "\[Rule]", "Red"}]}], "]"}]}], 
+                  "]"}]}]}], "}"}]}]}], "\[IndentingNewLine]", "}"}], ",", 
+           RowBox[{"Alignment", "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{"Center", ",", "Top"}], "}"}]}]}], "]"}]}], ",", 
+        RowBox[{"FrameStyle", "\[Rule]", 
+         RowBox[{"Dynamic", "[", 
+          RowBox[{"If", "[", 
+           RowBox[{"Checker", ",", 
+            RowBox[{"Blend", "[", 
+             RowBox[{"{", 
+              RowBox[{"Green", ",", "Black"}], "}"}], "]"}], ",", 
+            RowBox[{"Blend", "[", 
+             RowBox[{"{", 
+              RowBox[{"Red", ",", "Black"}], "}"}], "]"}]}], "]"}], "]"}]}]}],
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]}], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{"stencil", ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"stencil", ",", 
+       RowBox[{"Table", "[", 
+        RowBox[{"False", ",", 
+         RowBox[{"{", "3", "}"}], ",", 
+         RowBox[{"{", "5", "}"}]}], "]"}]}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Dynamic", "[", 
+    RowBox[{"StencilBox", "[", "stencil", "]"}], "]"}]}], 
+  "\[IndentingNewLine]", "]"}]], "Input"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`stencil$$ = {{
+     False, False, False, True, False}, {False, 1, True, 2, False}, {
+     False, False, False, False, False}}, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`stencil$$], {{False, False, False, False, False}, {
+        False, False, False, False, False}, {
+        False, False, False, False, False}}}}, {
+      Hold[
+       Dynamic[
+        $CellContext`StencilBox[$CellContext`stencil$$]]], 
+      Manipulate`Dump`ThisIsNotAControl}}, Typeset`size$$ = {665., {2., 8.}}, 
+    Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = True}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`stencil$$ = {{
+          False, False, False, False, False}, {
+          False, False, False, False, False}, {
+          False, False, False, False, False}}}, "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> $CellContext`stencil$$, 
+      "Specifications" :> {{{$CellContext`stencil$$, {{
+           False, False, False, False, False}, {
+           False, False, False, False, False}, {
+           False, False, False, False, False}}}, ControlType -> None}, 
+        Dynamic[
+         $CellContext`StencilBox[$CellContext`stencil$$]]}, "Options" :> {}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{714., {91., 96.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output"]
+}, Open  ]]
+},
+WindowSize->{1147, 926},
+WindowMargins->{{Automatic, -1241}, {29, Automatic}},
+ShowSelection->True,
+FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (October 6, 2011)",
+StyleDefinitions->"Default.nb"
+]
+
