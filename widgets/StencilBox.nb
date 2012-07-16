@@ -2,7 +2,7 @@ Notebook[{
 Cell[BoxData[{
  RowBox[{
   RowBox[{"SetAttributes", "[", 
-   RowBox[{"StencilBox", ",", "HoldFirst"}], "]"}], 
+   RowBox[{"StencilBox", ",", "HoldAll"}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
