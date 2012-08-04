@@ -1,0 +1,1338 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"(", 
+   RowBox[{"Uup", "=", 
+    RowBox[{"{", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"0", ",", 
+        SubscriptBox["\[Beta]", "1"], ",", 
+        RowBox[{
+         RowBox[{"1", "/", "2"}], "+", 
+         SubscriptBox["\[Beta]", "2"]}], ",", 
+        SubscriptBox["\[Beta]", "3"], ",", "0"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", 
+         SubscriptBox["\[Beta]", "4"]}], ",", 
+        RowBox[{
+         SubscriptBox["\[Beta]", "4"], "-", 
+         SubscriptBox["\[Beta]", "5"], "-", 
+         SubscriptBox["\[Beta]", "1"]}], ",", 
+        RowBox[{
+         RowBox[{"1", "/", "2"}], "-", 
+         SubscriptBox["\[Beta]", "2"], "+", 
+         SubscriptBox["\[Beta]", "5"], "-", 
+         SubscriptBox["\[Beta]", "6"]}], ",", 
+        RowBox[{
+         SubscriptBox["\[Beta]", "6"], "-", 
+         SubscriptBox["\[Beta]", "7"], "-", 
+         SubscriptBox["\[Beta]", "3"]}], ",", 
+        SubscriptBox["\[Beta]", "7"]}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}]}], 
+     "\[IndentingNewLine]", "}"}]}], ")"}], "//", 
+  "MatrixForm"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(", 
+   RowBox[{"Udn", "=", 
+    RowBox[{"{", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", 
+        SubscriptBox["\[Beta]", "1"], ",", 
+        RowBox[{
+         RowBox[{"1", "/", "2"}], "+", 
+         SubscriptBox["\[Beta]", "2"]}], ",", 
+        SubscriptBox["\[Beta]", "3"], ",", "0"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", 
+         SubscriptBox["\[Beta]", "4"]}], ",", 
+        RowBox[{
+         SubscriptBox["\[Beta]", "4"], "-", 
+         SubscriptBox["\[Beta]", "5"], "-", 
+         SubscriptBox["\[Beta]", "1"]}], ",", 
+        RowBox[{
+         RowBox[{"1", "/", "2"}], "-", 
+         SubscriptBox["\[Beta]", "2"], "+", 
+         SubscriptBox["\[Beta]", "5"], "-", 
+         SubscriptBox["\[Beta]", "6"]}], ",", 
+        RowBox[{
+         SubscriptBox["\[Beta]", "6"], "-", 
+         SubscriptBox["\[Beta]", "7"], "-", 
+         SubscriptBox["\[Beta]", "3"]}], ",", 
+        SubscriptBox["\[Beta]", "7"]}], "}"}]}], "\[IndentingNewLine]", 
+     "}"}]}], ")"}], "//", "MatrixForm"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(", 
+   RowBox[{"Frt", "=", 
+    RowBox[{
+     FractionBox["h", "\[Tau]"], 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", 
+         RowBox[{"-", 
+          SubscriptBox["\[Gamma]", "1"]}], ",", 
+         RowBox[{
+          FractionBox["\[Sigma]", "2"], "+", 
+          SubscriptBox["\[Gamma]", "1"], "-", 
+          SubscriptBox["\[Gamma]", "2"]}], ",", 
+         RowBox[{
+          FractionBox["\[Sigma]", "2"], "+", 
+          SubscriptBox["\[Gamma]", "2"], "-", 
+          SubscriptBox["\[Gamma]", "3"]}], ",", 
+         SubscriptBox["\[Gamma]", "3"]}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], ")"}], "//", 
+  "MatrixForm"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(", 
+   RowBox[{"Flf", "=", 
+    RowBox[{
+     FractionBox["h", "\[Tau]"], 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", 
+          SubscriptBox["\[Gamma]", "1"]}], ",", 
+         RowBox[{
+          FractionBox["\[Sigma]", "2"], "+", 
+          SubscriptBox["\[Gamma]", "1"], "-", 
+          SubscriptBox["\[Gamma]", "2"]}], ",", 
+         RowBox[{
+          FractionBox["\[Sigma]", "2"], "+", 
+          SubscriptBox["\[Gamma]", "2"], "-", 
+          SubscriptBox["\[Gamma]", "3"]}], ",", 
+         SubscriptBox["\[Gamma]", "3"], ",", "0"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], ")"}], "//", 
+  "MatrixForm"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(", 
+   RowBox[{"Aaa", "=", 
+    RowBox[{"{", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"0", ",", 
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "^"], 
+         RowBox[{"-", "1"}]], ",", 
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "^"], "0"], ",", 
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "^"], "1"], ",", "0"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        SubscriptBox["\[Alpha]", 
+         RowBox[{"-", "2"}]], ",", 
+        SubscriptBox["\[Alpha]", 
+         RowBox[{"-", "1"}]], ",", 
+        SubscriptBox["\[Alpha]", "0"], ",", 
+        SubscriptBox["\[Alpha]", "1"], ",", 
+        SubscriptBox["\[Alpha]", "2"]}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "\[Hacek]"], 
+         RowBox[{"-", "2"}]], ",", 
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "\[Hacek]"], 
+         RowBox[{"-", "1"}]], ",", 
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "\[Hacek]"], "0"], ",", 
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "\[Hacek]"], "1"], ",", 
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}], "}"}]}], 
+     "\[IndentingNewLine]", "}"}]}], ")"}], "//", 
+  "MatrixForm"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(", 
+   RowBox[{"\[Nu]", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"2", "-", "i"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "3"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"j", ",", "5"}], "}"}]}], "]"}]}], ")"}], "//", 
+  "MatrixForm"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(", 
+   RowBox[{"\[Mu]", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"j", "-", "3"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "3"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"j", ",", "5"}], "}"}]}], "]"}]}], ")"}], "//", 
+  "MatrixForm"}]}], "Input"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"0", 
+      SubscriptBox["\[Beta]", "1"], 
+      RowBox[{
+       FractionBox["1", "2"], "+", 
+       SubscriptBox["\[Beta]", "2"]}], 
+      SubscriptBox["\[Beta]", "3"], "0"},
+     {
+      RowBox[{"-", 
+       SubscriptBox["\[Beta]", "4"]}], 
+      RowBox[{
+       RowBox[{"-", 
+        SubscriptBox["\[Beta]", "1"]}], "+", 
+       SubscriptBox["\[Beta]", "4"], "-", 
+       SubscriptBox["\[Beta]", "5"]}], 
+      RowBox[{
+       FractionBox["1", "2"], "-", 
+       SubscriptBox["\[Beta]", "2"], "+", 
+       SubscriptBox["\[Beta]", "5"], "-", 
+       SubscriptBox["\[Beta]", "6"]}], 
+      RowBox[{
+       RowBox[{"-", 
+        SubscriptBox["\[Beta]", "3"]}], "+", 
+       SubscriptBox["\[Beta]", "6"], "-", 
+       SubscriptBox["\[Beta]", "7"]}], 
+      SubscriptBox["\[Beta]", "7"]},
+     {"0", "0", "0", "0", "0"}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"0", "0", "0", "0", "0"},
+     {"0", 
+      SubscriptBox["\[Beta]", "1"], 
+      RowBox[{
+       FractionBox["1", "2"], "+", 
+       SubscriptBox["\[Beta]", "2"]}], 
+      SubscriptBox["\[Beta]", "3"], "0"},
+     {
+      RowBox[{"-", 
+       SubscriptBox["\[Beta]", "4"]}], 
+      RowBox[{
+       RowBox[{"-", 
+        SubscriptBox["\[Beta]", "1"]}], "+", 
+       SubscriptBox["\[Beta]", "4"], "-", 
+       SubscriptBox["\[Beta]", "5"]}], 
+      RowBox[{
+       FractionBox["1", "2"], "-", 
+       SubscriptBox["\[Beta]", "2"], "+", 
+       SubscriptBox["\[Beta]", "5"], "-", 
+       SubscriptBox["\[Beta]", "6"]}], 
+      RowBox[{
+       RowBox[{"-", 
+        SubscriptBox["\[Beta]", "3"]}], "+", 
+       SubscriptBox["\[Beta]", "6"], "-", 
+       SubscriptBox["\[Beta]", "7"]}], 
+      SubscriptBox["\[Beta]", "7"]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"0", "0", "0", "0", "0"},
+     {"0", 
+      RowBox[{"-", 
+       FractionBox[
+        RowBox[{"h", " ", 
+         SubscriptBox["\[Gamma]", "1"]}], "\[Tau]"]}], 
+      FractionBox[
+       RowBox[{"h", " ", 
+        RowBox[{"(", 
+         RowBox[{
+          FractionBox["\[Sigma]", "2"], "+", 
+          SubscriptBox["\[Gamma]", "1"], "-", 
+          SubscriptBox["\[Gamma]", "2"]}], ")"}]}], "\[Tau]"], 
+      FractionBox[
+       RowBox[{"h", " ", 
+        RowBox[{"(", 
+         RowBox[{
+          FractionBox["\[Sigma]", "2"], "+", 
+          SubscriptBox["\[Gamma]", "2"], "-", 
+          SubscriptBox["\[Gamma]", "3"]}], ")"}]}], "\[Tau]"], 
+      FractionBox[
+       RowBox[{"h", " ", 
+        SubscriptBox["\[Gamma]", "3"]}], "\[Tau]"]},
+     {"0", "0", "0", "0", "0"}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"0", "0", "0", "0", "0"},
+     {
+      RowBox[{"-", 
+       FractionBox[
+        RowBox[{"h", " ", 
+         SubscriptBox["\[Gamma]", "1"]}], "\[Tau]"]}], 
+      FractionBox[
+       RowBox[{"h", " ", 
+        RowBox[{"(", 
+         RowBox[{
+          FractionBox["\[Sigma]", "2"], "+", 
+          SubscriptBox["\[Gamma]", "1"], "-", 
+          SubscriptBox["\[Gamma]", "2"]}], ")"}]}], "\[Tau]"], 
+      FractionBox[
+       RowBox[{"h", " ", 
+        RowBox[{"(", 
+         RowBox[{
+          FractionBox["\[Sigma]", "2"], "+", 
+          SubscriptBox["\[Gamma]", "2"], "-", 
+          SubscriptBox["\[Gamma]", "3"]}], ")"}]}], "\[Tau]"], 
+      FractionBox[
+       RowBox[{"h", " ", 
+        SubscriptBox["\[Gamma]", "3"]}], "\[Tau]"], "0"},
+     {"0", "0", "0", "0", "0"}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"0", 
+      SubscriptBox[
+       OverscriptBox["\[Alpha]", "^"], 
+       RowBox[{"-", "1"}]], 
+      SubscriptBox[
+       OverscriptBox["\[Alpha]", "^"], "0"], 
+      SubscriptBox[
+       OverscriptBox["\[Alpha]", "^"], "1"], "0"},
+     {
+      SubscriptBox["\[Alpha]", 
+       RowBox[{"-", "2"}]], 
+      SubscriptBox["\[Alpha]", 
+       RowBox[{"-", "1"}]], 
+      SubscriptBox["\[Alpha]", "0"], 
+      SubscriptBox["\[Alpha]", "1"], 
+      SubscriptBox["\[Alpha]", "2"]},
+     {
+      SubscriptBox[
+       OverscriptBox["\[Alpha]", "\[Hacek]"], 
+       RowBox[{"-", "2"}]], 
+      SubscriptBox[
+       OverscriptBox["\[Alpha]", "\[Hacek]"], 
+       RowBox[{"-", "1"}]], 
+      SubscriptBox[
+       OverscriptBox["\[Alpha]", "\[Hacek]"], "0"], 
+      SubscriptBox[
+       OverscriptBox["\[Alpha]", "\[Hacek]"], "1"], 
+      SubscriptBox[
+       OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"1", "1", "1", "1", "1"},
+     {"0", "0", "0", "0", "0"},
+     {
+      RowBox[{"-", "1"}], 
+      RowBox[{"-", "1"}], 
+      RowBox[{"-", "1"}], 
+      RowBox[{"-", "1"}], 
+      RowBox[{"-", "1"}]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {
+      RowBox[{"-", "2"}], 
+      RowBox[{"-", "1"}], "0", "1", "2"},
+     {
+      RowBox[{"-", "2"}], 
+      RowBox[{"-", "1"}], "0", "1", "2"},
+     {
+      RowBox[{"-", "2"}], 
+      RowBox[{"-", "1"}], "0", "1", "2"}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(", 
+   RowBox[{"eqns", "=", 
+    RowBox[{"Thread", "[", 
+     RowBox[{
+      RowBox[{"Flatten", "@", "Aaa"}], "\[Equal]", 
+      RowBox[{"Simplify", "@", 
+       RowBox[{"Flatten", "[", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"Uup", "-", "Udn"}], ")"}], "+", 
+         RowBox[{
+          FractionBox["\[Tau]", "h"], 
+          RowBox[{"(", 
+           RowBox[{"Frt", "-", "Flf"}], ")"}]}]}], "]"}]}]}], "]"}]}], ")"}], 
+  "//", "MatrixForm"}]], "Input"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", 
+   TagBox[GridBox[{
+      {"True"},
+      {
+       RowBox[{
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "^"], 
+         RowBox[{"-", "1"}]], "\[Equal]", 
+        SubscriptBox["\[Beta]", "1"]}]},
+      {
+       RowBox[{
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "^"], "0"], "\[Equal]", 
+        RowBox[{
+         FractionBox["1", "2"], "+", 
+         SubscriptBox["\[Beta]", "2"]}]}]},
+      {
+       RowBox[{
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "^"], "1"], "\[Equal]", 
+        SubscriptBox["\[Beta]", "3"]}]},
+      {"True"},
+      {
+       RowBox[{
+        SubscriptBox["\[Alpha]", 
+         RowBox[{"-", "2"}]], "\[Equal]", 
+        RowBox[{
+         RowBox[{"-", 
+          SubscriptBox["\[Beta]", "4"]}], "+", 
+         SubscriptBox["\[Gamma]", "1"]}]}]},
+      {
+       RowBox[{
+        SubscriptBox["\[Alpha]", 
+         RowBox[{"-", "1"}]], "\[Equal]", 
+        RowBox[{
+         RowBox[{"-", 
+          FractionBox["\[Sigma]", "2"]}], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Beta]", "1"]}], "+", 
+         SubscriptBox["\[Beta]", "4"], "-", 
+         SubscriptBox["\[Beta]", "5"], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Gamma]", "1"]}], "+", 
+         SubscriptBox["\[Gamma]", "2"]}]}]},
+      {
+       RowBox[{
+        SubscriptBox["\[Alpha]", "0"], "\[Equal]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"-", "2"}], " ", 
+          SubscriptBox["\[Beta]", "2"]}], "+", 
+         SubscriptBox["\[Beta]", "5"], "-", 
+         SubscriptBox["\[Beta]", "6"], "+", 
+         SubscriptBox["\[Gamma]", "1"], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Gamma]", "2"]}], "+", 
+         SubscriptBox["\[Gamma]", "3"]}]}]},
+      {
+       RowBox[{
+        SubscriptBox["\[Alpha]", "1"], "\[Equal]", 
+        RowBox[{
+         FractionBox["\[Sigma]", "2"], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Beta]", "3"]}], "+", 
+         SubscriptBox["\[Beta]", "6"], "-", 
+         SubscriptBox["\[Beta]", "7"], "+", 
+         SubscriptBox["\[Gamma]", "2"], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Gamma]", "3"]}]}]}]},
+      {
+       RowBox[{
+        SubscriptBox["\[Alpha]", "2"], "\[Equal]", 
+        RowBox[{
+         SubscriptBox["\[Beta]", "7"], "+", 
+         SubscriptBox["\[Gamma]", "3"]}]}]},
+      {
+       RowBox[{
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "\[Hacek]"], 
+         RowBox[{"-", "2"}]], "\[Equal]", 
+        SubscriptBox["\[Beta]", "4"]}]},
+      {
+       RowBox[{
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "\[Hacek]"], 
+         RowBox[{"-", "1"}]], "\[Equal]", 
+        RowBox[{
+         SubscriptBox["\[Beta]", "1"], "-", 
+         SubscriptBox["\[Beta]", "4"], "+", 
+         SubscriptBox["\[Beta]", "5"]}]}]},
+      {
+       RowBox[{
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "\[Hacek]"], "0"], "\[Equal]", 
+        RowBox[{
+         RowBox[{"-", 
+          FractionBox["1", "2"]}], "+", 
+         SubscriptBox["\[Beta]", "2"], "-", 
+         SubscriptBox["\[Beta]", "5"], "+", 
+         SubscriptBox["\[Beta]", "6"]}]}]},
+      {
+       RowBox[{
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "\[Hacek]"], "1"], "\[Equal]", 
+        RowBox[{
+         SubscriptBox["\[Beta]", "3"], "-", 
+         SubscriptBox["\[Beta]", "6"], "+", 
+         SubscriptBox["\[Beta]", "7"]}]}]},
+      {
+       RowBox[{
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "\[Hacek]"], "2"], "\[Equal]", 
+        RowBox[{"-", 
+         SubscriptBox["\[Beta]", "7"]}]}]}
+     },
+     GridBoxAlignment->{
+      "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}},
+        "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[0.5599999999999999]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], {
+          Offset[0.4]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    Column], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"eqns", "//", "MatrixForm"}], "//", "TeXForm"}]], "Input"],
+
+Cell["\<\
+\\left(
+\\begin{array}{c}
+ \\text{True} \\\\
+ \\hat{\\alpha }_{-1}=\\beta _1 \\\\
+ \\hat{\\alpha }_0=\\beta _2+\\frac{1}{2} \\\\
+ \\hat{\\alpha }_1=\\beta _3 \\\\
+ \\text{True} \\\\
+ \\alpha _{-2}=\\gamma _1-\\beta _4 \\\\
+ \\alpha _{-1}=-2 \\beta _1+\\beta _4-\\beta _5-2 \\gamma _1+\\gamma \
+_2-\\frac{\\sigma }{2} \\\\
+ \\alpha _0=-2 \\beta _2+\\beta _5-\\beta _6+\\gamma _1-2 \\gamma _2+\\gamma \
+_3 \\\\
+ \\alpha _1=-2 \\beta _3+\\beta _6-\\beta _7+\\gamma _2-2 \\gamma \
+_3+\\frac{\\sigma }{2} \\\\
+ \\alpha _2=\\beta _7+\\gamma _3 \\\\
+ \\check{\\alpha }_{-2}=\\beta _4 \\\\
+ \\check{\\alpha }_{-1}=\\beta _1-\\beta _4+\\beta _5 \\\\
+ \\check{\\alpha }_0=\\beta _2-\\beta _5+\\beta _6-\\frac{1}{2} \\\\
+ \\check{\\alpha }_1=\\beta _3-\\beta _6+\\beta _7 \\\\
+ \\check{\\alpha }_2=-\\beta _7 \\\\
+\\end{array}
+\\right)\
+\>", "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"Eliminate", "[", 
+      RowBox[{"eqns", ",", 
+       RowBox[{"{", 
+        RowBox[{
+         SubscriptBox["\[Beta]", "1"], ",", 
+         SubscriptBox["\[Beta]", "2"], ",", 
+         SubscriptBox["\[Beta]", "3"], ",", 
+         SubscriptBox["\[Beta]", "4"], ",", 
+         SubscriptBox["\[Beta]", "5"], ",", 
+         SubscriptBox["\[Beta]", "6"], ",", 
+         SubscriptBox["\[Beta]", "7"], ",", 
+         SubscriptBox["\[Gamma]", "1"], ",", 
+         SubscriptBox["\[Gamma]", "2"], ",", 
+         SubscriptBox["\[Gamma]", "3"]}], "}"}]}], "]"}], "//", "Simplify"}], 
+    ")"}], "/.", 
+   RowBox[{"And", "\[Rule]", "List"}]}], "//", "MatrixForm"}]], "Input"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", 
+   TagBox[GridBox[{
+      {
+       RowBox[{
+        RowBox[{"2", "+", "\[Sigma]", "+", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], 
+           RowBox[{"-", "2"}]]}], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], 
+          RowBox[{"-", "1"}]]}], "\[Equal]", 
+        RowBox[{
+         SubscriptBox["\[Alpha]", 
+          RowBox[{"-", "1"}]], "+", 
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Alpha]", "0"]}], "+", 
+         RowBox[{"3", " ", 
+          SubscriptBox["\[Alpha]", "1"]}], "+", 
+         RowBox[{"4", " ", 
+          SubscriptBox["\[Alpha]", "2"]}], "+", 
+         RowBox[{"3", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "^"], 
+           RowBox[{"-", "1"}]]}], "+", 
+         RowBox[{"4", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "^"], "0"]}], "+", 
+         RowBox[{"5", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "^"], "1"]}], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "1"], "+", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]}]},
+      {
+       RowBox[{
+        RowBox[{"\[Sigma]", "+", 
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Alpha]", 
+           RowBox[{"-", "2"}]]}], "+", 
+         SubscriptBox["\[Alpha]", 
+          RowBox[{"-", "1"}]], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], 
+          RowBox[{"-", "1"}]], "+", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], 
+           RowBox[{"-", "2"}]]}], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], 
+          RowBox[{"-", "1"}]]}], "\[Equal]", 
+        RowBox[{
+         SubscriptBox["\[Alpha]", "1"], "+", 
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Alpha]", "2"]}], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "1"], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "1"], "+", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]}]},
+      {
+       RowBox[{
+        RowBox[{
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], 
+          RowBox[{"-", "1"}]], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "0"], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "1"]}], "\[Equal]", 
+        RowBox[{"1", "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], 
+          RowBox[{"-", "2"}]], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], 
+          RowBox[{"-", "1"}]], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "0"], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "1"], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]}
+     },
+     GridBoxAlignment->{
+      "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}},
+        "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[0.5599999999999999]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], {
+          Offset[0.4]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    Column], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"Assuming", "[", 
+    RowBox[{
+     RowBox[{"Eliminate", "[", 
+      RowBox[{"eqns", ",", 
+       RowBox[{"{", 
+        RowBox[{
+         SubscriptBox["\[Beta]", "1"], ",", 
+         SubscriptBox["\[Beta]", "2"], ",", 
+         SubscriptBox["\[Beta]", "3"], ",", 
+         SubscriptBox["\[Beta]", "4"], ",", 
+         SubscriptBox["\[Beta]", "5"], ",", 
+         SubscriptBox["\[Beta]", "6"], ",", 
+         SubscriptBox["\[Beta]", "7"], ",", 
+         SubscriptBox["\[Gamma]", "1"], ",", 
+         SubscriptBox["\[Gamma]", "2"], ",", 
+         SubscriptBox["\[Gamma]", "3"]}], "}"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"eqns2", "=", 
+      RowBox[{"Reduce", "@", 
+       RowBox[{"Simplify", "[", 
+        RowBox[{"eqns", "/.", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            SubscriptBox["\[Beta]", "1"], "\[Rule]", 
+            SubscriptBox[
+             OverscriptBox["\[Alpha]", "^"], 
+             RowBox[{"-", "1"}]]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            SubscriptBox["\[Beta]", "2"], "\[Rule]", 
+            RowBox[{
+             SubscriptBox[
+              OverscriptBox["\[Alpha]", "^"], "0"], "-", 
+             RowBox[{"1", "/", "2"}]}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            SubscriptBox["\[Beta]", "3"], "\[Rule]", 
+            SubscriptBox[
+             OverscriptBox["\[Alpha]", "^"], "1"]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            SubscriptBox["\[Beta]", "4"], "\[Rule]", 
+            SubscriptBox[
+             OverscriptBox["\[Alpha]", "\[Hacek]"], 
+             RowBox[{"-", "2"}]]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            SubscriptBox["\[Beta]", "5"], "\[Rule]", 
+            RowBox[{
+             RowBox[{"-", 
+              SubscriptBox[
+               OverscriptBox["\[Alpha]", "^"], 
+               RowBox[{"-", "1"}]]}], "+", 
+             SubscriptBox[
+              OverscriptBox["\[Alpha]", "\[Hacek]"], 
+              RowBox[{"-", "1"}]], "+", 
+             SubscriptBox[
+              OverscriptBox["\[Alpha]", "\[Hacek]"], 
+              RowBox[{"-", "2"}]]}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            SubscriptBox["\[Beta]", "6"], "\[Rule]", 
+            RowBox[{
+             SubscriptBox[
+              OverscriptBox["\[Alpha]", "^"], "1"], "-", 
+             SubscriptBox[
+              OverscriptBox["\[Alpha]", "\[Hacek]"], "1"], "-", 
+             SubscriptBox[
+              OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            SubscriptBox["\[Beta]", "7"], "\[Rule]", 
+            RowBox[{"-", 
+             SubscriptBox[
+              OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            SubscriptBox["\[Gamma]", "1"], "\[Rule]", 
+            RowBox[{
+             SubscriptBox["\[Alpha]", 
+              RowBox[{"-", "2"}]], "+", 
+             SubscriptBox[
+              OverscriptBox["\[Alpha]", "\[Hacek]"], 
+              RowBox[{"-", "2"}]]}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            SubscriptBox["\[Gamma]", "2"], "\[Rule]", 
+            RowBox[{
+             FractionBox["1", "2"], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               SubscriptBox["\[Alpha]", 
+                RowBox[{"-", "2"}]], "-", 
+               SubscriptBox["\[Alpha]", "0"], "+", 
+               SubscriptBox["\[Alpha]", "2"], "-", 
+               SubscriptBox[
+                OverscriptBox["\[Alpha]", "^"], "0"], "+", 
+               SubscriptBox[
+                OverscriptBox["\[Alpha]", "\[Hacek]"], 
+                RowBox[{"-", "2"}]], "-", 
+               SubscriptBox[
+                OverscriptBox["\[Alpha]", "\[Hacek]"], "0"], "+", 
+               SubscriptBox[
+                OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}], ")"}]}]}], ",",
+            "\[IndentingNewLine]", 
+           RowBox[{
+            SubscriptBox["\[Gamma]", "3"], "\[Rule]", 
+            RowBox[{
+             SubscriptBox["\[Alpha]", "2"], "+", 
+             SubscriptBox[
+              OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]}], 
+          "\[IndentingNewLine]", "}"}]}], "]"}]}]}]}], "]"}], "//", 
+   "MatrixForm"}], "\[IndentingNewLine]"}]], "Input"],
+
+Cell[BoxData[
+ TagBox["True",
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"D", "[", 
+  RowBox[{
+   RowBox[{"eqns", "/.", 
+    RowBox[{
+     RowBox[{"Equal", "[", 
+      RowBox[{"x_", ",", "y_"}], "]"}], "\[Rule]", 
+     RowBox[{"x", "-", "y"}]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"{", 
+     RowBox[{
+      SubscriptBox["\[Beta]", "1"], ",", 
+      SubscriptBox["\[Beta]", "2"], ",", 
+      SubscriptBox["\[Beta]", "3"], ",", 
+      SubscriptBox["\[Beta]", "4"], ",", 
+      SubscriptBox["\[Beta]", "5"], ",", 
+      SubscriptBox["\[Beta]", "6"], ",", 
+      SubscriptBox["\[Beta]", "7"], ",", 
+      SubscriptBox["\[Gamma]", "1"], ",", 
+      SubscriptBox["\[Gamma]", "2"], ",", 
+      SubscriptBox["\[Gamma]", "3"]}], "}"}], "}"}]}], "]"}]], "Input"],
+
+Cell[BoxData["10"], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"MatrixForm", "[", 
+  RowBox[{"eqns2", "/.", 
+   RowBox[{"And", "\[Rule]", "List"}]}], "]"}]], "Input"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", 
+   TagBox[GridBox[{
+      {
+       RowBox[{
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "^"], 
+         RowBox[{"-", "1"}]], "\[Equal]", 
+        RowBox[{"1", "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "0"], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "1"], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], 
+          RowBox[{"-", "2"}]], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], 
+          RowBox[{"-", "1"}]], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "0"], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "1"], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]},
+      {
+       RowBox[{
+        SubscriptBox["\[Beta]", "6"], "\[Equal]", 
+        RowBox[{
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "1"], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "1"], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]},
+      {
+       RowBox[{
+        SubscriptBox["\[Beta]", "5"], "\[Equal]", 
+        RowBox[{
+         RowBox[{"-", "1"}], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "0"], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "1"], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "0"], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "1"], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]},
+      {
+       RowBox[{
+        SubscriptBox["\[Alpha]", 
+         RowBox[{"-", "1"}]], "\[Equal]", 
+        RowBox[{
+         RowBox[{"-", "1"}], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Alpha]", "0"]}], "-", 
+         SubscriptBox["\[Alpha]", "1"], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Gamma]", "2"]}], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "0"], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], 
+          RowBox[{"-", "2"}]], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], 
+           RowBox[{"-", "1"}]]}], "-", 
+         RowBox[{"3", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], "0"]}], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], "1"]}], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]},
+      {
+       RowBox[{
+        SubscriptBox["\[Alpha]", 
+         RowBox[{"-", "2"}]], "\[Equal]", 
+        RowBox[{
+         SubscriptBox["\[Alpha]", "0"], "-", 
+         SubscriptBox["\[Alpha]", "2"], "+", 
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Gamma]", "2"]}], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "0"], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], 
+          RowBox[{"-", "2"}]], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "0"], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]},
+      {
+       RowBox[{"\[Sigma]", "\[Equal]", 
+        RowBox[{
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Alpha]", "1"]}], "+", 
+         RowBox[{"4", " ", 
+          SubscriptBox["\[Alpha]", "2"]}], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Gamma]", "2"]}], "+", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "^"], "1"]}], "+", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], "1"]}], "+", 
+         RowBox[{"4", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]}]}
+     },
+     GridBoxAlignment->{
+      "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}},
+        "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[0.5599999999999999]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], {
+          Offset[0.4]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    Column], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Simplify", "[", 
+  RowBox[{
+   FractionBox[
+    RowBox[{"-", "1"}], "2"], 
+   RowBox[{"(", " ", 
+    RowBox[{
+     SubscriptBox["\[Alpha]", "0"], "-", 
+     SubscriptBox["\[Alpha]", "2"], "+", 
+     SubscriptBox[
+      OverscriptBox["\[Alpha]", "^"], "0"], "-", 
+     SubscriptBox[
+      OverscriptBox["\[Alpha]", "\[Hacek]"], 
+      RowBox[{"-", "2"}]], "+", 
+     SubscriptBox[
+      OverscriptBox["\[Alpha]", "\[Hacek]"], "0"], "-", 
+     SubscriptBox[
+      OverscriptBox["\[Alpha]", "\[Hacek]"], "2"], "-", 
+     SubscriptBox["\[Alpha]", 
+      RowBox[{"-", "2"}]]}], ")"}]}], "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "2"], " ", 
+  RowBox[{"(", 
+   RowBox[{
+    SubscriptBox["\[Alpha]", 
+     RowBox[{"-", "2"}]], "-", 
+    SubscriptBox["\[Alpha]", "0"], "+", 
+    SubscriptBox["\[Alpha]", "2"], "-", 
+    SubscriptBox[
+     OverscriptBox["\[Alpha]", "^"], "0"], "+", 
+    SubscriptBox[
+     OverscriptBox["\[Alpha]", "\[Hacek]"], 
+     RowBox[{"-", "2"}]], "-", 
+    SubscriptBox[
+     OverscriptBox["\[Alpha]", "\[Hacek]"], "0"], "+", 
+    SubscriptBox[
+     OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}], ")"}]}]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"sol", "=", 
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      SubscriptBox["\[Beta]", "1"], "\[Rule]", 
+      SubscriptBox[
+       OverscriptBox["\[Alpha]", "^"], 
+       RowBox[{"-", "1"}]]}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      SubscriptBox["\[Beta]", "2"], "\[Rule]", 
+      RowBox[{
+       SubscriptBox[
+        OverscriptBox["\[Alpha]", "^"], "0"], "-", 
+       RowBox[{"1", "/", "2"}]}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      SubscriptBox["\[Beta]", "3"], "\[Rule]", 
+      SubscriptBox[
+       OverscriptBox["\[Alpha]", "^"], "1"]}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      SubscriptBox["\[Beta]", "4"], "\[Rule]", 
+      SubscriptBox[
+       OverscriptBox["\[Alpha]", "\[Hacek]"], 
+       RowBox[{"-", "2"}]]}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      SubscriptBox["\[Beta]", "5"], "\[Rule]", 
+      RowBox[{
+       RowBox[{"-", 
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "^"], 
+         RowBox[{"-", "1"}]]}], "+", 
+       SubscriptBox[
+        OverscriptBox["\[Alpha]", "\[Hacek]"], 
+        RowBox[{"-", "1"}]], "+", 
+       SubscriptBox[
+        OverscriptBox["\[Alpha]", "\[Hacek]"], 
+        RowBox[{"-", "2"}]]}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      SubscriptBox["\[Beta]", "6"], "\[Rule]", 
+      RowBox[{
+       SubscriptBox[
+        OverscriptBox["\[Alpha]", "^"], "1"], "-", 
+       SubscriptBox[
+        OverscriptBox["\[Alpha]", "\[Hacek]"], "1"], "-", 
+       SubscriptBox[
+        OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      SubscriptBox["\[Beta]", "7"], "\[Rule]", 
+      RowBox[{"-", 
+       SubscriptBox[
+        OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      SubscriptBox["\[Gamma]", "1"], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["\[Alpha]", 
+        RowBox[{"-", "2"}]], "+", 
+       SubscriptBox[
+        OverscriptBox["\[Alpha]", "\[Hacek]"], 
+        RowBox[{"-", "2"}]]}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      SubscriptBox["\[Gamma]", "2"], "\[Rule]", 
+      RowBox[{
+       FractionBox["1", "2"], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         SubscriptBox["\[Alpha]", 
+          RowBox[{"-", "2"}]], "-", 
+         SubscriptBox["\[Alpha]", "0"], "+", 
+         SubscriptBox["\[Alpha]", "2"], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "0"], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], 
+          RowBox[{"-", "2"}]], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "0"], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}], ")"}]}]}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      SubscriptBox["\[Gamma]", "3"], "\[Rule]", 
+      RowBox[{
+       SubscriptBox["\[Alpha]", "2"], "+", 
+       SubscriptBox[
+        OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]}], 
+    "\[IndentingNewLine]", "}"}]}], ";"}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"Reduce", "[", 
+    RowBox[{"eqns", "/.", "sol"}], "]"}], "/.", 
+   RowBox[{"And", "\[Rule]", "List"}]}], "//", "MatrixForm"}]], "Input"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", 
+   TagBox[GridBox[{
+      {
+       RowBox[{
+        SubscriptBox[
+         OverscriptBox["\[Alpha]", "^"], 
+         RowBox[{"-", "1"}]], "\[Equal]", 
+        RowBox[{"1", "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "0"], "-", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "1"], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], 
+          RowBox[{"-", "2"}]], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], 
+          RowBox[{"-", "1"}]], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "0"], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "1"], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]},
+      {
+       RowBox[{
+        SubscriptBox["\[Alpha]", 
+         RowBox[{"-", "2"}]], "\[Equal]", 
+        RowBox[{
+         RowBox[{"-", "1"}], "-", 
+         SubscriptBox["\[Alpha]", 
+          RowBox[{"-", "1"}]], "-", 
+         SubscriptBox["\[Alpha]", "0"], "-", 
+         SubscriptBox["\[Alpha]", "1"], "-", 
+         SubscriptBox["\[Alpha]", "2"], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], 
+           RowBox[{"-", "2"}]]}], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], 
+           RowBox[{"-", "1"}]]}], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], "0"]}], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], "1"]}], "-", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]}]},
+      {
+       RowBox[{"\[Sigma]", "\[Equal]", 
+        RowBox[{"1", "+", 
+         SubscriptBox["\[Alpha]", 
+          RowBox[{"-", "1"}]], "+", 
+         RowBox[{"2", " ", 
+          SubscriptBox["\[Alpha]", "0"]}], "+", 
+         RowBox[{"3", " ", 
+          SubscriptBox["\[Alpha]", "1"]}], "+", 
+         RowBox[{"4", " ", 
+          SubscriptBox["\[Alpha]", "2"]}], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "^"], "0"], "+", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "^"], "1"]}], "+", 
+         SubscriptBox[
+          OverscriptBox["\[Alpha]", "\[Hacek]"], 
+          RowBox[{"-", "2"}]], "+", 
+         RowBox[{"2", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], 
+           RowBox[{"-", "1"}]]}], "+", 
+         RowBox[{"3", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], "0"]}], "+", 
+         RowBox[{"4", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], "1"]}], "+", 
+         RowBox[{"5", " ", 
+          SubscriptBox[
+           OverscriptBox["\[Alpha]", "\[Hacek]"], "2"]}]}]}]}
+     },
+     GridBoxAlignment->{
+      "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}},
+        "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[0.5599999999999999]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], {
+          Offset[0.4]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    Column], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"sol", "/.", 
+    RowBox[{"Rule", "\[Rule]", "Equal"}]}], "//", "MatrixForm"}], "//", 
+  "TeXForm"}]], "Input"],
+
+Cell["\<\
+\\left(
+\\begin{array}{c}
+ \\beta _1=\\hat{\\alpha }_{-1} \\\\
+ \\beta _2=\\hat{\\alpha }_0-\\frac{1}{2} \\\\
+ \\beta _3=\\hat{\\alpha }_1 \\\\
+ \\beta _4=\\check{\\alpha }_{-2} \\\\
+ \\beta _5=\\check{\\alpha }_{-2}+\\check{\\alpha }_{-1}-\\hat{\\alpha }_{-1} \
+\\\\
+ \\beta _6=-\\check{\\alpha }_1-\\check{\\alpha }_2+\\hat{\\alpha }_1 \\\\
+ \\beta _7=-\\check{\\alpha }_2 \\\\
+ \\gamma _1=\\check{\\alpha }_{-2}+\\alpha _{-2} \\\\
+ \\gamma _2=\\frac{1}{2} \\left(\\check{\\alpha }_{-2}-\\check{\\alpha \
+}_0+\\check{\\alpha }_2+\\alpha _{-2}-\\alpha _0+\\alpha
+   _2-\\hat{\\alpha }_0\\right) \\\\
+ \\gamma _3=\\check{\\alpha }_2+\\alpha _2 \\\\
+\\end{array}
+\\right)\
+\>", "Output"]
+}, Open  ]]
+},
+WindowSize->{1020, 647},
+WindowMargins->{{Automatic, 228}, {13, Automatic}},
+FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (October 6, 2011)",
+StyleDefinitions->"Default.nb"
+]
+

@@ -176,7 +176,8 @@ Cell[BoxData[{
                "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
             RowBox[{"{", 
              RowBox[{
-             "\"\<\!\(\*FractionBox[\(\[Tau]\), \(h\)]\) ratio\>\"", ",", 
+             "\"\<\[Sigma]=\!\(\*FractionBox[\(\(|\)\(\[Lambda]\)\*\
+SubscriptBox[\(|\), \(max\)]\(\[Tau]\)\), \(h\)]\), Courant number\>\"", ",", 
               RowBox[{"RadioButton", "[", 
                RowBox[{
                 RowBox[{"Dynamic", "[", "Courant", "]"}], ",", "True"}], 
@@ -202,7 +203,9 @@ Cell[BoxData[{
                  RowBox[{"Dynamic", "[", "Courant", "]"}]}]}], "]"}]}], "}"}],
              ",", "\[IndentingNewLine]", 
             RowBox[{"{", 
-             RowBox[{"\"\<\[Tau], time step\>\"", ",", 
+             RowBox[{
+             "\"\<|\[Lambda]\!\(\*SubscriptBox[\(|\), \(max\)]\)\[Tau], time \
+step\>\"", ",", 
               RowBox[{"RadioButton", "[", 
                RowBox[{
                 RowBox[{"Dynamic", "[", "Courant", "]"}], ",", "False"}], 
@@ -230,8 +233,8 @@ Cell[BoxData[{
           RowBox[{"Alignment", "\[Rule]", "Left"}]}], "]"}]}]}]}]}], 
     "\[IndentingNewLine]", "]"}]}], ";"}]}], "Input"]
 },
-WindowSize->{988, 647},
-WindowMargins->{{Automatic, -1147}, {Automatic, -21}},
+WindowSize->{785, 645},
+WindowMargins->{{5, Automatic}, {2, Automatic}},
 ShowSelection->True,
 FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (October 6, 2011)",
 StyleDefinitions->"Default.nb"
