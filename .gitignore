@@ -1,0 +1,14 @@
+# Tex
+
+*.aux
+*.log
+
+# Vim
+
+*.swp
+
+# Metapost
+*.mpx
+
+# EpsToPdf
+*eps-converted-to.pdf

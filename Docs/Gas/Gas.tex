@@ -1,0 +1,387 @@
+\documentclass[10pt]{article}
+\usepackage[cp1251]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage{ifpdf}
+
+\ifpdf\usepackage{epstopdf}\fi
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+\graphicspath{{fig/}}
+
+\title{Разностная схема для уравнений газовой динамики в 1D}
+\author{Цыбулин Иван}
+
+\newcommand{\pd}[2]{\frac{\partial{#1}}{\partial {#2}}}
+\newcommand{\td}[2]{\frac{d{#1}}{d {#2}}}
+
+\newcommand{\cutefrac}[2]{{}^{#1\!}\!/{\!}_#2}
+\newcommand{\half}{\cutefrac{1}{2}}
+
+\begin{document}
+\maketitle
+
+\section{Построение квази-консервативных схем на 13-ти точечном шаблоне}
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=.5\textwidth]{gas-0}%
+\caption{13-ти точечный шаблон}
+\end{figure}
+
+Предположим, что некоторым образом на этом шаблоне построена схема для линейного уравнения переноса 
+\begin{equation}
+\pd{u}{t} + \pd{F(u)}{x} = 0, \qquad F(u) = \lambda u, \quad \lambda > 0
+\label{eq:transf}
+\end{equation}
+вида
+\begin{equation}
+u^{n+1}_m = \sum_{(\mu,\nu) \in S} \tilde{\alpha}_\mu^\nu u^{n + \nu}_{m + \mu}
+\label{eq:linscheme}
+\end{equation}
+Добавим точку $(0,1)$ в шаблон $S$ (далее будем именовать его полным шаблоном) и введем произвольную
+нормировку коэффициентов
+\begin{equation}
+\sum_{(\mu,\nu) \in S} \alpha_\mu^\nu u^{n + \nu}_{m + \mu} = 0, \qquad \sum_{(\mu,\nu) \in S} \left(\alpha_\mu^\nu\right)^2 \neq 0
+\label{eq:linscheme2}
+\end{equation}
+
+\newcommand{\uu}{\hat{u}}
+\newcommand{\ud}{\check{u}}
+Построим эквивалентную (для линейного уравнения переноса!) полностью консервативную разностную схему в форме
+\begin{equation}
+\frac{u^{n+\half}_{m}-u^{n-\half}_{m}}{\tau} + \frac{F^{n}_{m+\half}-F^{n}_{m-\half}}{h} = 0,
+\label{eq:conserv}
+\end{equation}
+где $u^{n\pm\half}_m$ и $F^n_{m\pm\half}$ --- некоторые линейные комбинации $u^{n+\nu}_{m+\mu}$ и $F^{n+\nu}_{m+\mu}$, вычисляемые
+для <<$+$>> и для <<$-$>> одинаковым способом.
+Пусть
+\begin{align*}
+u^{n + \half}_m &= \frac{1}{2}(\hat{u}_m + u_m) + \\
+& 
+(\beta_1)^{n+\half}_{m-1} (\hat{u}_{m-1} - u_{m-1}) + 
+(\beta_2)^{n+\half}_m (\hat{u}_{m} - u_{m}) + 
+(\beta_3)^{n+\half}_{m+1} (\hat{u}_{m+1} - u_{m+1}) + \\
+& 
+(\beta_4)^n_{m-\cutefrac{3}{2}} (u_{m-1} - u_{m-2}) + 
+(\beta_5)^n_{m-\cutefrac{1}{2}} (u_{m} - u_{m-1}) + \\
+& 
+(\beta_6)^n_{m+\cutefrac{1}{2}} (u_{m+1} - u_{m}) + 
+(\beta_7)^n_{m+\cutefrac{3}{2}} (u_{m+2} - u_{m})\\
+u^{n - \half}_m &= \frac{1}{2}(\check{u}_m + u_m) + \\
+& 
+(\beta_1)^{n-\half}_{m-1}  (u_{m-1} - \check{u}_{m-1}) + 
+(\beta_2)^{n-\half}_m (u_{m} - \check{u}_{m}) + 
+(\beta_3)^{n-\half}_{m+1} (u_{m+1} - \check{u}_{m+1}) + \\
+& 
+(\beta_4)^{n-1}_{m-\cutefrac{3}{2}} (\check{u}_{m-1} - \check{u}_{m-2}) + 
+(\beta_5)^{n-1}_{m-\cutefrac{1}{2}} (\check{u}_{m} - \check{u}_{m-1}) + \\
+& 
+(\beta_6)^{n-1}_{m+\cutefrac{1}{2}} (\check{u}_{m+1} - \check{u}_{m}) + 
+(\beta_7)^{n-1}_{m+\cutefrac{3}{2}} (\check{u}_{m+2} - \check{u}_{m})\\
+F^{n}_{m + \half} &= \frac{1}{2}\left(F_{m}^n + F_{m+1}^n\right) + \frac{h}{\tau}\times\\
+&
+\left[(\gamma_1)^n_{m-\half} (u_m - u_{m-1}) + 
+(\gamma_2)^n_{m+\half} (u_{m+1} - u_{m}) + 
+(\gamma_3)^n_{m+\cutefrac{3}{2}} (u_{m+2} - u_{m+1})\right]\\
+F^{n}_{m - \half} &= \frac{1}{2}\left(F_{m-1}^n + F_m^n\right) + \frac{h}{\tau}\times\\
+&
+\left[(\gamma_1)^n_{m-\cutefrac{3}{2}} (u_{m-1} - u_{m-2}) + 
+(\gamma_2)^n_{m-\cutefrac{1}{2}} (u_{m} - u_{m-1}) + 
+(\gamma_3)^n_{m+\cutefrac{1}{2}} (u_{m+1} - u_{m})\right]
+\end{align*}
+
+\begin{figure}[ht!]%
+\includegraphics[width=.5\columnwidth]{gas-1}%
+\includegraphics[width=.5\columnwidth]{gas-2}%
+\caption{Шаблоны для аппроксимации $u^{n+\half}_m$ и $F^n_{m+\half}$}%
+\label{}%
+\end{figure}
+
+Здесь использованы обозначения $\check{u}$ для $u^{n-1}$, $\hat{u}$ для $u^{n+1}$ и $u$ для $u^n$.
+Все коэффициенты $\beta_j, \gamma_j$ зависят от локального числа Куранта $\sigma$. 
+Cхема \eqref{eq:conserv} должна с точностью до умножения на константу совпадать с \eqref{eq:linscheme2}.
+Поскольку нормировка $\alpha^\nu_\mu$ пока не фиксирована, потребуем строго равенства:
+\begin{equation}
+\begin{cases}
+ \hat{\alpha }_{-1}&=\beta _1 \\
+ \hat{\alpha }_0&=\beta _2+\frac{1}{2} \\
+ \hat{\alpha }_1&=\beta _3 \\
+ \alpha _{-2}&=\gamma _1-\beta _4 \\
+ \alpha _{-1}&=-2 \beta _1+\beta _4-\beta _5-2 \gamma _1+\gamma _2-\frac{\sigma }{2} \\
+ \alpha _0&=-2 \beta _2+\beta _5-\beta _6+\gamma _1-2 \gamma _2+\gamma _3 \\
+ \alpha _1&=-2 \beta _3+\beta _6-\beta _7+\gamma _2-2 \gamma _3+\frac{\sigma }{2} \\
+ \alpha _2&=\beta _7+\gamma _3 \\
+ \check{\alpha }_{-2}&=\beta _4 \\
+ \check{\alpha }_{-1}&=\beta _1-\beta _4+\beta _5 \\
+ \check{\alpha }_0&=\beta _2-\beta _5+\beta _6-\frac{1}{2} \\
+ \check{\alpha }_1&=\beta _3-\beta _6+\beta _7 \\
+ \check{\alpha }_2&=-\beta _7 
+\end{cases}
+\label{eq:atobg}
+\end{equation}
+Здесь введено обозначение $\sigma = \frac{\lambda \tau}{h}$. 
+Система связывает 10 параметров $\beta_j, \gamma_j$.
+Исключая параметры $\beta_j,\gamma_j$ из \eqref{eq:atobg}, получаем три условия разрешимости системы:
+\begin{equation}
+\begin{cases}
+0 &= \sum \alpha^\nu_\mu\\
+1 &= (\hat{\alpha }_{-1} + \hat{\alpha }_{0} + \hat{\alpha }_{1}) - 
+(\check{\alpha }_{-2} + \check{\alpha }_{-1} + \check{\alpha }_{0} + \check{\alpha }_{1} + \check{\alpha }_{2}) = \sum \nu \alpha^\nu_\mu\\
+\sigma &= 
+-2 (\check{\alpha }_{-2} + {\alpha }_{-2})
+-(\check{\alpha }_{-1} + \hat{\alpha }_{-1} + {\alpha }_{-1})
++(\check{\alpha }_{1} + \hat{\alpha }_{1} + {\alpha }_{1}) 
++2(\check{\alpha }_{2} + {\alpha }_{2}) = \\
+&\hspace{.5\columnwidth}=\sum \mu \alpha^\nu_\mu
+\end{cases}
+\label{eq:solvable}
+\end{equation}
+Первое условие является условием нулевого порядка аппроксимации схемы \eqref{eq:linscheme2} (в терминах полного шаблона).
+Следующие два условия равносильны выполнению
+\begin{equation}
+\sum (\mu - \sigma \nu) \alpha^\nu_\mu = 0
+\label{eq:secord}
+\end{equation}
+при некоторой нормировке коэффициентов $\alpha^\nu_\mu$ (задаваемой $\sum \nu \alpha^\nu_\mu = 1,$ например), что представляет собой
+условие первого порядка аппроксимации (снова, для полного шаблона).
+С учетом \eqref{eq:solvable} уравнения \eqref{eq:atobg} разрешимы относительно $\beta_j, \gamma_j$:
+\begin{equation}
+\begin{cases}
+ \beta _1&=\hat{\alpha }_{-1} \\
+ \beta _2&=\hat{\alpha }_0-\frac{1}{2} \\
+ \beta _3&=\hat{\alpha }_1 \\
+ \beta _4&=\check{\alpha }_{-2} \\
+ \beta _5&=\check{\alpha }_{-2}+\check{\alpha }_{-1}-\hat{\alpha }_{-1} \\
+ \beta _6&=-\check{\alpha }_1-\check{\alpha }_2+\hat{\alpha }_1 \\
+ \beta _7&=-\check{\alpha }_2 \\
+ \gamma _1&=\check{\alpha }_{-2}+\alpha _{-2} \\
+ \gamma _2&=\frac{1}{2} \left(\check{\alpha }_{-2}-\check{\alpha }_0+\check{\alpha }_2+\alpha _{-2}-\alpha _0+\alpha
+   _2-\hat{\alpha }_0\right) \\
+ \gamma _3&=\check{\alpha }_2+\alpha _2 
+\end{cases}
+\label{eq:bg}
+\end{equation}
+
+Коэффициенты $\alpha^\nu_\mu$ можно доопределить в область отрицательных $\sigma$ следующим образом
+\begin{equation}
+\alpha^\nu_\mu(-|\sigma|) = \alpha^\nu_{-\mu}(|\sigma|)
+\label{eq:neg}
+\end{equation}
+
+Например, для явного левого уголка
+\begin{equation}
+u^{n+1}_m = (1-\sigma) u^n_m + \sigma u^n_{m-1}
+\label{eq:lc}
+\end{equation}
+коэффициенты $\alpha^\nu_\mu$ равны (при $\sigma > 0$)
+\begin{equation}
+\begin{cases}
+\hat{\alpha}_0 &= 1\\
+\alpha_0 &= \sigma - 1\\
+\alpha_{-1} &= -\sigma,
+\end{cases}
+\label{eq:alf}
+\end{equation}
+а коэффициенты $\beta_j, \gamma_j$, соответственно,
+\begin{equation}
+\begin{cases}
+ \beta _1&=0 \\
+ \beta _2&=\frac{1}{2} \\
+ \beta _3&=0 \\
+ \beta _4&=0 \\
+ \beta _5&=0 \\
+ \beta _6&=0\\
+ \beta _7&=0 \\
+ \gamma _1&=0 \\
+ \gamma _2&=-\frac{|\sigma|}{2}\\
+ \gamma _3&=0
+\end{cases}
+\label{eq:bglc}
+\end{equation}
+получаем известную схему
+\begin{align*}
+u^{n+\half}_m &= \frac{1}{2}(u^n_m + u^{n+1}_m) + \frac{1}{2}(u^{n+1}_m - u^{n}_m) = u^{n+1}_m\\
+u^{n-\half}_m &= \frac{1}{2}(u^n_m + u^{n-1}_m) + \frac{1}{2}(u^{n}_m - u^{n-1}_m) = u^{n}_m\\
+F^n_{m+\half} &= \frac{1}{2}(F^n_m + F^n_{m+1}) - \frac{1}{2}|A|(u^{n}_{m+1} - u^{n}_{m})\\
+F^n_{m-\half} &= \frac{1}{2}(F^n_m + F^n_{m-1}) - \frac{1}{2}|A|(u^{n}_{m} - u^{n}_{m-1}).
+\end{align*}
+
+Заменой $\beta_j \rightarrow \Omega \mathrm{B}_j \Omega^{-1}, \quad \gamma_j \rightarrow \frac{\tau}{h}\Omega \Gamma_j \Omega^{-1}$ 
+переходим к схеме для нелинейной системы гиперболических уравнений.
+
+Полученная система полностью консервативна, хотя аппроксимация врядли будет выше первой степени. Но на участках
+с почти постоянной матрицей $A$ решение будет иметь точность, близкую к точности линейных схем соответствующего порядка.
+
+Полученная схема не является линейной относительно значений $u$ на верхнем слое. От этих значений зависят коэффициенты $\beta_j, \gamma_j$.
+Выходом из этой ситуации является использование для неизвестных значений с верхнего слоя значения, полученные по явной сеточно-
+характеристической схеме первого порядка. При необходимости можно проводить внутренние итерации по этим значениям на каждом шаге.
+
+Полученная система на верхнем слое решается либо прогонкой
+
+\section{Система уравнений газовой динамики}
+\subsection{Величины}
+\begin{itemize}
+	\item $\rho$ --- плотность газа
+	\item $u$ --- скорость газа
+	\item $p$ --- давление газа
+	\item $\rho\varepsilon$ --- внутренняя энергия газа (удельная)
+	\item $\mathcal{P} = \rho u$ --- импульс (удельный) газа
+	\item $E = \frac{\rho u^2}{2} + \rho\varepsilon$ --- полная энергия (удельная) газа
+	\item $\gamma$ --- показатель адиабаты ($1.4$ для воздуха --- $21\%\,O_2 + 78\%\,N_2$)
+\end{itemize}
+
+Уравнение состояния $p = \rho \varepsilon (\gamma - 1) = (\gamma - 1)\left(E - \frac{\mathcal{P}^2}{2\rho}\right)$.
+
+\subsection{Система уравнений в дивергентной форме в переменных $\rho, u, \varepsilon, p$}
+\begin{align}
+\pd{\rho}{t} &+ \pd{}{x}\rho u = 0\\
+\pd{}{t}\rho u &+ \pd{}{x}\left(\rho u^2 + p\right) = 0\\
+\pd{}{t}\rho \left(\frac{u^2}{2} + \varepsilon \right) &+ 
+\pd{}{x}\rho u \left(\frac{u^2}{2} + \varepsilon + \frac{p}{\rho} \right) = 0
+\end{align}
+
+\subsection{Система уравнений в дивергентной форме в переменных $\rho, \mathcal{P}, E, p$}
+\begin{align}
+\pd{\rho}{t} &+ \pd{\mathcal{P}}{x} = 0\\
+\pd{\mathcal{P}}{t} &+ \pd{}{x}\left(\frac{\mathcal{P}^2}{\rho} + p\right) = 0\\
+\pd{E}{t} &+ 
+\pd{}{x} \left((E+p) \frac{\mathcal{P}}{\rho}\right) = 0
+\end{align}
+
+Обозначим $\mathbf{U}= (\rho, \mathcal{P}, E)^\mathsf{T},\,\mathbf{F} = \left(\mathcal{P}, 
+\frac{\mathcal{P}^2}{\rho} + p ,(E+p)\frac{\mathcal{P}}{\rho}\right)^\mathsf{T}$. Тогда
+\begin{multline}
+\mathbf{A} \equiv \pd {\mathbf{F}}{\mathbf{U}} = 
+\begin{pmatrix}
+	 0 & 1 & 0 \\
+ -\frac{\mathcal{P}^2}{\rho ^2} + \pd{p}{\rho} & \frac{2 \mathcal{P}}{\rho} + \pd{p}{\mathcal{P}} & \pd{p}{E} \\
+ -\frac{(E+p) \mathcal{P}}{\rho ^2} + \frac{\mathcal{P}}{\rho} \pd{p}{\rho} & 
+	\frac{E+p}{\rho} + \frac{\mathcal{P}}{\rho} \pd{p}{\mathcal{P}} & 
+	\frac{\mathcal{P}}{\rho} + \frac{\mathcal{P}}{\rho} \pd{p}{E}
+\end{pmatrix} = \\
+= 
+\begin{pmatrix}
+	 0 & 1 & 0 \\
+ \frac{\gamma - 3}{2}u^2 & (3 - \gamma)u & \gamma - 1 \\
+ -u\left(\gamma \varepsilon + (2 - \gamma)\frac{u^2}{2}\right) & \gamma \varepsilon + (3 - 2\gamma)\frac{u^2}{2} & \gamma u
+\end{pmatrix}
+\end{multline}
+
+\begin{figure}[ht!]%
+\begin{verbatim}
+A = {{0, 1, 0}, 
+{1/2 u^2 (-3 + \[Gamma]), -u (-3 + \[Gamma]), -1 + \[Gamma]},
+{1/2 u^3 (-2 + \[Gamma]) - u \[Gamma] \[CurlyEpsilon],
+u^2 (3/2 - \[Gamma]) + \[Gamma] \[CurlyEpsilon], u \[Gamma]}}
+\end{verbatim}
+\caption{Copy-paste}
+\end{figure}
+
+Введем скорость звука $c = \sqrt{(\gamma^2 - \gamma)\varepsilon}$. Тогда собственные числа матрицы $\mathbf{A}$ --- $u, u \pm c$.
+
+\begin{align}
+\mathbf{\Lambda} &= 
+\begin{pmatrix}
+	u &   0   & 0\\
+	0 & u - c & 0\\
+	0 &   0   & u + c
+\end{pmatrix}\\
+\mathbf{\Omega} &= 
+\begin{pmatrix}
+	 \frac{2}{u^2} & \frac{2 (\gamma -1)}{2 c^2-2 u (\gamma -1) c+u^2 (\gamma -1)} &
+   \frac{2 (\gamma -1)}{2 c^2+2 u (\gamma -1) c+u^2 (\gamma -1)} \\
+ \frac{2}{u} & -\frac{2 (c-u) (\gamma -1)}{2 c^2-2 u (\gamma -1) c+u^2 (\gamma -1)} &
+   \frac{2 (c+u) (\gamma -1)}{2 c^2+2 u (\gamma -1) c+u^2 (\gamma -1)} \\
+ 1 & 1 & 1 
+\end{pmatrix}\\
+\mathbf{A} &= \mathbf{\Omega}\mathbf{\Lambda}\mathbf{\Omega}^{-1}
+\end{align}
+
+\begin{figure}[ht!]% 
+\begin{verbatim}
+\[CapitalLambda] = {{u, 0, 0}, {0, -c + u, 0}, {0, 0, c + u}}
+\[CapitalOmega] = {{2/u^2, (2 (-1 + \[Gamma]))/(
+   2 c^2 - 2 c u (-1 + \[Gamma]) + u^2 (-1 + \[Gamma])), (
+   2 (-1 + \[Gamma]))/(
+   2 c^2 + 2 c u (-1 + \[Gamma]) + u^2 (-1 + \[Gamma]))}, {2/
+   u, -((2 (c - u) (-1 + \[Gamma]))/(
+    2 c^2 - 2 c u (-1 + \[Gamma]) + u^2 (-1 + \[Gamma]))), (
+   2 (c + u) (-1 + \[Gamma]))/(
+   2 c^2 + 2 c u (-1 + \[Gamma]) + u^2 (-1 + \[Gamma]))}, {1, 1, 1}}
+\end{verbatim}
+\caption{Copy-paste}
+\end{figure}%
+
+\subsection{Система уравнений в недивиргентной форме в переменных $\rho, u, \varepsilon, p$}
+
+Будем пользоваться обозначением $\frac{d}{dt} = \pd{}{t} + u \pd{}{x} $
+
+Уравнение массы
+\begin{equation}
+\pd{\rho}{t} + \pd{(\rho u)}{x} = 0
+\end{equation}
+преобразуется к виду
+\begin{equation}
+\td{\rho}{t} + \rho\pd{u}{x} = 0.
+\end{equation}
+
+Уравнение импульса
+\begin{equation}
+\pd{(\rho u)}{t} + \pd{(\rho u^2 + p)}{x} = 0
+\end{equation}
+преобразуется к виду
+\begin{equation}
+\rho\left(\pd{u}{t}+\pd{u^2}{x} + \frac{1}{\rho}\pd{p}{x}\right) + u \pd{\rho}{t} + u^2 \pd{\rho}{x}= 
+\rho\left(\pd{u}{t}+2u\pd{u}{x} + \frac{1}{\rho}\pd{p}{x}\right) + u \td{\rho}{t} = 0.
+\end{equation}
+Подставляя $\td{\rho}{t}$ из уравнения массы, получаем
+\begin{align}
+\rho\left(\pd{u}{t}+2u\pd{u}{x} + \frac{1}{\rho}\pd{p}{x} - u \pd{u}{x}\right) &= 
+\rho\left(\td{u}{t} + \frac{1}{\rho}\pd{p}{x}\right) = 
+0\\
+\td{u}{t} + \frac{1}{\rho}\pd{p}{x} &= 0.
+\end{align}
+
+Уравнение энергии
+\begin{equation}
+\pd{\left(\rho(\varepsilon + \frac{u^2}{2}) \right)}{t} + 
+\pd{\left(\rho u (\varepsilon + \frac{u^2}{2} + \frac{p}{\rho}) \right)}{x} = 0
+\end{equation}
+преобразуется к виду
+\begin{align}
+\pd{\left(\rho(\varepsilon + \frac{u^2}{2}) \right)}{t} + 
+u \pd{\left(\rho (\varepsilon + \frac{u^2}{2}) \right)}{x} &+ 
+\rho \left(\varepsilon + \frac{u^2}{2}\right) \pd{u}{x} + 
+\pd{(pu)}{x}= 0\\
+\td{\left(\rho(\varepsilon + \frac{u^2}{2}) \right)}{t} &+ 
+\rho \left(\varepsilon + \frac{u^2}{2}\right) \pd{u}{x} + 
+\pd{(pu)}{x}= 0\\
+\rho\td{\left(\varepsilon + \frac{u^2}{2} \right)}{t} + 
+\left(\varepsilon + \frac{u^2}{2} \right)\td{\rho}{t} &+ 
+\rho \left(\varepsilon + \frac{u^2}{2}\right) \pd{u}{x} + 
+\pd{(pu)}{x}= 0\\
+\rho\td{\varepsilon}{t} + \rho u \td{u}{t} +
+\left(\varepsilon + \frac{u^2}{2} \right)\td{\rho}{t} &+ 
+\rho \left(\varepsilon + \frac{u^2}{2}\right) \pd{u}{x} + 
+\pd{(pu)}{x}= 0
+\end{align}
+Используя известные соотношения для $\td{\rho}{t}$ и $\td{u}{t}$, преобразуем
+\begin{align}
+\rho\td{\varepsilon}{t} - u \pd{p}{x} - 
+\rho \left(\varepsilon + \frac{u^2}{2} \right)\pd{u}{x} &+ 
+\rho \left(\varepsilon + \frac{u^2}{2}\right) \pd{u}{x} + 
+\pd{(pu)}{x}= 0\\
+\td{\varepsilon}{t} &+ \frac{p}{\rho}\pd{u}{x}= 0
+\end{align}
+Система уравнений переходит в 
+\begin{align}
+\td{\rho}{t} + \rho \pd{u}{x} = 0\\
+\td{u}{t} + \frac{1}{\rho} \pd{p}{x} = 0\\
+\td{\varepsilon}{t} + \frac{p}{\rho} \pd{u}{x} = 0
+\end{align}
+Матрицы для системы в данной форме можно найти на стр 386 книги <<Лекции по вычислительной
+математике>> Петрова И.Б. и Лобанова А.И.
+
+\end{document}
