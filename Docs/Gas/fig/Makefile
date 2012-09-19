@@ -3,7 +3,7 @@
 SRC=gas.mp
 RES=$(SRC:.mp=-0.eps)
 
-MPOST=mpost.exe
+MPOST=mpost
 
 %-0.eps: %.mp
 	$(MPOST) $<
