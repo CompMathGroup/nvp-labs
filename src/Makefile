@@ -1,11 +1,11 @@
 CC=gcc
-CXX=g++
+CXX=clang++ -std=c++11
 RM=rm -f
-CFLAGS=-O0 -g
-CXXFLAGS=-O0 -g
-LDFLAGS=-lm
+CFLAGS=-O0 -g -Wall
+CXXFLAGS=$(CFLAGS)
+LDFLAGS=-g -lm
 TARGET=gas
-OBJS=gas.o matrix.o
+OBJS=main.o gas.o solver.o
 
 .PHONY: clean all
 
@@ -14,9 +14,14 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
-clean: 
+purge:
+	$(RM) sod*.csv
+
+clean: purge
 	$(RM) $(OBJS) $(TARGET)
 
-gas.o: matrix.h
+gas.o:: coeff.h 
 
-matrix.o: matrix.h
+main.o:: main.h array.h 
+
+solver.o:: solver.h array.h 

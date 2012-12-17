@@ -68,7 +68,7 @@ u^{n + \half}_m &= \frac{1}{2}(\hat{u}_m + u_m) + \\
 (\beta_5)^n_{m-\cutefrac{1}{2}} (u_{m} - u_{m-1}) + \\
 & 
 (\beta_6)^n_{m+\cutefrac{1}{2}} (u_{m+1} - u_{m}) + 
-(\beta_7)^n_{m+\cutefrac{3}{2}} (u_{m+2} - u_{m})\\
+(\beta_7)^n_{m+\cutefrac{3}{2}} (u_{m+2} - u_{m+1})\\
 u^{n - \half}_m &= \frac{1}{2}(\check{u}_m + u_m) + \\
 & 
 (\beta_1)^{n-\half}_{m-1}  (u_{m-1} - \check{u}_{m-1}) + 
@@ -79,7 +79,7 @@ u^{n - \half}_m &= \frac{1}{2}(\check{u}_m + u_m) + \\
 (\beta_5)^{n-1}_{m-\cutefrac{1}{2}} (\check{u}_{m} - \check{u}_{m-1}) + \\
 & 
 (\beta_6)^{n-1}_{m+\cutefrac{1}{2}} (\check{u}_{m+1} - \check{u}_{m}) + 
-(\beta_7)^{n-1}_{m+\cutefrac{3}{2}} (\check{u}_{m+2} - \check{u}_{m})\\
+(\beta_7)^{n-1}_{m+\cutefrac{3}{2}} (\check{u}_{m+2} - \check{u}_{m+1})\\
 F^{n}_{m + \half} &= \frac{1}{2}\left(F_{m}^n + F_{m+1}^n\right) + \frac{h}{\tau}\times\\
 &
 \left[(\gamma_1)^n_{m-\half} (u_m - u_{m-1}) + 
@@ -204,8 +204,8 @@ u^{n+1}_m = (1-\sigma) u^n_m + \sigma u^n_{m-1}
 \begin{align*}
 u^{n+\half}_m &= \frac{1}{2}(u^n_m + u^{n+1}_m) + \frac{1}{2}(u^{n+1}_m - u^{n}_m) = u^{n+1}_m\\
 u^{n-\half}_m &= \frac{1}{2}(u^n_m + u^{n-1}_m) + \frac{1}{2}(u^{n}_m - u^{n-1}_m) = u^{n}_m\\
-F^n_{m+\half} &= \frac{1}{2}(F^n_m + F^n_{m+1}) - \frac{1}{2}|\sigma|(u^{n}_{m+1} - u^{n}_{m})\\
-F^n_{m-\half} &= \frac{1}{2}(F^n_m + F^n_{m-1}) - \frac{1}{2}|\sigma|(u^{n}_{m} - u^{n}_{m-1}).
+F^n_{m+\half} &= \frac{1}{2}(F^n_m + F^n_{m+1}) - \frac{h}{2\tau}|\sigma|(u^{n}_{m+1} - u^{n}_{m})\\
+F^n_{m-\half} &= \frac{1}{2}(F^n_m + F^n_{m-1}) - \frac{h}{2\tau}|\sigma|(u^{n}_{m} - u^{n}_{m-1}).
 \end{align*}
 
 Заменой $\beta_j \rightarrow \Omega \mathrm{B}_j \Omega^{-1}, \:
