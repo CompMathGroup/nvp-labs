@@ -1,6 +1,23 @@
-Notebook[{
+(* Content-type: application/vnd.wolfram.mathematica *)
 
-Cell[CellGroupData[{
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      8240,        239]
+NotebookOptionsPosition[      8006,        226]
+NotebookOutlinePosition[      8340,        241]
+CellTagsIndexPosition[      8297,        238]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
 Cell[BoxData[
  RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
   RowBox[{
@@ -8,7 +25,8 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"{", "\[IndentingNewLine]", 
       RowBox[{
-       RowBox[{"\"\<Coefficient space\>\"", "\[Rule]", "\[IndentingNewLine]", 
+       RowBox[{
+       "\"\<Coefficient space\>\"", "\[Rule]", "\[IndentingNewLine]", 
         RowBox[{"CalculateSchemes", "[", 
          RowBox[{
           RowBox[{"{", 
@@ -204,164 +222,28 @@ Cell[BoxData[
          RowBox[{"{", 
           RowBox[{"0", ",", "1", ",", "0", ",", "1"}], "}"}], ",", "M", ",", 
          "h", ",", "\[Sigma]", ",", "\[Tau]"}], "]"}], "]"}]}], "}"}], 
-    "]"}]}], "\[IndentingNewLine]", "]"}]], "Input"],
-
-Cell[BoxData[
- TagBox[
-  StyleBox[
-   DynamicModuleBox[{$CellContext`As$$ = {{
-     0, 0, 2 #/(1 + 2 #), (1 + 2 #)^(-1)}& , {0, 2, 0, -1}& , {
-     0, (1 + #)^(-1), #/(1 + #), 0}& , {2 #, 0, 0, 1 - 2 #}& , {
-     Rational[1, 2]/#, 0, 1 + Rational[-1, 2]/#, 
-      0}& , {-(-1 + #)^(-1) #, (-1 + #)^(-1) (-1 + 2 #), 0, 
-      0}& }, $CellContext`B2$$ = {(-2 + # - 6 #^2 - #^3)/(-5 + 
-     3 # + #^2 + #^3), 2 (-3 + 5 # + 2 #^2)/(-5 + 
-     3 # + #^2 + #^3), (1 + 2 #)^(-1) (5 + 2 # + #^2)^(-1) (-2 + 3 # + #^2 + 
-      2 #^3), (1 + 2 #)^(-1) (5 + 2 # + #^2)^(-1) (-1 - 4 # + 11 #^2 + 
-      2 #^3)}& , $CellContext`B3$$ = {(-2) (-1 + #)^(-1) #^2, (-1 + #)^(-1) \
-(-2 + 4 #), 0, -1 + 
-     2 #}& , $CellContext`B5$$ = {(2 - 2 #)^(-1), (2 + (-1 + #)^(-1))/(1 + #),
-      Rational[1, 2] (1 + #)^(-1) (-1 + 2 #), 
-     0}& , $CellContext`C3$$ = {-(-1 + #)^(-1) #, (-2 + 
-      4 #)/(-1 + #^2), # (-1 + 2 #)/(1 + 3 # + 2 #^2), (-1 + 2 #)/(1 + 
-     2 #)}& , $CellContext`fOrd$$ = {#2, #3, -(1 + 
-       2 #)^(-1) (#2 + # (-2 + #3)), -(1 + 
-       2 #)^(-1) (-1 + #3 + # (2 #2 + #3))}& , $CellContext`h$$ = 
-    0.01, $CellContext`localStencil$$ = {{False, 3, False, False, False}, {
-     False, False, 2, False, False}, {
-     False, 1, 4, False, False}}, $CellContext`M$$ = 
-    101, $CellContext`mono$$ = {{{2 #, 0, 0, 1 - 2 #}& , 
-      Subscript[
-      "A", 3]}, {{-(-1 + #)^(-1) #, (-1 + #)^(-1) (-1 + 2 #), 0, 0}& , 
-      Subscript["A", 5]}, {{0, (1 + #)^(-1), #/(1 + #), 0}& , 
-      Subscript["A", 2]}, {{0, 0, 2 #/(1 + 2 #), (1 + 2 #)^(-1)}& , 
-      Subscript["A", 0]}}, $CellContext`schm1$$ = {-(-1 + #)^(-1) #, (-2 + 
-      4 #)/(-1 + #^2), # (-1 + 2 #)/(1 + 3 # + 2 #^2), (-1 + 2 #)/(1 + 
-     2 #)}& , $CellContext`schm2$$ = Null, $CellContext`schm3$$ = 
-    Null, $CellContext`sOrd$$ = {#2, (1 + #)^(-1) (2 - 
-      2 #2), (1 + 3 # + 2 #^2)^(-1) (2 #^2 - #2 + # #2), (1 + 2 #)^(-1) (-1 - 
-      2 (-1 + #) #2)}& , $CellContext`stencil$$ = {{
-     False, 3, False, False, False}, {False, False, 2, False, False}, {
-     False, 1, 4, False, False}}, $CellContext`tabn$$ = 
-    2, $CellContext`\[Sigma]$$ = 0.36, $CellContext`\[Tau]$$ = 0.0036, 
-    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
-    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
-    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
-       Hold[$CellContext`localStencil$$], {{
-        False, False, False, False, False}, {3, 1, 2, 4, False}, {
-        False, False, False, False, False}}}}, {{
-       Hold[$CellContext`stencil$$], Null}}, {{
-       Hold[$CellContext`As$$], {Null, Null, Null, Null, Null, Null}}}, {{
-       Hold[$CellContext`mono$$], Null}}, {{
-       Hold[$CellContext`B2$$], Null}}, {{
-       Hold[$CellContext`B3$$], Null}}, {{
-       Hold[$CellContext`B5$$], Null}}, {{
-       Hold[$CellContext`schm1$$], {#, 1 - #, 0, 0}& }}, {{
-       Hold[$CellContext`schm2$$], Null}}, {{
-       Hold[$CellContext`schm3$$], Null}}, {{
-       Hold[$CellContext`fOrd$$], Null}}, {{
-       Hold[$CellContext`sOrd$$], Null}}, {{
-       Hold[$CellContext`C3$$], Null}}, {{
-       Hold[$CellContext`M$$], 101}}, {{
-       Hold[$CellContext`h$$], 0.01}}, {{
-       Hold[$CellContext`\[Tau]$$], 0.005}}, {{
-       Hold[$CellContext`\[Sigma]$$], 0.5}}, {{
-       Hold[$CellContext`tabn$$], 1}}, {
-      Hold[
-       Row[{
-         Dynamic[
-          $CellContext`StencilBox[$CellContext`stencil$$, \
-$CellContext`localStencil$$, $CellContext`\[Sigma]$$]], 
-         Spacer[10], 
-         Dynamic[
-          $CellContext`StepsBox[{0, 1, 0, 
-           1}, $CellContext`M$$, $CellContext`h$$, $CellContext`\[Sigma]$$, \
-$CellContext`\[Tau]$$]]}]], Manipulate`Dump`ThisIsNotAControl}}, 
-    Typeset`size$$ = {1016., {405., 410.}}, Typeset`update$$ = 0, 
-    Typeset`initDone$$, Typeset`skipInitDone$$ = True}, 
-    DynamicBox[Manipulate`ManipulateBoxes[
-     1, StandardForm, 
-      "Variables" :> {$CellContext`As$$ = {
-         Null, Null, Null, Null, Null, Null}, $CellContext`B2$$ = 
-        Null, $CellContext`B3$$ = Null, $CellContext`B5$$ = 
-        Null, $CellContext`C3$$ = Null, $CellContext`fOrd$$ = 
-        Null, $CellContext`h$$ = 
-        0.01, $CellContext`localStencil$$ = {{
-          False, False, False, False, False}, {3, 1, 2, 4, False}, {
-          False, False, False, False, False}}, $CellContext`M$$ = 
-        101, $CellContext`mono$$ = 
-        Null, $CellContext`schm1$$ = {#, 1 - #, 0, 0}& , $CellContext`schm2$$ = 
-        Null, $CellContext`schm3$$ = Null, $CellContext`sOrd$$ = 
-        Null, $CellContext`stencil$$ = Null, $CellContext`tabn$$ = 
-        1, $CellContext`\[Sigma]$$ = 0.5, $CellContext`\[Tau]$$ = 0.005}, 
-      "ControllerVariables" :> {}, 
-      "OtherVariables" :> {
-       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
-        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
-        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
-         Typeset`skipInitDone$$}, "Body" :> 
-      TabView[{"Coefficient space" -> \
-$CellContext`CalculateSchemes[{$CellContext`stencil$$, \
-$CellContext`\[Sigma]$$}, $CellContext`fOrd$$, $CellContext`sOrd$$, \
-$CellContext`mono$$, $CellContext`As$$, $CellContext`schm1$$, \
-$CellContext`B2$$, $CellContext`B3$$, $CellContext`B5$$, $CellContext`C3$$], 
-         "Scheme info" -> $CellContext`AnalyzeScheme[$CellContext`schm1$$, {
-           Part[$CellContext`As$$, 1] -> "\!\(\*SubscriptBox[\(A\), \(0\)]\)",
-             Part[$CellContext`As$$, 2] -> 
-            "\!\(\*SubscriptBox[\(A\), \(1\)]\)", Part[$CellContext`As$$, 3] -> 
-            "\!\(\*SubscriptBox[\(A\), \(2\)]\)", Part[$CellContext`As$$, 4] -> 
-            "\!\(\*SubscriptBox[\(A\), \(3\)]\)", Part[$CellContext`As$$, 5] -> 
-            "\!\(\*SubscriptBox[\(A\), \(4\)]\)", Part[$CellContext`As$$, 6] -> 
-            "\!\(\*SubscriptBox[\(A\), \(5\)]\)", $CellContext`B2$$ -> 
-            "\!\(\*SubscriptBox[\(B\), \(2\)]\)", $CellContext`B3$$ -> 
-            "\!\(\*SubscriptBox[\(B\), \(3\)]\)", $CellContext`B5$$ -> 
-            "\!\(\*SubscriptBox[\(B\), \(5\)]\)", $CellContext`C3$$ -> 
-            "C"}, $CellContext`stencil$$, $CellContext`\[Sigma]$$]}, 
-        Dynamic[$CellContext`tabn$$]], 
-      "Specifications" :> {{{$CellContext`localStencil$$, {{
-           False, False, False, False, False}, {3, 1, 2, 4, False}, {
-           False, False, False, False, False}}}, ControlType -> 
-         None}, {{$CellContext`stencil$$, Null}, ControlType -> 
-         None}, {{$CellContext`As$$, {Null, Null, Null, Null, Null, Null}}, 
-         ControlType -> None}, {{$CellContext`mono$$, Null}, ControlType -> 
-         None}, {{$CellContext`B2$$, Null}, ControlType -> 
-         None}, {{$CellContext`B3$$, Null}, ControlType -> 
-         None}, {{$CellContext`B5$$, Null}, ControlType -> 
-         None}, {{$CellContext`schm1$$, {#, 1 - #, 0, 0}& }, ControlType -> 
-         None}, {{$CellContext`schm2$$, Null}, ControlType -> 
-         None}, {{$CellContext`schm3$$, Null}, ControlType -> 
-         None}, {{$CellContext`fOrd$$, Null}, ControlType -> 
-         None}, {{$CellContext`sOrd$$, Null}, ControlType -> 
-         None}, {{$CellContext`C3$$, Null}, ControlType -> 
-         None}, {{$CellContext`M$$, 101}, ControlType -> 
-         None}, {{$CellContext`h$$, 0.01}, ControlType -> 
-         None}, {{$CellContext`\[Tau]$$, 0.005}, ControlType -> 
-         None}, {{$CellContext`\[Sigma]$$, 0.5}, ControlType -> 
-         None}, {{$CellContext`tabn$$, 1}, ControlType -> None}, 
-        Row[{
-          Dynamic[
-           $CellContext`StencilBox[$CellContext`stencil$$, \
-$CellContext`localStencil$$, $CellContext`\[Sigma]$$]], 
-          Spacer[10], 
-          Dynamic[
-           $CellContext`StepsBox[{0, 1, 0, 
-            1}, $CellContext`M$$, $CellContext`h$$, $CellContext`\[Sigma]$$, \
-$CellContext`\[Tau]$$]]}]}, "Options" :> {}, "DefaultOptions" :> {}],
-     ImageSizeCache->{1065., {513., 518.}},
-     SingleEvaluation->True],
-    Deinitialization:>None,
-    DynamicModuleValues:>{},
-    SynchronousInitialization->True,
-    UnsavedVariables:>{Typeset`initDone$$},
-    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
-   Deployed->True,
-   StripOnInput->False],
-  Manipulate`InterpretManipulate[1]]], "Output"]
-}, Open  ]]
+    "]"}]}], "\[IndentingNewLine]", "]"}]], "Input"]
 },
-WindowSize->{834, 953},
-WindowMargins->{{Automatic, 0}, {Automatic, 1}},
-FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (October 6, 2011)",
+WindowSize->{785, 852},
+WindowMargins->{{0, Automatic}, {2, Automatic}},
+FrontEndVersion->"8.0 for Linux x86 (64-bit) (October 10, 2011)",
 StyleDefinitions->"Default.nb"
 ]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 7445, 204, 642, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
 

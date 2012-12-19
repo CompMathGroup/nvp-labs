@@ -31,6 +31,9 @@ class Main {
 	Array<Matrix> B2;
 	Array<Matrix> B3;
 	Array<Vector> rhs;
+	Array<Vector> sol;
+
+	Array<int> schemenum;
 
 	int N;
 	double cou;
@@ -43,7 +46,7 @@ class Main {
 private:
 	void predict();
 	void correct(const Alphas &scheme, const std::vector<int> &where);
-	void checkMono(std::vector<int> &where);
+	bool checkMono(std::vector<int> &where);
 public:
 	Main(int n, bool cycled, 
 		Array<Vars> &u0, Array<Vars> &u1, Array<Vars> &u2) : 
@@ -56,7 +59,8 @@ public:
 		W1(n, 2), iW1(n, 2),
 		W2(n, 2), iW2(n, 2),
 		B1(n, 0), B2(n, 0),	B3(n, 0), 
-		rhs(n, 0),
+		rhs(n, 0), sol(n, 0),
+		schemenum(n, 0),
 		N(n),
 		cycled(cycled)
 	{
@@ -68,9 +72,9 @@ public:
 
 	double getTime() const { return t; }
 	int getIter() const { return iter; }
+	const Array<int> &getSchemeNums() const { return schemenum; }
 	void doFirstStep(double C);
 	double doStep(const std::vector<Alphas *> schemes);
-
 };
 
 #endif

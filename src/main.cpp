@@ -1,6 +1,10 @@
 #include "main.h"
 #include "solver.h"
 
+#include <iostream>
+
+HalfInteger I_2(1);
+
 // {{{ doFirstStep
 void Main::doFirstStep(double C) {
 	/* Compute u1 using first-order scheme */
@@ -26,16 +30,17 @@ void Main::doFirstStep(double C) {
 			lam0[j] *= cou;
 		for (int j = -1; j < N; j++)
 		{
-			f[j + 1_2] = .5 * (F1[j] + F1[j+1]);
+			f[j + I_2] = .5 * (F1[j] + F1[j+1]);
 			Vars udiff(u0[j+1] - u0[j]);
-			f[j + 1_2] -= i4cou * 
+			f[j + I_2] -= i4cou * 
 				udiff.lmul(W0[j  ], lam0[j  ], iW0[j  ], AbsoluteValue());
-			f[j + 1_2] -= i4cou * 
+			f[j + I_2] -= i4cou * 
 				udiff.lmul(W0[j+1], lam0[j+1], iW0[j+1], AbsoluteValue());
 		}
 		for (int j = 0; j < N; j++) {
-			u1[j] = u0[j] + cou * (f[j - 1_2] - f[j + 1_2]);
+			u1[j] = u0[j] + cou * (f[j - I_2] - f[j + I_2]);
 			u1[j].fixup();
+			schemenum[j] = 0;
 		}
 
 		lmax = 0;
@@ -74,13 +79,14 @@ double Main::doStep(std::vector<Alphas *> schemes) {
 	/* Control actual courant's number */
 	if (Citer > Cmax)
 		Cmax = Citer;
-	printf("Citer = %.3f Cmax = %.3f\n", Citer, Cmax);
+	std::cout << "Citer = " << Citer << " Cmax = " << Cmax << std::endl;
 	
 	/* Points that need update */
-	std::vector<int> where;
+	std::vector<int> where(N);
 	/* First pass should be done for all points */
 	for (int j = 0; j < N; j++)
-		where.push_back(j);
+		where[j] = j;
+	int scnum = 1;
 	for (std::vector<Alphas *>::iterator 
 		i = schemes.begin();
 		i != schemes.end(); ++i) 
@@ -89,25 +95,27 @@ double Main::doStep(std::vector<Alphas *> schemes) {
 		predict();
 		/* Now we have all needed data to correct u2 */
 		correct(**i, where);
+		for (std::vector<int>::const_iterator j = where.begin();
+			j != where.end(); ++j) 
+			schemenum[*j] = scnum;
+		scnum ++;
 		/* Solve system for u2 */
-		if (!cycled)
-			EliminateExtrapolated(B1, B2, B3, rhs);
-		else
-			EliminateCycled(B1, B2, B3, rhs);
-		TridiagonalSolve(B1, B2, B3, rhs);
+		if (cycled)
+			EliminateCycled(B1, B2, B3, rhs, sol);
+		TridiagonalSolve(B1, B2, B3, rhs, sol, cycled);
 		/* Set u2 = sol */
 		for (int j = 0; j < N; j++) {
-			u2[j].rho = rhs[j](0);
-			u2[j].P   = rhs[j](1);
-			u2[j].E   = rhs[j](2);
+			u2[j].rho = sol[j](0);
+			u2[j].P   = sol[j](1);
+			u2[j].E   = sol[j](2);
 			u2[j].fixup();
 		}
+		u2.actualize();
 		/* If any alternatives left, search for points 
 		   that require recompute */
-		if (i+1 != schemes.end()) {
-			where.empty();
-	//		checkMono(where);
-		}
+		if (i+1 != schemes.end()) 
+			if (checkMono(where))
+				break;
 	}
 	/* Cycle shift arrays */
 	advance(u0, u1, u2);
@@ -121,20 +129,79 @@ double Main::doStep(std::vector<Alphas *> schemes) {
 	return Citer;
 } // }}}
 
+// {{{ checkMono
+bool Main::checkMono(std::vector<int> &where) {
+	/*
+	uL | uC | uR
+	---+----+---
+	   | uD |
+	*/
+	double reltol = 1e-4;
+	double abstol = 1e-4;
+	where.clear();
+	for (int j = 0; j < N; j++) {
+/*
+		Vector u2L = u2[j-1].to_nconserv();
+		Vector u2R = u2[j+1].to_nconserv();
+		Vector u2C = u2[j  ].to_nconserv();
+		Vector u1C = u1[j  ].to_nconserv();
+*/
+		Vector u2L = iW2[j] * u2[j-1].to_vect();
+		Vector u2R = iW2[j] * u2[j+1].to_vect();
+		Vector u2C = iW2[j] * u2[j  ].to_vect();
+		Vector u1C = iW2[j] * u1[j  ].to_vect();
+
+		bool need = false;
+		for (int k = 0; k < 3; k++) {
+			double wL = u2L(k);
+			double wR = u2R(k);
+			double wD = u1C(k);
+			double wC = u2C(k);
+			double u = lam2[j](k);
+			if (u > 0) {
+				double wmin = std::min(wL, wD);
+				double wmax = std::max(wL, wD);
+				double wdiff = wmax - wmin;
+				wmin = wmin - reltol * wdiff - abstol;
+				wmax = wmax + reltol * wdiff + abstol;
+				double wmid = wC;
+
+				if (wmid < wmin || wmid > wmax)
+					need = true;
+			}
+			if (u < 0) {
+				double wmin = std::min(wR, wD);
+				double wmax = std::max(wR, wD);
+				double wdiff = wmax - wmin;
+				wmin = wmin - reltol * wdiff - abstol;
+				wmax = wmax + reltol * wdiff + abstol;
+				double wmid = wC;
+
+				if (wmid < wmin || wmid > wmax)
+					need = true;
+			}
+		}
+		if (need)
+			where.push_back(j);
+	}
+
+	return where.empty();
+}// }}}
+
 // {{{ predict 
 void Main::predict() {
 	double i4cou = .25 / cou;
 	for (int j = -1; j < N; j++)
 	{
-		f[j + 1_2] = .5 * (F1[j] + F1[j+1]);
+		f[j + I_2] = .5 * (F1[j] + F1[j+1]);
 		Vars udiff(u1[j+1] - u1[j]);
-		f[j + 1_2] -= i4cou * 
+		f[j + I_2] -= i4cou * 
 			udiff.lmul(W1[j  ], lam1[j  ], iW1[j  ], AbsoluteValue());
-		f[j + 1_2] -= i4cou * 
+		f[j + I_2] -= i4cou * 
 			udiff.lmul(W1[j+1], lam1[j+1], iW1[j+1], AbsoluteValue());
 	}
 	for (int j = 0; j < N; j++) {
-		u2[j] = u1[j] + cou * (f[j - 1_2] - f[j + 1_2]);
+		u2[j] = u1[j] + cou * (f[j - I_2] - f[j + I_2]);
 		u2[j].fixup();
 	}
 	u2.actualize();
@@ -161,21 +228,21 @@ void Main::correct(const Alphas &scheme, const std::vector<int> &where) {
 
 	double i2cou = .5 / cou;
 
-	/* First, compute f[j + 1_2] and f[j - 1_2] */
+	/* First, compute f[j + I_2] and f[j - I_2] */
 	for (int j = -1; j < N; j++) {
-		f[j + 1_2] = .5 * (F1[j] + F1[j+1]);
+		f[j + I_2] = .5 * (F1[j] + F1[j+1]);
 		Vars du1(u1[j] - u1[j-1]);
 		Vars du2(u1[j+1] - u1[j]);
 		Vars du3(u1[j+2] - u1[j+1]);
 
-		f[j + 1_2] += i2cou * du1.lmul(W1[j-1], lam1[j-1], iW1[j-1], gamma1);
-		f[j + 1_2] += i2cou * du1.lmul(W1[j  ], lam1[j  ], iW1[j  ], gamma1);
+		f[j + I_2] += i2cou * du1.lmul(W1[j-1], lam1[j-1], iW1[j-1], gamma1);
+		f[j + I_2] += i2cou * du1.lmul(W1[j  ], lam1[j  ], iW1[j  ], gamma1);
 
-		f[j + 1_2] += i2cou * du2.lmul(W1[j  ], lam1[j  ], iW1[j  ], gamma2);
-		f[j + 1_2] += i2cou * du2.lmul(W1[j+1], lam1[j+1], iW1[j+1], gamma2);
+		f[j + I_2] += i2cou * du2.lmul(W1[j  ], lam1[j  ], iW1[j  ], gamma2);
+		f[j + I_2] += i2cou * du2.lmul(W1[j+1], lam1[j+1], iW1[j+1], gamma2);
 
-		f[j + 1_2] += i2cou * du3.lmul(W1[j+1], lam1[j+1], iW1[j+1], gamma3);
-		f[j + 1_2] += i2cou * du3.lmul(W1[j+2], lam1[j+2], iW1[j+2], gamma3);
+		f[j + I_2] += i2cou * du3.lmul(W1[j+1], lam1[j+1], iW1[j+1], gamma3);
+		f[j + I_2] += i2cou * du3.lmul(W1[j+2], lam1[j+2], iW1[j+2], gamma3);
 	}
 	/* Next, compute ulower */
 	for (int j = 0; j < N; j++) {
@@ -236,7 +303,7 @@ void Main::correct(const Alphas &scheme, const std::vector<int> &where) {
 		i != where.end(); ++i) 
 	{
 		int j = *i;
-		Vars rh = cou * (f[j - 1_2] - f[j + 1_2]) + ulower[j] - uupper[j];
+		Vars rh = cou * (f[j - I_2] - f[j + I_2]) + ulower[j] - uupper[j];
 
 		B1[j]  = Matrix(W2[j-1], lam2[j-1], iW2[j-1], beta1);
 		B1[j] += Matrix(W1[j-1], lam1[j-1], iW1[j-1], beta1);

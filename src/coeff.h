@@ -7,13 +7,16 @@
 struct Rational {
 	double a0, a1, a2, a3;
 	double b0, b1, b2, b3;
+	Rational(double x = 0, double y = 0, double z = 0, double w = 0)
+		: a0(x), a1(y), a2(z), a3(w),
+		  b0(1), b1(0), b2(0), b3(0)
+		{}
 	Rational(
 		double a0_, double a1_, double a2_, double a3_,
 		double b0_, double b1_, double b2_, double b3_)
 		: a0(a0_), a1(a1_), a2(a2_), a3(a3_),
 		  b0(b0_), b1(b1_), b2(b2_), b3(b3_)
-		{
-		}
+		{}
 	double operator()(double sigma) const {
 		double nom, denom;
 		nom = 0;
@@ -31,9 +34,9 @@ struct Rational {
 };
 
 struct Alphas {
-	const Rational           &aup_1,   &aup0,   &aup1;
-	const Rational &a_2,     &a_1,     &a0,     &a1,     &a2;
-	const Rational &adown_2, &adown_1, &adown0, &adown1, &adown2;
+	const Rational          aup_1,   aup0,   aup1;
+	const Rational a_2,     a_1,     a0,     a1,     a2;
+	const Rational adown_2, adown_1, adown0, adown1, adown2;
 	Alphas(
 		const Rational &aup_1,
 		const Rational &aup0,

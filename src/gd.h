@@ -153,6 +153,9 @@ struct Vars {
 		v(2) = (E - .5 * P * v(1)) / rho;
 		return v;
 	}
+	Vector to_vect() const {
+		return Vector(rho, P, E);
+	}
 };
 
 #endif

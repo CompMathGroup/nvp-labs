@@ -5,15 +5,11 @@
 #include "matrix.h"
 
 void TridiagonalSolve(
-	Array<Matrix> &A, Array<Matrix> &B, Array<Matrix> &C, Array<Vector> &d);
-
-void TridiagonalSolveDebug(
-	Array<Matrix> &A, Array<Matrix> &B, Array<Matrix> &C, Array<Vector> &d);
-
-void EliminateExtrapolated(
-	Array<Matrix> &A, Array<Matrix> &B, Array<Matrix> &C, Array<Vector> &d);
+	const Array<Matrix> &A, const Array<Matrix> &B, const Array<Matrix> &C, const Array<Vector> &d, 
+	Array<Vector> &x, bool cycled);
 
 void EliminateCycled(
-	Array<Matrix> &A, Array<Matrix> &B, Array<Matrix> &C, Array<Vector> &d);
+	const Array<Matrix> &A, const Array<Matrix> &B, const Array<Matrix> &C, const Array<Vector> &d, 
+	Array<Vector> &x);
 
 #endif

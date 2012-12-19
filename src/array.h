@@ -1,7 +1,7 @@
 #ifndef __ARRAY_H__
 #define __ARRAY_H__
 
-#include <cstdint>
+#include <stdint.h>
 #include <cmath>
 
 template<class CT>
@@ -30,6 +30,10 @@ public:
 	}
 
 	CT &operator[] (std::ptrdiff_t i) {
+		return cells[i + ext];
+	}
+	
+	const CT &operator[] (std::ptrdiff_t i) const {
 		return cells[i + ext];
 	}
 
@@ -84,20 +88,16 @@ class HalfInteger {
 private:
 	int v;
 public:
-	explicit constexpr HalfInteger(int _v) : v(_v) {}
-	constexpr HalfInteger operator -() const {
+	explicit HalfInteger(int _v) : v(_v) {}
+	HalfInteger operator -() const {
 		return HalfInteger(-v);
 	}
-	friend std::ptrdiff_t operator +(std::ptrdiff_t i, const HalfInteger o) {
+	friend std::ptrdiff_t operator +(std::ptrdiff_t i, const HalfInteger &o) {
 		return i + (o.v >> 1);
 	}
-	friend std::ptrdiff_t operator -(std::ptrdiff_t i, const HalfInteger o) {
+	friend std::ptrdiff_t operator -(std::ptrdiff_t i, const HalfInteger &o) {
 		return i + ((-o.v) >> 1);
 	}
 };
-
-constexpr HalfInteger operator "" _2 (unsigned long long _v) {
-	return HalfInteger(_v);
-}
 
 #endif

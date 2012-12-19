@@ -1,11 +1,12 @@
 CC=gcc
-CXX=clang++ -std=c++11
+CXX=clang++ 
+#-std=c++11
 RM=rm -f
-CFLAGS=-O0 -g -Wall
+CFLAGS=-O3 -g -Wall
 CXXFLAGS=$(CFLAGS)
-LDFLAGS=-g -lm
+LDFLAGS=-g -lm -lprofiler
 TARGET=gas
-OBJS=main.o gas.o solver.o
+OBJS=main.o gas.o solver.o schemes.o
 
 .PHONY: clean all
 
@@ -20,8 +21,10 @@ purge:
 clean: purge
 	$(RM) $(OBJS) $(TARGET)
 
-gas.o:: coeff.h 
+gas.o:: main.cpp coeff.h 
 
-main.o:: main.h array.h 
+main.o:: main.cpp main.h array.h 
 
-solver.o:: solver.h array.h 
+schemes.o:: schemes.cpp schemes.h coeff.h 
+
+solver.o:: solver.cpp solver.h array.h 
