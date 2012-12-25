@@ -12,3 +12,8 @@
 
 # EpsToPdf
 *eps-converted-to.pdf
+
+#build
+*.exe
+*.o
+*.a

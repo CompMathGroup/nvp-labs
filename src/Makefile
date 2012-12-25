@@ -1,19 +1,20 @@
-CC=gcc
-CXX=clang++ 
-#-std=c++11
+CC=gcc 
+CXX=g++ 
 RM=rm -f
-CFLAGS=-O3 -g -Wall
+CFLAGS=-m32 -O3 -g -Wall
 CXXFLAGS=$(CFLAGS)
 LDFLAGS=-g -lm -lprofiler
-TARGET=gas
-OBJS=main.o gas.o solver.o schemes.o
+AR=ar -rcs
+TARGET=libgassolver32.a
+OBJS=solver.o linalg.o riemann.o
 
 .PHONY: clean all
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CXX) $(LDFLAGS) -o $@ $^
+	$(AR) -o $@ $^
+#	$(CXX) $(LDFLAGS) -o $@ $^
 
 purge:
 	$(RM) sod*.csv
@@ -21,10 +22,6 @@ purge:
 clean: purge
 	$(RM) $(OBJS) $(TARGET)
 
-gas.o:: main.cpp coeff.h 
-
-main.o:: main.cpp main.h array.h 
-
-schemes.o:: schemes.cpp schemes.h coeff.h 
+linalg.o:: linalg.cpp linalg.h array.h 
 
 solver.o:: solver.cpp solver.h array.h 

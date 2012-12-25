@@ -76,6 +76,7 @@ void swap(Array<T> &src, Array<T> &dst) {
 	*src = *dst;
 	*dst = tmp;
 }
+
 template <class T>
 void advance(Array<T> &u0, Array<T> &u1, Array<T> &u2) {
 	T *tmp = *u2;
@@ -84,6 +85,7 @@ void advance(Array<T> &u0, Array<T> &u1, Array<T> &u2) {
 	*u1 = tmp;
 }
 
+/* This may not be portable. Valid if (-1) >> 1 === -1, 1 >> 1 === 0 */
 class HalfInteger {
 private:
 	int v;

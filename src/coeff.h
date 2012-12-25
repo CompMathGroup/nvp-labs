@@ -5,82 +5,78 @@
 #include <cmath>
 
 struct Rational {
-	double a0, a1, a2, a3;
-	double b0, b1, b2, b3;
-	Rational(double x = 0, double y = 0, double z = 0, double w = 0)
-		: a0(x), a1(y), a2(z), a3(w),
-		  b0(1), b1(0), b2(0), b3(0)
-		{}
-	Rational(
-		double a0_, double a1_, double a2_, double a3_,
-		double b0_, double b1_, double b2_, double b3_)
-		: a0(a0_), a1(a1_), a2(a2_), a3(a3_),
-		  b0(b0_), b1(b1_), b2(b2_), b3(b3_)
-		{}
-	double operator()(double sigma) const {
-		double nom, denom;
-		nom = 0;
-		nom = nom * sigma + a3;
-		nom = nom * sigma + a2;
-		nom = nom * sigma + a1;
-		nom = nom * sigma + a0;
-		denom = 0;
-		denom = denom * sigma + b3;
-		denom = denom * sigma + b2;
-		denom = denom * sigma + b1;
-		denom = denom * sigma + b0;
-		return nom / denom;
+	int n, m;
+	double a[16];
+	double b[16];
+
+	inline double poly(double x, const double *c, int k) const {
+		double y = c[k];
+		switch (k) {
+			case 15: y = y * x + c[14];
+			case 14: y = y * x + c[13];
+			case 13: y = y * x + c[12];
+			case 12: y = y * x + c[11];
+			case 11: y = y * x + c[10];
+			case 10: y = y * x + c[ 9];
+			case  9: y = y * x + c[ 8];
+			case  8: y = y * x + c[ 7];
+			case  7: y = y * x + c[ 6];
+			case  6: y = y * x + c[ 5];
+			case  5: y = y * x + c[ 4];
+			case  4: y = y * x + c[ 3];
+			case  3: y = y * x + c[ 2];
+			case  2: y = y * x + c[ 1];
+			case  1: y = y * x + c[ 0];
+			case  0: break;
+		}
+		return y;
+	}
+
+	Rational(const double *p, const double *q) {
+		for (int i = 0; i < 16; i++) {
+			a[i] = p[i];
+			b[i] = q[i];
+		}
+		n = 15;
+		while ((n > 0) && (std::fabs(a[n]) > 1e-14))
+			n--;
+		m = 15;
+		while ((m > 0) && (std::fabs(b[m]) > 1e-14))
+			m--;
+	}
+
+	inline double operator()(double sigma) const {
+		double p = poly(sigma, a, n);
+		double q = poly(sigma, b, m);
+		return p / q;
 	}
 };
 
 struct Alphas {
-	const Rational          aup_1,   aup0,   aup1;
-	const Rational a_2,     a_1,     a0,     a1,     a2;
-	const Rational adown_2, adown_1, adown0, adown1, adown2;
+	const Rational b1, b2, b3;
+	const Rational b4, b5, b6, b7;
+	const Rational g1, g2, g3;
 	Alphas(
-		const Rational &aup_1,
-		const Rational &aup0,
-		const Rational &aup1,
+		const Rational &b1,
+		const Rational &b2,
+		const Rational &b3,
 
-		const Rational &a_2,
-		const Rational &a_1,
-		const Rational &a0,
-		const Rational &a1,
-		const Rational &a2,
+		const Rational &b4,
+		const Rational &b5,
+		const Rational &b6,
+		const Rational &b7,
 
-		const Rational &adown_2,
-		const Rational &adown_1,
-		const Rational &adown0,
-		const Rational &adown1,
-		const Rational &adown2
+		const Rational &g1,
+		const Rational &g2,
+		const Rational &g3
 	) : 
-		aup_1(aup_1), aup0(aup0), aup1(aup1),
-		a_2(a_2), a_1(a_1), a0(a0), a1(a1), a2(a2),
-		adown_2(adown_2), adown_1(adown_1), adown0(adown0), adown1(adown1), adown2(adown2)
+		b1(b1), b2(b2), b3(b3),
+		b4(b4), b5(b5), b6(b6), b7(b7),
+		g1(g1), g2(g2), g3(g3)
 	{}
 	bool sanity() {
-		double s = .25;
-		double sup = aup_1(s) + aup0(s) + aup1(s);
-		double smid = a_2(s) + a_1(s) + a0(s) + a1(s) + a2(s);
-		double sdown = adown_2(s) + adown_1(s) + adown0(s) + adown1(s) + adown2(s);
-
-		double msup = -aup_1(s) + aup1(s);
-		double msmid = -2*a_2(s) - a_1(s) + a1(s) + 2*a2(s);
-		double msdown = -2*adown_2(s) - adown_1(s) + adown1(s) + 2*adown2(s);
-
-		bool sumzero;
-		sumzero = std::fabs(sup + smid + sdown) < 1e-12;
-		if (!sumzero)
-			std::cerr << "Alphas not sum up to zero! sum a = " << sup + smid + sdown << std::endl;
-		bool norm;
-		norm = std::fabs(sup - sdown - 1) < 1e-12;
-		if (!norm)
-			std::cerr << "Alphas are not normalized! sum nu a = " << sup - sdown << std::endl;
-		bool firstord;
-		firstord = std::fabs(msup + msmid + msdown - s) < 1e-12;
-		if (!firstord)
-			std::cerr << "Alphas do not provide first order scheme! (sum mu a)/s = " << (msup + msdown + msmid)/s << std::endl;
-		return sumzero && norm && firstord;
+		/* No checks for this type */
+		return true;
 	}
 };
 
@@ -88,9 +84,9 @@ struct Gamma1 : public Alphas {
 	Gamma1( const Alphas &o) : Alphas(o) {}
 	double operator()(double sigma) const {
 		if (sigma > 0)
-			return adown_2(sigma) + a_2(sigma);
+			return g1(+sigma);
 		else
-			return adown2(-sigma) + a2(-sigma);
+			return g3(-sigma);
 	}
 };
 
@@ -98,7 +94,7 @@ struct Gamma2 : public Alphas {
 	Gamma2( const Alphas &o) : Alphas(o) {}
 	double operator()(double sigma) const {
 		double s = std::fabs(sigma);
-		return .5 * (adown_2(s) + adown2(s) + a_2(s) + a2(s) - adown0(s) - a0(s) - aup0(s));
+		return g2(s);
 	}
 };
 
@@ -106,9 +102,9 @@ struct Gamma3 : public Alphas {
 	Gamma3( const Alphas &o) : Alphas(o) {}
 	double operator()(double sigma) const {
 		if (sigma > 0)
-			return adown2(sigma) + a2(sigma);
+			return g3(+sigma);
 		else
-			return adown_2(-sigma) + a_2(-sigma);
+			return g1(-sigma);
 	}
 };
 
@@ -116,9 +112,9 @@ struct Beta1 : public Alphas {
 	Beta1( const Alphas &o ) : Alphas(o) {}
 	double operator()(double sigma) const {
 		if (sigma > 0)
-			return aup_1(sigma);
+			return b1(+sigma);
 		else
-			return aup1(-sigma);
+			return b3(-sigma);
 	}
 };
 
@@ -126,9 +122,9 @@ struct Beta3 : public Alphas {
 	Beta3( const Alphas &o) : Alphas(o) {}
 	double operator()(double sigma) const {
 		if (sigma > 0)
-			return aup1(sigma);
+			return b3(+sigma);
 		else
-			return aup_1(-sigma);
+			return b1(-sigma);
 	}
 };
 
@@ -136,27 +132,7 @@ struct Beta2 : public Alphas {
 	Beta2( const Alphas &o ) : Alphas(o) {}
 	double operator()(double sigma) const {
 		double s = std::fabs(sigma);
-		return aup0(s) - .5;
-	}
-};
-
-struct Beta5 : public Alphas {
-	Beta5( const Alphas &o ) : Alphas(o) {}
-	double operator()(double sigma) const {
-		if (sigma > 0)
-			return adown_2(sigma) + adown_1(sigma) - aup_1(sigma);
-		else
-			return adown2(-sigma) + adown1(-sigma) - aup1(-sigma);
-	}
-};
-
-struct Beta6 : public Alphas {
-	Beta6( const Alphas &o ) : Alphas(o) {}
-	double operator()(double sigma) const {
-		if (sigma > 0)
-			return -adown2(sigma) - adown1(sigma) + aup1(sigma);
-		else
-			return -adown_2(-sigma) - adown_1(-sigma) + aup_1(-sigma);
+		return b2(s);
 	}
 };
 
@@ -164,9 +140,9 @@ struct Beta4 : public Alphas {
 	Beta4( const Alphas &o ) : Alphas(o) {}
 	double operator()(double sigma) const {
 		if (sigma > 0)
-			return adown_2(sigma);
+			return +b4(+sigma);
 		else
-			return adown2(-sigma);
+			return -b7(-sigma);
 	}
 };
 
@@ -174,9 +150,29 @@ struct Beta7 : public Alphas {
 	Beta7( const Alphas &o ) : Alphas(o) {}
 	double operator()(double sigma) const {
 		if (sigma > 0)
-			return -adown2(sigma);
+			return +b7(+sigma);
 		else
-			return -adown_2(-sigma);
+			return -b4(-sigma);
+	}
+};
+
+struct Beta5 : public Alphas {
+	Beta5( const Alphas &o ) : Alphas(o) {}
+	double operator()(double sigma) const {
+		if (sigma > 0)
+			return +b5(+sigma);
+		else
+			return -b6(-sigma);
+	}
+};
+
+struct Beta6 : public Alphas {
+	Beta6( const Alphas &o ) : Alphas(o) {}
+	double operator()(double sigma) const {
+		if (sigma > 0)
+			return +b6(+sigma);
+		else
+			return -b7(-sigma);
 	}
 };
 

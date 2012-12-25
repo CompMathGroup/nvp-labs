@@ -10,12 +10,6 @@
 #define PRESS_MIN 1e-9
 #define GAMMA 1.4
 
-struct Identity {
-	double operator()(double sigma) const {
-		return sigma;
-	}
-};
-
 struct AbsoluteValue {
 	double operator()(double s) const {
 		return std::fabs(s);
@@ -28,6 +22,12 @@ struct Vars {
 	double E;
 
 	Vars() {}
+
+	Vars(const Vector &o) {
+		rho = o(0);
+		P = rho * o(1);
+		E = rho * (.5 * o(1) * o(1) + o(2));
+	}
 
 	Vars(double _rho, double _P, double _E) : 
 		rho(_rho), P(_P), E(_E) { }
