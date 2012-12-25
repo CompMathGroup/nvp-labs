@@ -1,8 +1,6 @@
 #include "solver.h"
 #include "linalg.h"
 
-#include <iostream>
-
 HalfInteger I_2(1);
 
 // {{{ doFirstStep
@@ -80,7 +78,6 @@ double Solver::doStep(std::vector<Alphas *> schemes) {
 	/* Control actual courant's number */
 	if (Citer > Cmax)
 		Cmax = Citer;
-	std::cout << "Citer = " << Citer << " Cmax = " << Cmax << std::endl;
 	
 	/* Points that need update */
 	std::vector<int> where(N);

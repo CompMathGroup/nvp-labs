@@ -7,6 +7,8 @@
 #include <array.h>
 #include <solver.h>
 
+#include <mathlink.h>
+
 static Riemann *rie = 0;
 static Solver *sol = 0;
 
@@ -105,9 +107,6 @@ int AddScheme(double *coeff, int sz) {
 	chain.push_back(shm);
 	return 0;
 }
-
-extern void *stdlink;
-extern "C" int MLPutReal64Array(void *link, double *a, int *dims, char **heads, int d);
 
 void DoSteps(int count) {
 	if (firsttime) {
