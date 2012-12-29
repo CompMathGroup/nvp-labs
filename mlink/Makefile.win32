@@ -9,7 +9,7 @@ LDFLAGS= -static -L../src \
 
 MPREP=/c/Program\ Files/Wolfram\ Research/Mathematica/8.0/SystemFiles/Links/MathLink/DeveloperKit/Windows/CompilerAdditions/cygwin/bin/mprep
 
-all: win32 
+all: win32 win64 
 
 gate32.o : gate.cpp
 	$(CXX) -m32 $(CXXFLAGS) -c -o $@ $<
