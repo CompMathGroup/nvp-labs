@@ -1,7 +1,9 @@
 CXX=g++
-CXXFLAGS= -I../src -O3 -g 
-LDFLAGS= -L../src
-MCC=/usr/local/Wolfram/Mathematica/8.0/Executables/mcc
+CXXFLAGS= -I../src -O3 -g \
+	-I/usr/local/Wolfram/Mathematica/8.0/SystemFiles/Links/MathLink/DeveloperKit/Linux-x86-64/CompilerAdditions/
+
+LDFLAGS=-static-libgcc -L../src
+MCC=/usr/local/Wolfram/Mathematica/8.0/Executables/mcc --verbose
 
 all: unix32 unix64
 

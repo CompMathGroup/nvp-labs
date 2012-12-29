@@ -1,7 +1,6 @@
 #ifndef __COEFF_H__
 #define __COEFF_H__
 
-#include <iostream>
 #include <cmath>
 
 struct Rational {

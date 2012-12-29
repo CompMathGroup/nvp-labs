@@ -1,11 +1,12 @@
+BITS=64
 CC=gcc 
 CXX=g++ 
 RM=rm -f
-CFLAGS=-m32 -O3 -g -Wall
+CFLAGS=-m$(BITS) -O3 -g -Wall
 CXXFLAGS=$(CFLAGS)
 LDFLAGS=-g -lm -lprofiler
 AR=ar -rcs
-TARGET=libgassolver32.a
+TARGET=libgassolver$(BITS).a
 OBJS=solver.o linalg.o riemann.o
 
 .PHONY: clean all
