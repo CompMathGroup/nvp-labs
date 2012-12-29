@@ -1,27 +1,40 @@
-BITS=64
 CC=gcc 
 CXX=g++ 
 RM=rm -f
-CFLAGS=-m$(BITS) -O3 -g -Wall
-CXXFLAGS=$(CFLAGS)
+OPT=-O3
+CFLAGS32=-m32 $(OPT) -g -Wall -funroll-loops
+CXXFLAGS32=$(CFLAGS32)
+CFLAGS64=-m64 $(OPT) -g -Wall -funroll-loops
+CXXFLAGS64=$(CFLAGS64)
 LDFLAGS=-g -lm -lprofiler
 AR=ar -rcs
-TARGET=libgassolver$(BITS).a
-OBJS=solver.o linalg.o riemann.o
+TARGET32=libgassolver32.a
+TARGET64=libgassolver64.a
+SRC=gdsolver.cpp advsolver.cpp riemann.cpp
+OBJS32=$(SRC:.cpp=32.o)
+OBJS64=$(SRC:.cpp=64.o)
 
 .PHONY: clean all
 
-all: $(TARGET)
+%32.o : %.cpp
+	$(CXX) $(CXXFLAGS32) -c -o $@ $<
 
-$(TARGET): $(OBJS)
+%64.o : %.cpp
+	$(CXX) $(CXXFLAGS64) -c -o $@ $<
+
+all: $(TARGET32) $(TARGET64)
+
+$(TARGET32): $(OBJS32)
 	$(AR) -o $@ $^
-#	$(CXX) $(LDFLAGS) -o $@ $^
+
+$(TARGET64): $(OBJS64)
+	$(AR) -o $@ $^
 
 purge:
 	$(RM) sod*.csv
 
 clean: purge
-	$(RM) $(OBJS) $(TARGET)
+	$(RM) $(OBJS32) $(OBJS64) $(TARGET32) $(TARGET64)
 
 linalg.o:: linalg.cpp linalg.h array.h 
 

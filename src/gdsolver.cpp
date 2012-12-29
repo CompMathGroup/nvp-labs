@@ -1,10 +1,10 @@
-#include "solver.h"
+#include "gdsolver.h"
 #include "linalg.h"
 
-HalfInteger I_2(1);
+static HalfInteger I_2(1);
 
 // {{{ doFirstStep
-double Solver::doFirstStep(double C) {
+double GDSolver::doFirstStep(double C) {
 	/* Compute u1 using first-order scheme */
 	u0.actualize();
 	double lmax = 0;
@@ -61,7 +61,7 @@ double Solver::doFirstStep(double C) {
 } // }}}
 
 // {{{ doStep
-double Solver::doStep(std::vector<Alphas *> schemes) {
+double GDSolver::doStep(const std::vector<Alphas *> &schemes) {
 	/* u1 is incomplete, actualize it */
 	u1.actualize();
 
@@ -90,7 +90,7 @@ double Solver::doStep(std::vector<Alphas *> schemes) {
 		for (int j = 0; j < N; j++)
 			schemenum[j] = 0;
 	}
-	for (std::vector<Alphas *>::iterator 
+	for (std::vector<Alphas *>::const_iterator 
 		i = schemes.begin();
 		i != schemes.end(); ++i) 
 	{
@@ -102,18 +102,6 @@ double Solver::doStep(std::vector<Alphas *> schemes) {
 			j != where.end(); ++j) 
 			schemenum[*j] = scnum;
 		scnum ++;
-		/* Solve system for u2 */
-		if (cycled)
-			EliminateCycled(B1, B2, B3, rhs, sol);
-		TridiagonalSolve(B1, B2, B3, rhs, sol, cycled);
-		/* Set u2 = sol */
-		for (int j = 0; j < N; j++) {
-			u2[j].rho = sol[j](0);
-			u2[j].P   = sol[j](1);
-			u2[j].E   = sol[j](2);
-			u2[j].fixup();
-		}
-		u2.actualize();
 		/* If any alternatives left, search for points 
 		   that require recompute */
 		if (i+1 != schemes.end()) 
@@ -133,7 +121,7 @@ double Solver::doStep(std::vector<Alphas *> schemes) {
 } // }}}
 
 // {{{ checkMono
-bool Solver::checkMono(std::vector<int> &where) {
+bool GDSolver::checkMono(std::vector<int> &where) {
 	/*
 	uL | uC | uR
 	---+----+---
@@ -192,7 +180,7 @@ bool Solver::checkMono(std::vector<int> &where) {
 }// }}}
 
 // {{{ predict 
-void Solver::predict() {
+void GDSolver::predict() {
 	double i4cou = .25 / cou;
 	for (int j = -1; j < N; j++)
 	{
@@ -216,7 +204,7 @@ void Solver::predict() {
 } /// }}}
 
 // {{{ correct
-void Solver::correct(const Alphas &scheme, const std::vector<int> &where) {
+void GDSolver::correct(const Alphas &scheme, const std::vector<int> &where) {
 	Gamma1 gamma1(scheme);
 	Gamma2 gamma2(scheme);
 	Gamma3 gamma3(scheme);
@@ -325,4 +313,16 @@ void Solver::correct(const Alphas &scheme, const std::vector<int> &where) {
 		rhs[j](1) = rh.P;
 		rhs[j](2) = rh.E;
 	}
+	/* Solve system for u2 */
+	if (cycled)
+		EliminateCycled(B1, B2, B3, rhs, sol);
+	TridiagonalSolve(B1, B2, B3, rhs, sol, cycled);
+	/* Set u2 = sol */
+	for (int j = 0; j < N; j++) {
+		u2[j].rho = sol[j](0);
+		u2[j].P   = sol[j](1);
+		u2[j].E   = sol[j](2);
+		u2[j].fixup();
+	}
+	u2.actualize();
 } // }}}

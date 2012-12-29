@@ -4,12 +4,16 @@
 #include "array.h"
 #include "matrix.h"
 
+template <typename M, typename V>
 void TridiagonalSolve(
-	const Array<Matrix> &A, const Array<Matrix> &B, const Array<Matrix> &C, const Array<Vector> &d, 
-	Array<Vector> &x, bool cycled);
+	const Array<M> &A, const Array<M> &B, const Array<M> &C, const Array<V> &d, 
+	Array<V> &x, bool cycled);
 
+template <typename M, typename V>
 void EliminateCycled(
-	const Array<Matrix> &A, const Array<Matrix> &B, const Array<Matrix> &C, const Array<Vector> &d, 
-	Array<Vector> &x);
+	const Array<M> &A, const Array<M> &B, const Array<M> &C, const Array<V> &d, 
+	Array<V> &x);
+
+#include "linalg.cpp"
 
 #endif

@@ -68,6 +68,9 @@ struct Vector {
 	}
 }; 
 
+struct Matrix;
+inline Matrix inverse(const Matrix &o);
+
 struct Matrix {
 	double _m[3][3];
 	Matrix() {
@@ -134,7 +137,7 @@ struct Matrix {
 		return v;
 	}
 	Vector solve(const Vector &b) const {
-		Matrix iA = this->inverse();
+		Matrix iA = inverse(*this);
 		return iA * b;
 	}
 	double norm() const {
@@ -150,7 +153,7 @@ struct Matrix {
 		return ret;
 	}
 	double cond() const {
-		return this->norm() * this->inverse().norm();
+		return this->norm() * inverse(*this).norm();
 	}
 	template <class Functor>
 	Matrix(const Matrix &W, const Vector &e, const Matrix &iW, const Functor &func = Functor()) {
@@ -162,18 +165,20 @@ struct Matrix {
 				_m[i][j] = Aij;
 			}
 	}
-	Matrix inverse() const {
-		double a = _m[0][0];
-		double b = _m[0][1];
-		double c = _m[0][2];
+};
 
-		double d = _m[1][0];
-		double e = _m[1][1];
-		double f = _m[1][2];
+inline Matrix inverse(const Matrix &o) {
+		double a = o._m[0][0];
+		double b = o._m[0][1];
+		double c = o._m[0][2];
 
-		double g = _m[2][0];
-		double h = _m[2][1];
-		double i = _m[2][2];
+		double d = o._m[1][0];
+		double e = o._m[1][1];
+		double f = o._m[1][2];
+
+		double g = o._m[2][0];
+		double h = o._m[2][1];
+		double i = o._m[2][2];
 
 		Matrix m;
 		m(0, 0) = e*i - f*h;
@@ -196,10 +201,8 @@ struct Matrix {
 
 		return m;
 	}
-};
 
-inline
-Matrix operator *(double v, const Matrix &m) {
+inline Matrix operator *(double v, const Matrix &m) {
 	Matrix ret;
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++)

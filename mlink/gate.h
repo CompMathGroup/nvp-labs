@@ -5,7 +5,9 @@
 extern "C" {
 #endif
 
-double InitializeSolver(const char *prob, int n, double C,
+double InitializeSolver(
+	const char *solv, const char *prob, 
+	int n, double C,
 	double rL, double uL, double eL,
 	double rR, double uR, double eR);
 int AddScheme(double *coeff, int sz);

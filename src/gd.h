@@ -11,9 +11,7 @@
 #define GAMMA 1.4
 
 struct AbsoluteValue {
-	double operator()(double s) const {
-		return std::fabs(s);
-	}
+	double operator()(double s) const {	return std::fabs(s); }
 };
 
 struct Vars {
