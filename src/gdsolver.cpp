@@ -123,31 +123,26 @@ double GDSolver::doStep(const std::vector<Alphas *> &schemes) {
 // {{{ checkMono
 bool GDSolver::checkMono(std::vector<int> &where) {
 	/*
-	uL | uC | uR
+	   | uC |   
 	---+----+---
-	   | uD |
+	uL | uD | uR
 	*/
-	double reltol = 1e-4;
-	double abstol = 1e-4;
+	double reltol = tolerance;
+	double abstol = tolerance;
 	where.clear();
 	for (int j = 0; j < N; j++) {
-/*
-		Vector u2L = u2[j-1].to_nconserv();
-		Vector u2R = u2[j+1].to_nconserv();
-		Vector u2C = u2[j  ].to_nconserv();
-		Vector u1C = u1[j  ].to_nconserv();
-*/
-		Vector u2L = iW2[j] * u2[j-1].to_vect();
-		Vector u2R = iW2[j] * u2[j+1].to_vect();
-		Vector u2C = iW2[j] * u2[j  ].to_vect();
-		Vector u1C = iW2[j] * u1[j  ].to_vect();
+
+		Vector uC = iW2[j] * u2[j  ].to_vect();
+		Vector uL = iW2[j] * u1[j-1].to_vect();
+		Vector uD = iW2[j] * u1[j  ].to_vect();
+		Vector uR = iW2[j] * u1[j+1].to_vect();
 
 		bool need = false;
 		for (int k = 0; k < 3; k++) {
-			double wL = u2L(k);
-			double wR = u2R(k);
-			double wD = u1C(k);
-			double wC = u2C(k);
+			double wL = uL(k);
+			double wR = uR(k);
+			double wD = uD(k);
+			double wC = uC(k);
 			double u = lam2[j](k);
 			if (u > 0) {
 				double wmin = std::min(wL, wD);

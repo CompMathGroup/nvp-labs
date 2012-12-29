@@ -11,6 +11,8 @@ double AdvectionSolver::doFirstStep(double C) {
 	cou = C;
 
 	/* This is all, expect u1 to be already filled */
+	for (int j = 0; j < N; j++)
+		schemenum[j] = 0;
 
 	t += dt;
 	iter++;
@@ -59,16 +61,16 @@ double AdvectionSolver::doStep(const std::vector<Alphas *> &schemes) {
 // {{{ checkMono
 bool AdvectionSolver::checkMono(std::vector<int> &where) {
 	/*
-	uL | uC |
+	   | uC |
 	---+----+
-	   | uD |
+	uL | uD |
 	*/
-	double reltol = 1e-4;
-	double abstol = 1e-4;
+	double reltol = tolerance;
+	double abstol = tolerance;
 	where.clear();
 	for (int j = 0; j < N; j++) {
-		double wL = u2[j-1];
 		double wC = u2[j  ];
+		double wL = u1[j-1];
 		double wD = u1[j  ];
 
 		bool need = false;

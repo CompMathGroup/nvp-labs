@@ -9,6 +9,10 @@
 
 #include <mathlink.h>
 
+#ifndef TOLERANCE
+#define TOLERANCE 1e-6
+#endif
+
 bool linear;
 
 static Riemann *rie = 0;
@@ -33,6 +37,7 @@ static double *ea;
 static double *r;
 static double *u;
 static double *e;
+static double *snum;
 
 static bool firsttime;
 
@@ -102,13 +107,14 @@ double InitializeSolver(
 		rie = new Riemann(GAMMA);
 		rie->solve(rL, uL, eL, rR, uR, eR);
 
-		data = new double[6 * n];
+		data = new double[7 * n];
 		ra = data;
 		ua = data + n;
 		ea = data + 2*n;
 		r = data + 3*n;
 		u = data + 4*n;
 		e = data + 5*n;
+		snum = data + 6*n;
 
 		if (csproblem) {
 			u0 = new CycledArray<Vars>(n, 2);
@@ -131,16 +137,19 @@ double InitializeSolver(
 			for (int i = n / 2; i < n; i++)
 				(*u0)[i] = Vars(Vector(rR, uR, eR));
 		}
+		sol->tolerance = TOLERANCE;
 		for (std::vector<Alphas *>::iterator j = chain.begin(); j != chain.end(); j++)
 			delete *j;
 		chain.clear();
 		firsttime = true;
 		return sol->doFirstStep(C);
 	} else {
-		data = new double[2 * n];
+		data = new double[3 * n];
 		
 		ra = data;
 		r = data + n;
+		snum = data + 2*n;
+
 		bool isstep = 0 == strcasecmp(prob, "step");
 		bool iscap = 0 == strcasecmp(prob, "cap");
 		bool istri = 0 == strcasecmp(prob, "triangle");
@@ -151,6 +160,7 @@ double InitializeSolver(
 		w2 = new CycledArray<double>(n, 2);
 
 		adv = new AdvectionSolver(n, *w0, *w1, *w2);
+		adv->tolerance = TOLERANCE;
 		sol = 0;
 
 		for (int j = 0; j < n; j++) {
@@ -198,18 +208,21 @@ void DoSteps(int count) {
 			rie->twoCS(t, u1->size(), x, ra, ua, ea);
 		else
 			rie->evaluate(t, u1->size(), x, ra, ua, ea);
+
+		const Array<int> &ss = sol->getSchemeNums();
 		for (int i = 0; i < u1->size(); i++) {
 			Vector w = (*u1)[i].to_nconserv();
 			r[i] = std::isnormal(w(0)) ? w(0) : 0;
 			u[i] = std::isnormal(w(1)) ? w(1) : 0;
 			e[i] = std::isnormal(w(2)) ? w(2) : 0;
+			snum[i] = ss[i];
 		}
 
 		int dims[2];
 		char *heads[2] = {(char *)"List", (char *)"List"};
 		int depth = 2;
 		
-		dims[0] = 6;
+		dims[0] = 7;
 		dims[1] = u1->size();
 		MLPutReal64Array(stdlink, data, dims, heads, depth);
 	} else {
@@ -221,17 +234,19 @@ void DoSteps(int count) {
 			r[i] = (*w1)[i];
 		}
 
+		const Array<int> &ss = adv->getSchemeNums();
 		for (int j = 0; j < w1->size(); j++) {
 			double y = x[j] - t;
 			y -= std::floor(y);
 			ra[j] = f(y);
+			snum[j] = ss[j];
 		}
 
 		int dims[2];
 		char *heads[2] = {(char *)"List", (char *)"List"};
 		int depth = 2;
 		
-		dims[0] = 2;
+		dims[0] = 3;
 		dims[1] = w1->size();
 		MLPutReal64Array(stdlink, data, dims, heads, depth);
 	}

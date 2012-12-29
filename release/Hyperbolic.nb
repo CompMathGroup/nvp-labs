@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    164660,       3943]
-NotebookOptionsPosition[    162704,       3880]
-NotebookOutlinePosition[    163094,       3897]
-CellTagsIndexPosition[    163051,       3894]
+NotebookDataLength[    166821,       3987]
+NotebookOptionsPosition[    164865,       3924]
+NotebookOutlinePosition[    165255,       3941]
+CellTagsIndexPosition[    165212,       3938]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -2700,8 +2700,8 @@ Cell[BoxData[{
        "\[IndentingNewLine]", "deltas1", ",", "deltas2", ",", "deltas3", ",", 
        "deltas4", ",", "\[IndentingNewLine]", "\[Rho]", ",", "u", ",", 
        "\[CurlyEpsilon]", ",", "\[Rho]a", ",", "ua", ",", "\[CurlyEpsilon]a", 
-       ",", "\[IndentingNewLine]", "x", ",", "minv", ",", "maxv", ",", "it"}],
-       "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+       ",", "snum", ",", "\[IndentingNewLine]", "x", ",", "minv", ",", "maxv",
+        ",", "it"}], "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
      RowBox[{"Column", "[", 
       RowBox[{"{", "\[IndentingNewLine]", 
        RowBox[{
@@ -3140,7 +3140,7 @@ Cell[BoxData[{
               RowBox[{
                RowBox[{"Dimensions", "[", "sol", "]"}], 
                "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], ">", 
-              "2"}], ",", "\[IndentingNewLine]", 
+              "3"}], ",", "\[IndentingNewLine]", 
              RowBox[{
               RowBox[{"\[Rho]a", "=", 
                RowBox[{"sol", "\[LeftDoubleBracket]", 
@@ -3165,14 +3165,32 @@ Cell[BoxData[{
               RowBox[{"\[CurlyEpsilon]", "=", 
                RowBox[{"sol", "\[LeftDoubleBracket]", 
                 RowBox[{"frame", ",", "6"}], "\[RightDoubleBracket]"}]}], ";",
+               "\[IndentingNewLine]", 
+              RowBox[{"snum", "=", 
+               RowBox[{"sol", "\[LeftDoubleBracket]", 
+                RowBox[{"frame", ",", "7"}], "\[RightDoubleBracket]"}]}], ";",
                "\[IndentingNewLine]", "\[IndentingNewLine]", 
               RowBox[{"minv", "=", 
                RowBox[{"Min", "[", 
-                RowBox[{"Flatten", "@", "sol"}], "]"}]}], ";", 
-              "\[IndentingNewLine]", 
+                RowBox[{"Flatten", "@", 
+                 RowBox[{"sol", "\[LeftDoubleBracket]", 
+                  RowBox[{";;", ",", 
+                   RowBox[{"1", ";;", "6"}]}], "\[RightDoubleBracket]"}]}], 
+                "]"}]}], ";", "\[IndentingNewLine]", 
               RowBox[{"maxv", "=", 
                RowBox[{"Max", "[", 
-                RowBox[{"Flatten", "@", "sol"}], "]"}]}], ";", 
+                RowBox[{"Flatten", "@", 
+                 RowBox[{"sol", "\[LeftDoubleBracket]", 
+                  RowBox[{";;", ",", 
+                   RowBox[{"1", ";;", "6"}]}], "\[RightDoubleBracket]"}]}], 
+                "]"}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{"minv", "=", 
+               RowBox[{"Max", "[", 
+                RowBox[{"minv", ",", 
+                 RowBox[{"-", "20"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{"maxv", "=", 
+               RowBox[{"Min", "[", 
+                RowBox[{"maxv", ",", "20"}], "]"}]}], ";", 
               "\[IndentingNewLine]", 
               RowBox[{"x", "=", 
                RowBox[{
@@ -3363,14 +3381,32 @@ Cell[BoxData[{
               RowBox[{"\[Rho]", "=", 
                RowBox[{"sol", "\[LeftDoubleBracket]", 
                 RowBox[{"frame", ",", "2"}], "\[RightDoubleBracket]"}]}], ";",
+               "\[IndentingNewLine]", 
+              RowBox[{"snum", "=", 
+               RowBox[{"sol", "\[LeftDoubleBracket]", 
+                RowBox[{"frame", ",", "3"}], "\[RightDoubleBracket]"}]}], ";",
                "\[IndentingNewLine]", "\[IndentingNewLine]", 
               RowBox[{"minv", "=", 
                RowBox[{"Min", "[", 
-                RowBox[{"Flatten", "@", "sol"}], "]"}]}], ";", 
-              "\[IndentingNewLine]", 
+                RowBox[{"Flatten", "@", 
+                 RowBox[{"sol", "\[LeftDoubleBracket]", 
+                  RowBox[{";;", ",", 
+                   RowBox[{"1", ";;", "2"}]}], "\[RightDoubleBracket]"}]}], 
+                "]"}]}], ";", "\[IndentingNewLine]", 
               RowBox[{"maxv", "=", 
                RowBox[{"Max", "[", 
-                RowBox[{"Flatten", "@", "sol"}], "]"}]}], ";", 
+                RowBox[{"Flatten", "@", 
+                 RowBox[{"sol", "\[LeftDoubleBracket]", 
+                  RowBox[{";;", ",", 
+                   RowBox[{"1", ";;", "2"}]}], "\[RightDoubleBracket]"}]}], 
+                "]"}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{"minv", "=", 
+               RowBox[{"Max", "[", 
+                RowBox[{"minv", ",", 
+                 RowBox[{"-", "3"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{"maxv", "=", 
+               RowBox[{"Min", "[", 
+                RowBox[{"maxv", ",", "3"}], "]"}]}], ";", 
               "\[IndentingNewLine]", 
               RowBox[{"x", "=", 
                RowBox[{
@@ -3395,6 +3431,12 @@ Cell[BoxData[{
                     RowBox[{"Transpose", "[", 
                     RowBox[{"{", 
                     RowBox[{"x", ",", "\[Rho]a"}], "}"}], "]"}]}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{",", 
+                    RowBox[{"Transpose", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"x", ",", "snum"}], "}"}], "]"}]}], "*)"}], 
                     "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
                    
                    RowBox[{"PlotStyle", "\[Rule]", 
@@ -3403,7 +3445,9 @@ Cell[BoxData[{
                     RowBox[{"Directive", "[", 
                     RowBox[{"Thick", ",", "Red"}], "]"}], ",", 
                     RowBox[{"Directive", "[", 
-                    RowBox[{"Dashed", ",", "Red"}], "]"}]}], "}"}]}], ",", 
+                    RowBox[{"Dashed", ",", "Red"}], "]"}]}], 
+                    RowBox[{"(*", 
+                    RowBox[{",", "Thick"}], "*)"}], "}"}]}], ",", 
                    "\[IndentingNewLine]", 
                    RowBox[{"PlotLabel", "\[Rule]", 
                     RowBox[{"Style", "[", 
@@ -3935,14 +3979,14 @@ Cell[CellGroupData[{
 Cell[109877, 2675, 143, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10005.}],
-Cell[110023, 2679, 37881, 799, 2921, "Input",
+Cell[110023, 2679, 40042, 843, 3054, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10005.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[147941, 3483, 162, 3, 31, "Input",
+Cell[150102, 3527, 162, 3, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10006.}],
-Cell[148106, 3488, 14582, 389, 1413, "Input",
+Cell[150267, 3532, 14582, 389, 1413, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10006.}]
 }, Closed]]
 }

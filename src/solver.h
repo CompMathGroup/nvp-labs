@@ -13,6 +13,7 @@ struct Solver {
 	double h;
 	double dt;
 	double t;
+	double tolerance;
 
 	Array<V> &u0;
 	Array<V> &u1;
@@ -27,6 +28,7 @@ struct Solver {
 		h = 1.0 / N;
 		t = 0;
 		iter = 0;
+		tolerance = 1e-6;
 	}
 
 	double getTime() const { return t; }
