@@ -148,24 +148,17 @@ void Riemann::evaluate(double t, int np, double *x, double *r, double *u, double
 	}
 }
 
-void Riemann::twoCS(double t, int np, double *x, double *r, double *u, double *e) {
+void Riemann::twoCS(double t, int np, double *x, double (*f)(double), double *r, double *u, double *e) {
 	double v = 0.5 * (u1 + u2); /* should be v = u1 = u2*/
-	double x1 = 0.4 + v * t;
-	double x2 = 0.6 + v * t;
-	x1 = x1 - floor(x1);
-	x2 = x2 - floor(x2);
 
 	/* also p1 = p2 <=> r1 e1 = r2 e2 */
-	if (x1 < x2)
-		for (int i=0; i<np; i++) {
-			r[i] = (x[i] > x1 && x[i] <= x2) ? r1 : r2;
-			e[i] = (x[i] > x1 && x[i] <= x2) ? e1 : e2;
-		}
-	else
-		for (int i=0; i<np; i++) {
-			r[i] = (x[i] > x2 && x[i] < x1) ? r2 : r1;
-			e[i] = (x[i] > x2 && x[i] < x1) ? e2 : e1;
-		}
+	for (int i = 0; i < np; i++) {
+		double y = x[i] - v * t;
+		if (y < 0)
+			y = y - floor(y);
+		r[i] = r2 + (r1 - r2) * f(y);
+		e[i] = e2 + (e1 - e2) * f(y);
+	}
 	for (int i=0; i<np; i++) 
 		u[i] = v;
 }

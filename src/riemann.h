@@ -29,7 +29,7 @@ public:
 	Riemann(double _gamma);
 	Conf solve(double r1, double u1, double e1, double r2, double u2, double e2);
 	void evaluate(double t, int np, double *x, double *r, double *u, double *e);
-	void twoCS(double t, int np, double *x, double *r, double *u, double *e);
+	void twoCS(double t, int np, double *x, double (*f)(double), double *r, double *u, double *e);
 };
 
 #endif

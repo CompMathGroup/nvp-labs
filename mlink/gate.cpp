@@ -102,7 +102,7 @@ double InitializeSolver(
 
 	if (!linear) {
 		
-		csproblem = 0 == strcasecmp(prob, "contact");
+		csproblem = 0 != strcasecmp(prob, "riemann");
 		
 		rie = new Riemann(GAMMA);
 		rie->solve(rL, uL, eL, rR, uR, eR);
@@ -121,12 +121,22 @@ double InitializeSolver(
 			u1 = new CycledArray<Vars>(n, 2);
 			u2 = new CycledArray<Vars>(n, 2);
 			sol = new GDSolver(n, true, *u0, *u1, *u2);
-			for (int i = 0; i < 2 * n / 5; i++)
-				(*u0)[i] = Vars(Vector(rR, uR, eR));
-			for (int i = 2 * n / 5; i < 3 * n / 5; i++)
-				(*u0)[i] = Vars(Vector(rL, uL, eL));
-			for (int i = 3 * n / 5; i < n; i++)
-				(*u0)[i] = Vars(Vector(rR, uR, eR));
+
+			bool isstep = 0 == strcasecmp(prob, "contacts");
+			bool iscap =  0 == strcasecmp(prob, "contactc");
+			bool istri =  0 == strcasecmp(prob, "contactt");
+			f = isstep ? step : (iscap ? cap : (istri ? tri : wtf));
+
+			/* Left -> inner, Right -> outer 
+			* z = outer + (inner - outer) * f
+			*/
+
+			for (int i = 0; i < n; i++) {
+				double rX = rR + (rL - rR) * f(x[i]);
+				double uX = uR + (uL - uR) * f(x[i]);
+				double eX = eR + (eL - eR) * f(x[i]);
+				(*u0)[i] = Vars(Vector(rX, uX, eX));
+			}
 		} else {
 			u0 = new ExtrapolatingArray<Vars>(n, 2);
 			u1 = new ExtrapolatingArray<Vars>(n, 2);
@@ -151,8 +161,8 @@ double InitializeSolver(
 		snum = data + 2*n;
 
 		bool isstep = 0 == strcasecmp(prob, "step");
-		bool iscap = 0 == strcasecmp(prob, "cap");
-		bool istri = 0 == strcasecmp(prob, "triangle");
+		bool iscap =  0 == strcasecmp(prob, "cap");
+		bool istri =  0 == strcasecmp(prob, "triangle");
 		f = isstep ? step : (iscap ? cap : (istri ? tri : wtf));
 
 		w0 = new CycledArray<double>(n, 2);
@@ -205,7 +215,7 @@ void DoSteps(int count) {
 
 		double t = sol->getTime();
 		if (csproblem)
-			rie->twoCS(t, u1->size(), x, ra, ua, ea);
+			rie->twoCS(t, u1->size(), x, f, ra, ua, ea);
 		else
 			rie->evaluate(t, u1->size(), x, ra, ua, ea);
 

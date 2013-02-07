@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    166821,       3987]
-NotebookOptionsPosition[    164865,       3924]
-NotebookOutlinePosition[    165255,       3941]
-CellTagsIndexPosition[    165212,       3938]
+NotebookDataLength[    167173,       3992]
+NotebookOptionsPosition[    165222,       3929]
+NotebookOutlinePosition[    165607,       3946]
+CellTagsIndexPosition[    165564,       3943]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -2731,7 +2731,7 @@ Cell[BoxData[{
                 RowBox[{"solver", "\[Equal]", "\"\<Nonlinear\>\""}], ",", 
                 "\[IndentingNewLine]", 
                 RowBox[{
-                 RowBox[{"problem", "=", "\"\<Contact\>\""}], ";", 
+                 RowBox[{"problem", "=", "\"\<ContactS\>\""}], ";", 
                  "\[IndentingNewLine]", 
                  RowBox[{"Row", "[", 
                   RowBox[{"{", 
@@ -2739,16 +2739,21 @@ Cell[BoxData[{
                     RowBox[{"SetterBar", "[", 
                     RowBox[{
                     RowBox[{"Dynamic", "@", "problem"}], ",", 
-                    RowBox[{"{", 
+                    RowBox[{"{", "\[IndentingNewLine]", 
                     RowBox[{
+                    RowBox[{"\"\<ContactS\>\"", "\[Rule]", "\"\<Step\>\""}], 
+                    ",", "\[IndentingNewLine]", 
                     RowBox[{
-                    "\"\<Contact\>\"", "\[Rule]", 
-                    "\"\<Two contact surfaces\>\""}], ",", 
+                    "\"\<ContactT\>\"", "\[Rule]", "\"\<Triangle\>\""}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    "\"\<ContactC\>\"", "\[Rule]", "\"\<Parabola\>\""}], ",", 
+                    "\[IndentingNewLine]", 
                     RowBox[{
                     "\"\<Riemann\>\"", "\[Rule]", 
-                    "\"\<Riemann problem\>\""}]}], "}"}]}], "]"}]}], 
-                   "\[IndentingNewLine]", "}"}], "]"}]}], ",", 
-                "\[IndentingNewLine]", 
+                    "\"\<Riemann problem\>\""}]}], "\[IndentingNewLine]", 
+                    "}"}]}], "]"}]}], "\[IndentingNewLine]", "}"}], "]"}]}], 
+                ",", "\[IndentingNewLine]", 
                 RowBox[{
                  RowBox[{"problem", "=", "\"\<Step\>\""}], ";", 
                  "\[IndentingNewLine]", 
@@ -2784,9 +2789,9 @@ Cell[BoxData[{
                     RowBox[{"Dynamic", "[", 
                     RowBox[{"If", "[", 
                     RowBox[{
-                    RowBox[{"problem", "\[Equal]", "\"\<Contact\>\""}], ",", 
-                    "\"\<inner\>\"", ",", "\"\<left\>\""}], "   ", "]"}], 
-                    "]"}]}], "]"}], ",", 
+                    RowBox[{"problem", "\[NotEqual]", "\"\<Riemann\>\""}], 
+                    ",", "\"\<inner\>\"", ",", "\"\<left\>\""}], "   ", "]"}],
+                     "]"}]}], "]"}], ",", 
                     RowBox[{"Slider", "[", 
                     RowBox[{
                     RowBox[{"Dynamic", "@", "\[Rho]L"}], ",", 
@@ -2799,9 +2804,9 @@ Cell[BoxData[{
                     RowBox[{"Dynamic", "[", 
                     RowBox[{"If", "[", 
                     RowBox[{
-                    RowBox[{"problem", "\[Equal]", "\"\<Contact\>\""}], ",", 
-                    "\"\<outer\>\"", ",", "\"\<right\>\""}], "]"}], "]"}]}], 
-                    "]"}], ",", 
+                    RowBox[{"problem", "\[NotEqual]", "\"\<Riemann\>\""}], 
+                    ",", "\"\<outer\>\"", ",", "\"\<right\>\""}], "]"}], 
+                    "]"}]}], "]"}], ",", 
                     RowBox[{"Slider", "[", 
                     RowBox[{
                     RowBox[{"Dynamic", "@", "\[Rho]R"}], ",", 
@@ -2816,9 +2821,9 @@ Cell[BoxData[{
                     RowBox[{"Dynamic", "[", 
                     RowBox[{"If", "[", 
                     RowBox[{
-                    RowBox[{"problem", "\[Equal]", "\"\<Contact\>\""}], ",", 
-                    "\"\<inner\>\"", ",", "\"\<left\>\""}], "   ", "]"}], 
-                    "]"}]}], "]"}], ",", 
+                    RowBox[{"problem", "\[NotEqual]", "\"\<Riemann\>\""}], 
+                    ",", "\"\<inner\>\"", ",", "\"\<left\>\""}], "   ", "]"}],
+                     "]"}]}], "]"}], ",", 
                     RowBox[{"Slider", "[", 
                     RowBox[{
                     RowBox[{"Dynamic", "@", "uL"}], ",", 
@@ -2832,9 +2837,9 @@ Cell[BoxData[{
                     RowBox[{"Dynamic", "[", 
                     RowBox[{"If", "[", 
                     RowBox[{
-                    RowBox[{"problem", "\[Equal]", "\"\<Contact\>\""}], ",", 
-                    "\"\<outer\>\"", ",", "\"\<right\>\""}], "]"}], "]"}]}], 
-                    "]"}], ",", 
+                    RowBox[{"problem", "\[NotEqual]", "\"\<Riemann\>\""}], 
+                    ",", "\"\<outer\>\"", ",", "\"\<right\>\""}], "]"}], 
+                    "]"}]}], "]"}], ",", 
                     RowBox[{"Slider", "[", 
                     RowBox[{
                     RowBox[{"Dynamic", "@", "uR"}], ",", 
@@ -2850,9 +2855,9 @@ Cell[BoxData[{
                     RowBox[{"Dynamic", "[", 
                     RowBox[{"If", "[", 
                     RowBox[{
-                    RowBox[{"problem", "\[Equal]", "\"\<Contact\>\""}], ",", 
-                    "\"\<inner\>\"", ",", "\"\<left\>\""}], "   ", "]"}], 
-                    "]"}]}], "]"}], ",", 
+                    RowBox[{"problem", "\[NotEqual]", "\"\<Riemann\>\""}], 
+                    ",", "\"\<inner\>\"", ",", "\"\<left\>\""}], "   ", "]"}],
+                     "]"}]}], "]"}], ",", 
                     RowBox[{"Slider", "[", 
                     RowBox[{
                     RowBox[{"Dynamic", "@", "\[CurlyEpsilon]L"}], ",", 
@@ -2865,9 +2870,9 @@ Cell[BoxData[{
                     RowBox[{"Dynamic", "[", 
                     RowBox[{"If", "[", 
                     RowBox[{
-                    RowBox[{"problem", "\[Equal]", "\"\<Contact\>\""}], ",", 
-                    "\"\<outer\>\"", ",", "\"\<right\>\""}], "]"}], "]"}]}], 
-                    "]"}], ",", 
+                    RowBox[{"problem", "\[NotEqual]", "\"\<Riemann\>\""}], 
+                    ",", "\"\<outer\>\"", ",", "\"\<right\>\""}], "]"}], 
+                    "]"}]}], "]"}], ",", 
                     RowBox[{"Slider", "[", 
                     RowBox[{
                     RowBox[{"Dynamic", "@", "\[CurlyEpsilon]R"}], ",", 
@@ -3922,8 +3927,8 @@ Cell[BoxData[
  FontFamily->"DejaVu Sans Mono"]
 }, Closed]]
 },
-WindowSize->{1278, 976},
-WindowMargins->{{Automatic, -1278}, {Automatic, 46}},
+WindowSize->{1038, 852},
+WindowMargins->{{0, Automatic}, {2, Automatic}},
 ShowSelection->True,
 TrackCellChangeTimes->False,
 FrontEndVersion->"8.0 for Linux x86 (64-bit) (October 10, 2011)",
@@ -3979,14 +3984,14 @@ Cell[CellGroupData[{
 Cell[109877, 2675, 143, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10005.}],
-Cell[110023, 2679, 40042, 843, 3054, "Input",
+Cell[110023, 2679, 40399, 848, 3304, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10005.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[150102, 3527, 162, 3, 31, "Input",
+Cell[150459, 3532, 162, 3, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10006.}],
-Cell[150267, 3532, 14582, 389, 1413, "Input",
+Cell[150624, 3537, 14582, 389, 1413, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10006.}]
 }, Closed]]
 }
