@@ -68,7 +68,7 @@ double wtf(double x) {
 double (*f)(double);
 
 double InitializeSolver(
-	const char *solver, const char *prob, int n, double C,
+	const char *solver, double CpCv, const char *prob, int n, double C,
 	double rL, double uL, double eL,
 	double rR, double uR, double eR) 
 {
@@ -104,7 +104,7 @@ double InitializeSolver(
 		
 		csproblem = 0 != strcasecmp(prob, "riemann");
 		
-		rie = new Riemann(GAMMA);
+		rie = new Riemann(CpCv);
 		rie->solve(rL, uL, eL, rR, uR, eR);
 
 		data = new double[7 * n];
@@ -135,7 +135,7 @@ double InitializeSolver(
 				double rX = rR + (rL - rR) * f(x[i]);
 				double uX = uR + (uL - uR) * f(x[i]);
 				double eX = eR + (eL - eR) * f(x[i]);
-				(*u0)[i] = Vars(Vector(rX, uX, eX));
+				(*u0)[i] = Vars(Vector(rX, uX, eX), CpCv);
 			}
 		} else {
 			u0 = new ExtrapolatingArray<Vars>(n, 2);
@@ -143,9 +143,9 @@ double InitializeSolver(
 			u2 = new ExtrapolatingArray<Vars>(n, 2);
 			sol = new GDSolver(n, false, *u0, *u1, *u2);
 			for (int i = 0; i < n / 2; i++)
-				(*u0)[i] = Vars(Vector(rL, uL, eL));
+				(*u0)[i] = Vars(Vector(rL, uL, eL), CpCv);
 			for (int i = n / 2; i < n; i++)
-				(*u0)[i] = Vars(Vector(rR, uR, eR));
+				(*u0)[i] = Vars(Vector(rR, uR, eR), CpCv);
 		}
 		sol->tolerance = TOLERANCE;
 		for (std::vector<Alphas *>::iterator j = chain.begin(); j != chain.end(); j++)

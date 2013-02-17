@@ -8,7 +8,6 @@
 
 #define RHO_MIN 1e-9
 #define PRESS_MIN 1e-9
-#define GAMMA 1.4
 
 struct AbsoluteValue {
 	double operator()(double s) const {	return std::fabs(s); }
@@ -18,28 +17,30 @@ struct Vars {
 	double rho;
 	double P;
 	double E;
+	double GAMMA;
 
 	Vars() {}
 
-	Vars(const Vector &o) {
+	Vars(const Vector &o, double _GAMMA) {
 		rho = o(0);
 		P = rho * o(1);
 		E = rho * (.5 * o(1) * o(1) + o(2));
+		GAMMA = _GAMMA;
 	}
 
-	Vars(double _rho, double _P, double _E) : 
-		rho(_rho), P(_P), E(_E) { }
+	Vars(double _rho, double _P, double _E, double _GAMMA = 1.4) : 
+		rho(_rho), P(_P), E(_E), GAMMA(_GAMMA) { }
 
 	Vars operator +(const Vars o) const {
-		return Vars(rho + o.rho, P + o.P, E + o.E);
+		return Vars(rho + o.rho, P + o.P, E + o.E, GAMMA);
 	}
 
 	Vars operator -(const Vars o) const {
-		return Vars(rho - o.rho, P - o.P, E - o.E);
+		return Vars(rho - o.rho, P - o.P, E - o.E, GAMMA);
 	}
 
 	friend Vars operator *(const double m, const Vars o) {
-		return Vars(m * o.rho, m * o.P, m * o.E);
+		return Vars(m * o.rho, m * o.P, m * o.E, o.GAMMA);
 	}
 
 	Vars &operator *=(const double m) {

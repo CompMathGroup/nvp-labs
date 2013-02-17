@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    167173,       3992]
-NotebookOptionsPosition[    165222,       3929]
-NotebookOutlinePosition[    165607,       3946]
-CellTagsIndexPosition[    165564,       3943]
+NotebookDataLength[    168371,       4019]
+NotebookOptionsPosition[    166415,       3956]
+NotebookOutlinePosition[    166805,       3973]
+CellTagsIndexPosition[    166762,       3970]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -2167,15 +2167,15 @@ Cell[BoxData[{
    RowBox[{"DynamicModule", "[", "\[IndentingNewLine]", 
     RowBox[{
      RowBox[{"{", 
-      RowBox[{"x0", ",", "x1", ",", "t0", ",", "t1", ",", 
+      RowBox[{"x0", ",", "x1", ",", 
        RowBox[{"Courant", "=", "True"}], ",", "ToNearestRound", ",", "rounds",
         ",", "\[IndentingNewLine]", "MToh", ",", "hToM"}], "}"}], ",", 
      "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{
        RowBox[{"{", 
-        RowBox[{"x0", ",", "x1", ",", "t0", ",", "t1"}], "}"}], "=", 
-       "xtrange"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"x0", ",", "x1"}], "}"}], "=", "xtrange"}], ";", 
+      "\[IndentingNewLine]", 
       RowBox[{"rounds", "=", 
        RowBox[{"Sort", "@", 
         RowBox[{"DeleteDuplicates", "@", 
@@ -2268,7 +2268,8 @@ Cell[BoxData[{
            RowBox[{
             RowBox[{"{", 
              RowBox[{
-             "\"\<M, points number\>\"", ",", ",", "\[IndentingNewLine]", 
+             "\"\<M, points number\>\"", ",", "Null", ",", 
+              "\[IndentingNewLine]", 
               RowBox[{"Slider", "[", 
                RowBox[{
                 RowBox[{"Dynamic", "[", 
@@ -2292,7 +2293,8 @@ Cell[BoxData[{
                "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
             RowBox[{"{", 
              RowBox[{
-             "\"\<h, spatial step\>\"", ",", ",", "\[IndentingNewLine]", 
+             "\"\<h, spatial step\>\"", ",", "Null", ",", 
+              "\[IndentingNewLine]", 
               RowBox[{"Slider", "[", 
                RowBox[{
                 RowBox[{"Dynamic", "[", 
@@ -2373,8 +2375,18 @@ step\>\"", ",",
                 RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}], ",", 
                 RowBox[{"Enabled", "\[Rule]", 
                  RowBox[{"Dynamic", "[", 
-                  RowBox[{"!", "Courant"}], "]"}]}]}], "]"}]}], "}"}]}], 
-           "\[IndentingNewLine]", "}"}], ",", 
+                  RowBox[{"!", "Courant"}], "]"}]}]}], "]"}]}], "}"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"{", 
+             RowBox[{
+             "\"\<T, max time\>\"", ",", "Null", ",", "\[IndentingNewLine]", 
+              RowBox[{"Slider", "[", 
+               RowBox[{
+                RowBox[{"Dynamic", "[", "T", "]"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"0.1", ",", "10"}], "}"}], ",", 
+                RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}]}], 
+               "]"}]}], "}"}]}], "\[IndentingNewLine]", "}"}], ",", 
           RowBox[{"Alignment", "\[Rule]", "Left"}]}], "]"}]}]}]}]}], 
     "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
@@ -2687,8 +2699,8 @@ Cell[BoxData[{
     RowBox[{
     "schm1_", ",", "schm2_", ",", "schm3_", ",", "schm4_", ",", "list_", ",", 
      "stencil_", ",", "M_", ",", "\[Sigma]_", ",", "\[IndentingNewLine]", 
-     "solver_", ",", "problem_", ",", "\[Rho]L_", ",", "uL_", ",", 
-     "\[CurlyEpsilon]L_", ",", "\[Rho]R_", ",", "uR_", ",", 
+     "solver_", ",", "problem_", ",", "T_", ",", "\[Gamma]_", ",", "\[Rho]L_",
+      ",", "uL_", ",", "\[CurlyEpsilon]L_", ",", "\[Rho]R_", ",", "uR_", ",", 
      "\[CurlyEpsilon]R_", ",", "\[IndentingNewLine]", "progress_", ",", 
      "iprint_", ",", "sol_", ",", "frame_", ",", "time_", ",", "steps_"}], 
     "]"}], ":=", 
@@ -2782,6 +2794,17 @@ Cell[BoxData[{
                  RowBox[{
                   RowBox[{"{", "\[IndentingNewLine]", 
                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    "\"\<\[Gamma], \!\(\*SubscriptBox[\(C\), \
+\(p\)]\)/\!\(\*SubscriptBox[\(C\), \(v\)]\) ratio\>\"", ",", 
+                    RowBox[{"Slider", "[", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "@", "\[Gamma]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"1.05", ",", "3"}], "}"}], ",", 
+                    RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}]}], 
+                    "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
                     RowBox[{"{", 
                     RowBox[{
                     RowBox[{"Subscript", "[", 
@@ -3010,8 +3033,8 @@ Cell[BoxData[{
                     RowBox[{"dt", "=", 
                     RowBox[{"InitializeSolver", "[", "\[IndentingNewLine]", 
                     RowBox[{
-                    "solver", ",", "\[IndentingNewLine]", "problem", ",", "M",
-                     ",", 
+                    "solver", ",", "\[Gamma]", ",", "\[IndentingNewLine]", 
+                    "problem", ",", "M", ",", 
                     RowBox[{"N", "@", "\[Sigma]"}], ",", 
                     "\[IndentingNewLine]", 
                     RowBox[{"N", "@", "\[Rho]L"}], ",", 
@@ -3027,7 +3050,8 @@ Cell[BoxData[{
                     RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
                     RowBox[{"If", "[", 
                     RowBox[{
-                    RowBox[{"dt", "\[Equal]", "$Failed"}], ",", 
+                    RowBox[{"!", 
+                    RowBox[{"NumericQ", "[", "dt", "]"}]}], ",", 
                     RowBox[{
                     RowBox[{"Print", "[", "dt", "]"}], ";", 
                     RowBox[{"Return", "[", "]"}]}]}], "]"}], ";", 
@@ -3085,7 +3109,7 @@ Cell[BoxData[{
                     "]"}], ";", "\[IndentingNewLine]", 
                     RowBox[{"If", "[", 
                     RowBox[{
-                    RowBox[{"progress", ">=", "1"}], ",", 
+                    RowBox[{"progress", "\[GreaterEqual]", "T"}], ",", 
                     RowBox[{"running", "=", "False"}]}], "]"}]}]}], 
                     "\[IndentingNewLine]", "]"}], "]"}], 
                     "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
@@ -3636,12 +3660,12 @@ Cell[BoxData[
             RowBox[{"C3", "\[Rule]", "\"\<C\>\""}], ",", 
             RowBox[{"Null", "\[Rule]", "\"\<None\>\""}]}], 
            "\[IndentingNewLine]", "}"}], ",", "stencil", ",", "M", ",", 
-          "\[Sigma]", ",", "solver", ",", "problem", ",", "\[Rho]L", ",", 
-          "uL", ",", "\[CurlyEpsilon]L", ",", "\[Rho]R", ",", "uR", ",", 
-          "\[CurlyEpsilon]R", ",", "\[IndentingNewLine]", "progress", ",", 
-          "iprint", ",", "sol", ",", "frame", ",", "time", ",", "steps"}], 
-         "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "}"}], ",", 
-     
+          "\[Sigma]", ",", "solver", ",", "problem", ",", "T", ",", 
+          "\[Gamma]", ",", "\[Rho]L", ",", "uL", ",", "\[CurlyEpsilon]L", ",",
+           "\[Rho]R", ",", "uR", ",", "\[CurlyEpsilon]R", ",", 
+          "\[IndentingNewLine]", "progress", ",", "iprint", ",", "sol", ",", 
+          "frame", ",", "time", ",", "steps"}], "\[IndentingNewLine]", 
+         "]"}]}]}], "\[IndentingNewLine]", "}"}], ",", 
      RowBox[{"Dynamic", "[", "tabn", "]"}]}], "]"}], ",", 
    "\[IndentingNewLine]", 
    RowBox[{"{", 
@@ -3788,10 +3812,8 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"{", 
       RowBox[{"T", ",", "1"}], "}"}], ",", 
-     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", " ", 
-   RowBox[{"(*", " ", 
-    RowBox[{"Is", " ", "it", " ", "really", " ", "SO", " ", 
-     RowBox[{"nessesary", "?"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
    RowBox[{"{", 
     RowBox[{
      RowBox[{"{", 
@@ -3820,6 +3842,12 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"{", 
       RowBox[{"problem", ",", "\"\<Contact\>\""}], "}"}], ",", 
+     RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\[Gamma]", ",", "1.4"}], "}"}], ",", 
      RowBox[{"ControlType", "\[Rule]", "None"}]}], "}"}], ",", 
    "\[IndentingNewLine]", 
    RowBox[{"(*", " ", 
@@ -3919,16 +3947,15 @@ Cell[BoxData[
        RowBox[{"StepsBox", "[", 
         RowBox[{
          RowBox[{"{", 
-          RowBox[{"0", ",", "1", ",", "0", ",", "1"}], "}"}], ",", "M", ",", 
-         "h", ",", "\[Sigma]", ",", "\[Tau]", ",", "T"}], "]"}], "]"}]}], 
-     "\[IndentingNewLine]", "}"}], "]"}]}], "\[IndentingNewLine]", 
-  "]"}]], "Input",
+          RowBox[{"0", ",", "1"}], "}"}], ",", "M", ",", "h", ",", "\[Sigma]",
+          ",", "\[Tau]", ",", "T"}], "]"}], "]"}]}], "\[IndentingNewLine]", 
+     "}"}], "]"}]}], "\[IndentingNewLine]", "]"}]], "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10006.},
  FontFamily->"DejaVu Sans Mono"]
 }, Closed]]
 },
-WindowSize->{1038, 852},
-WindowMargins->{{0, Automatic}, {2, Automatic}},
+WindowSize->{1278, 976},
+WindowMargins->{{Automatic, -1278}, {Automatic, 46}},
 ShowSelection->True,
 TrackCellChangeTimes->False,
 FrontEndVersion->"8.0 for Linux x86 (64-bit) (October 10, 2011)",
@@ -3977,21 +4004,21 @@ Cell[CellGroupData[{
 Cell[88302, 2151, 175, 3, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10004.}],
-Cell[88480, 2156, 21360, 514, 1501, "Input",
+Cell[88480, 2156, 21829, 526, 1545, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10004.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[109877, 2675, 143, 2, 31, "Input",
+Cell[110346, 2687, 143, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10005.}],
-Cell[110023, 2679, 40399, 848, 3304, "Input",
+Cell[110492, 2691, 41055, 860, 3173, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10005.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[150459, 3532, 162, 3, 31, "Input",
+Cell[151584, 3556, 162, 3, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10006.}],
-Cell[150624, 3537, 14582, 389, 1413, "Input",
+Cell[151749, 3561, 14650, 392, 1432, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10006.}]
 }, Closed]]
 }

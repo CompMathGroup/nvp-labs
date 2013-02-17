@@ -6,7 +6,9 @@ extern "C" {
 #endif
 
 double InitializeSolver(
-	const char *solv, const char *prob, 
+	const char *solv, 
+	double gamma,
+	const char *prob, 
 	int n, double C,
 	double rL, double uL, double eL,
 	double rR, double uR, double eR);
