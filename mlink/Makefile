@@ -1,5 +1,6 @@
 CXX=g++
-CXXFLAGS= -I../src -O3 -g \
+OPT=-O3
+CXXFLAGS= -I../src $(OPT) -g \
 	-I/usr/local/Wolfram/Mathematica/8.0/SystemFiles/Links/MathLink/DeveloperKit/Linux-x86-64/CompilerAdditions/
 
 LDFLAGS=-static-libgcc -L../src
@@ -22,4 +23,4 @@ unix64: GasLink.tm gate64.o
 	$(MCC) $^ -b64 -o Unix_x86-64/GasLink.exe $(LDFLAGS) -lgassolver64
 
 clean:
-	rm *.o
+	rm -f *.o

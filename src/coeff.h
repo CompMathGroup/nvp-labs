@@ -37,10 +37,10 @@ struct Rational {
 			b[i] = q[i];
 		}
 		n = 15;
-		while ((n > 0) && (std::fabs(a[n]) > 1e-14))
+		while ((n > 0) && (std::fabs(a[n]) < 1e-14))
 			n--;
 		m = 15;
-		while ((m > 0) && (std::fabs(b[m]) > 1e-14))
+		while ((m > 0) && (std::fabs(b[m]) < 1e-14))
 			m--;
 	}
 

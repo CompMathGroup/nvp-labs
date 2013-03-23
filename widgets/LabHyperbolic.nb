@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    168371,       4019]
-NotebookOptionsPosition[    166415,       3956]
-NotebookOutlinePosition[    166805,       3973]
-CellTagsIndexPosition[    166762,       3970]
+NotebookDataLength[    183179,       4389]
+NotebookOptionsPosition[    181224,       4326]
+NotebookOutlinePosition[    181613,       4343]
+CellTagsIndexPosition[    181570,       4340]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -477,7 +477,7 @@ Cell[BoxData[{
          "coeff", "\[LeftDoubleBracket]", "12", "\[RightDoubleBracket]"}]}], 
         "-", 
         RowBox[{
-        "coeff", "\[LeftDoubleBracket]", "13", "\[RightDoubleBracket]"}], "-", 
+        "coeff", "\[LeftDoubleBracket]", "13", "\[RightDoubleBracket]"}], "+", 
         RowBox[{
         "coeff", "\[LeftDoubleBracket]", "3", "\[RightDoubleBracket]"}]}]}], 
       ";", "\[IndentingNewLine]", 
@@ -1002,10 +1002,8 @@ Cell[BoxData[{
                 "]"}]}], ";", "\[IndentingNewLine]", 
              RowBox[{"If", "[", 
               RowBox[{
-               RowBox[{
-                RowBox[{"\[Omega]", ">", "0"}], "&&", 
-                RowBox[{"optim", "===", 
-                 RowBox[{"{", "}"}]}]}], ",", 
+               RowBox[{"optim", "===", 
+                RowBox[{"{", "}"}]}], ",", 
                RowBox[{"optim", "=", "int"}]}], "]"}], ";", 
              "\[IndentingNewLine]", 
              RowBox[{"ranges", "=", 
@@ -1020,6 +1018,13 @@ Cell[BoxData[{
         RowBox[{"{", 
          RowBox[{"i", ",", 
           RowBox[{"Length", "[", "\[Sigma]1", "]"}]}], "}"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"optim", "=", 
+       RowBox[{"IntervalIntersection", "[", 
+        RowBox[{"optim", ",", 
+         RowBox[{"Interval", "[", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", "\[Infinity]"}], "}"}], "]"}]}], "]"}]}], ";", 
       "\[IndentingNewLine]", 
       RowBox[{"\[Sigma]2", "=", 
        FractionBox[
@@ -2151,8 +2156,7 @@ Cell[CellGroupData[{
 
 Cell[TextData[StyleBox["User interface utilities", "Subsubtitle"]], "Input",
  Evaluatable->False,
- CellGroupingRules->{GroupTogetherGrouping, 10004.},
- FormatType->"TextForm"],
+ CellGroupingRules->{GroupTogetherGrouping, 10004.}],
 
 Cell[BoxData[{
  RowBox[{
@@ -2678,6 +2682,367 @@ step\>\"", ",",
            RowBox[{"{", 
             RowBox[{"Center", ",", "Top"}], "}"}]}]}], "]"}]}], 
        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DiagramPU", "[", "]"}], ":=", 
+   RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "pL", ",", "pR", ",", "cL", ",", "cR", ",", "\[Chi]", ",", "Ps", ",", 
+         "Us", ",", "umin", ",", "umax", ",", "\[CapitalDelta]", ",", "F", 
+         ",", "dFdP", ",", "G", ",", "dGdP"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\[Chi]", "=", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"\[Gamma]", "-", "1"}], ")"}], "/", 
+          RowBox[{"(", 
+           RowBox[{"2", " ", "\[Gamma]"}], ")"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"pL", ",", "pR"}], "}"}], "=", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"\[Gamma]", "-", "1"}], ")"}], " ", 
+          RowBox[{"{", 
+           RowBox[{"\[Rho]L", ",", "\[Rho]R"}], "}"}], "*", 
+          RowBox[{"{", 
+           RowBox[{"\[CurlyEpsilon]L", ",", "\[CurlyEpsilon]R"}], "}"}]}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"cL", ",", "cR"}], "}"}], "=", 
+         SqrtBox[
+          RowBox[{"(", 
+           RowBox[{"\[Gamma]", " ", 
+            RowBox[{"(", 
+             RowBox[{"\[Gamma]", "-", "1"}], ")"}], " ", 
+            RowBox[{"{", 
+             RowBox[{"\[CurlyEpsilon]L", ",", "\[CurlyEpsilon]R"}], "}"}]}], 
+           ")"}]]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"F", "[", 
+          RowBox[{"p_", ",", "c_", ",", "\[Rho]_", ",", "P_"}], "]"}], ":=", 
+         RowBox[{"Piecewise", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{
+               FractionBox[
+                RowBox[{"2", " ", "c"}], 
+                RowBox[{"\[Gamma]", "-", "1"}]], 
+               RowBox[{"(", 
+                RowBox[{
+                 SuperscriptBox[
+                  RowBox[{"(", 
+                   FractionBox["P", "p"], ")"}], "\[Chi]"], "-", "1"}], 
+                ")"}]}], ",", 
+              RowBox[{"P", "<", "p"}]}], "}"}], "}"}], ",", 
+           FractionBox[
+            RowBox[{"P", "-", "p"}], 
+            SqrtBox[
+             RowBox[{
+              FractionBox["\[Rho]", "2"], " ", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"P", " ", 
+                 RowBox[{"(", 
+                  RowBox[{"\[Gamma]", "+", "1"}], ")"}]}], "+", 
+                RowBox[{"p", " ", 
+                 RowBox[{"(", 
+                  RowBox[{"\[Gamma]", "-", "1"}], ")"}]}]}], ")"}]}]]]}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"dFdP", "[", 
+          RowBox[{"p_", ",", "c_", ",", "\[Rho]_", ",", "P_"}], "]"}], ":=", 
+         RowBox[{"Piecewise", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"-", 
+                FractionBox[
+                 RowBox[{"2", "c", " ", "\[Chi]"}], 
+                 RowBox[{"P", 
+                  RowBox[{"(", 
+                   RowBox[{"1", "-", "\[Gamma]"}], ")"}]}]]}], 
+               SuperscriptBox[
+                RowBox[{"(", 
+                 RowBox[{"P", "/", "p"}], ")"}], "\[Chi]"]}], ",", 
+              RowBox[{"p", ">", "P"}]}], "}"}], "}"}], ",", 
+           FractionBox[
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"P", "-", "p", "+", 
+                RowBox[{"3", "p", " ", "\[Gamma]"}], "+", 
+                RowBox[{"P", " ", "\[Gamma]"}]}], ")"}], "\[Rho]"}], ")"}], 
+            RowBox[{
+             SqrtBox["2"], 
+             SuperscriptBox[
+              RowBox[{"(", 
+               SqrtBox[
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{"p", 
+                    RowBox[{"(", 
+                    RowBox[{"\[Gamma]", "-", "1"}], ")"}]}], "+", 
+                   RowBox[{"P", 
+                    RowBox[{"(", 
+                    RowBox[{"1", "+", "\[Gamma]"}], ")"}]}]}], ")"}], 
+                 "\[Rho]"}]], ")"}], "3"]}]]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"G", "[", "Ps_", "]"}], ":=", 
+         RowBox[{"uR", "-", "uL", "+", 
+          RowBox[{"F", "[", 
+           RowBox[{"pR", ",", "cR", ",", "\[Rho]R", ",", "Ps"}], "]"}], "+", 
+          RowBox[{"F", "[", 
+           RowBox[{"pL", ",", "cL", ",", "\[Rho]L", ",", "Ps"}], "]"}]}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"dGdP", "[", "Ps_", "]"}], ":=", 
+         RowBox[{
+          RowBox[{"dFdP", "[", 
+           RowBox[{"pR", ",", "cR", ",", "\[Rho]R", ",", "Ps"}], "]"}], "+", 
+          RowBox[{"dFdP", "[", 
+           RowBox[{"pL", ",", "cL", ",", "\[Rho]L", ",", "Ps"}], "]"}]}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"Ps", "=", 
+         RowBox[{"Min", "[", 
+          RowBox[{"pL", ",", "pR"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"G", "[", "0", "]"}], ">", "0"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Ps", "=", "0"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"Us", "=", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"uL", "+", "uR"}], ")"}], "/", "2"}]}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"While", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"G", "[", "Ps", "]"}], ">", "0"}], ",", 
+             RowBox[{"Ps", "/=", "2"}]}], "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"Do", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Ps", "-=", 
+              RowBox[{
+               RowBox[{"G", "[", "Ps", "]"}], "/", 
+               RowBox[{"dGdP", "[", "Ps", "]"}]}]}], "\[IndentingNewLine]", 
+             ",", 
+             RowBox[{"{", 
+              RowBox[{"it", ",", "5"}], "}"}]}], "]"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Us", "=", 
+            RowBox[{"uR", "+", 
+             RowBox[{"F", "[", 
+              RowBox[{"pR", ",", "cR", ",", "\[Rho]R", ",", "Ps"}], "]"}]}]}],
+            ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"umin", "=", 
+         RowBox[{"Min", "[", 
+          RowBox[{"uL", ",", "uR", ",", "Us"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"umax", "=", 
+         RowBox[{"Max", "[", 
+          RowBox[{"uL", ",", "uR", ",", "Us"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\[CapitalDelta]", "=", 
+         RowBox[{"umax", "-", "umin"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"umin", "-=", 
+         RowBox[{
+          RowBox[{"0.2", " ", "\[CapitalDelta]"}], "+", "0.5"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"umax", "+=", 
+         RowBox[{
+          RowBox[{"0.2", " ", "\[CapitalDelta]"}], "+", "0.5"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Show", "[", 
+         RowBox[{
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"ParametricPlot", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"uR", "+", 
+                   RowBox[{"F", "[", 
+                    RowBox[{"pR", ",", "cR", ",", "\[Rho]R", ",", "P"}], 
+                    "]"}]}], ",", "P"}], "}"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"uL", "-", 
+                   RowBox[{"F", "[", 
+                    RowBox[{"pL", ",", "cL", ",", "\[Rho]L", ",", "P"}], 
+                    "]"}]}], ",", "P"}], "}"}]}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"P", ",", "0", ",", 
+                RowBox[{"1.1", " ", 
+                 RowBox[{"Max", "[", 
+                  RowBox[{"pL", ",", "pR", ",", "Ps"}], "]"}]}]}], "}"}], ",", 
+              RowBox[{"PlotRange", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"umin", ",", "umax"}], "}"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"0", ",", 
+                   RowBox[{"1.1", " ", 
+                    RowBox[{"Max", "[", 
+                    RowBox[{"pL", ",", "pR", ",", "Ps"}], "]"}]}]}], "}"}]}], 
+                "}"}]}], ",", "\[IndentingNewLine]", 
+              RowBox[{"PlotStyle", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"Directive", "[", 
+                  RowBox[{"Thick", ",", "Red"}], "]"}], ",", 
+                 RowBox[{"Directive", "[", 
+                  RowBox[{"Thick", ",", "Blue"}], "]"}]}], "}"}]}]}], "]"}], 
+            ",", 
+            RowBox[{"ListPlot", "[", 
+             RowBox[{
+              RowBox[{"{", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"Labeled", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"uR", ",", "pR"}], "}"}], ",", 
+                   RowBox[{"Style", "[", 
+                    RowBox[{"\"\<R\>\"", ",", "Large", ",", "Red"}], "]"}], 
+                   ",", "Bottom"}], "]"}], "}"}], ",", "\[IndentingNewLine]", 
+                
+                RowBox[{"{", 
+                 RowBox[{"Labeled", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"uL", ",", "pL"}], "}"}], ",", 
+                   RowBox[{"Style", "[", 
+                    RowBox[{"\"\<L\>\"", ",", "Large", ",", "Blue"}], "]"}], 
+                   ",", "Top"}], "]"}], "}"}], ",", "\[IndentingNewLine]", 
+                RowBox[{"{", 
+                 RowBox[{"Labeled", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"Us", ",", "Ps"}], "}"}], ",", 
+                   RowBox[{"Style", "[", 
+                    RowBox[{"\"\<C\>\"", ",", "Large", ",", "Black"}], "]"}], 
+                   ",", "Top"}], "]"}], "}"}]}], "}"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"PlotRange", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"umin", ",", "umax"}], "}"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"0", ",", 
+                   RowBox[{"1.1", " ", 
+                    RowBox[{"Max", "[", 
+                    RowBox[{"pL", ",", "pR", ",", "Ps"}], "]"}]}]}], "}"}]}], 
+                "}"}]}], ",", "\[IndentingNewLine]", 
+              RowBox[{"PlotMarkers", "\[Rule]", 
+               RowBox[{"Style", "[", 
+                RowBox[{"\[Bullet]", ",", "Large"}], "]"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"PlotStyle", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{"Red", ",", "Blue", ",", "Black"}], "}"}]}]}], 
+             "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"AxesLabel", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Style", "[", 
+              RowBox[{"\"\<u\>\"", ",", "Large"}], "]"}], ",", 
+             RowBox[{"Style", "[", 
+              RowBox[{"\"\<p\>\"", ",", "Large"}], "]"}]}], "}"}]}], ",", 
+          RowBox[{"AspectRatio", "\[Rule]", 
+           RowBox[{"2", "/", "3"}]}], ",", 
+          RowBox[{"ImageSize", "\[Rule]", "600"}]}], "]"}]}]}], "]"}], "\n", 
+     ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "\[Gamma]", ",", "1.4", ",", "\"\<\[Gamma], Cp/Cv ratio\>\""}], "}"}],
+        ",", "1.05", ",", "3", ",", 
+       RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}], ",", 
+       RowBox[{"ControlType", "\[Rule]", "Slider"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "\[Rho]L", ",", "1.", ",", 
+         "\"\<\!\(\*SubscriptBox[\(\[Rho]\), \(left\)]\)\>\""}], "}"}], ",", 
+       "0.01", ",", "3", ",", 
+       RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}], ",", 
+       RowBox[{"ControlType", "\[Rule]", "Slider"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "uL", ",", "1.", ",", 
+         "\"\<\!\(\*SubscriptBox[\(u\), \(left\)]\)\>\""}], "}"}], ",", 
+       RowBox[{"-", "3"}], ",", "3", ",", 
+       RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}], ",", 
+       RowBox[{"ControlType", "\[Rule]", "Slider"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "\[CurlyEpsilon]L", ",", "2.5", ",", 
+         "\"\<\!\(\*SubscriptBox[\(\[CurlyEpsilon]\), \(left\)]\)\>\""}], 
+        "}"}], ",", "0.01", ",", "5", ",", 
+       RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}], ",", 
+       RowBox[{"ControlType", "\[Rule]", "Slider"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "\[Rho]R", ",", ".5", ",", 
+         "\"\<\!\(\*SubscriptBox[\(\[Rho]\), \(right\)]\)\>\""}], "}"}], ",", 
+       "0.01", ",", "3", ",", 
+       RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}], ",", 
+       RowBox[{"ControlType", "\[Rule]", "Slider"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "uR", ",", "1.", ",", 
+         "\"\<\!\(\*SubscriptBox[\(u\), \(right\)]\)\>\""}], "}"}], ",", 
+       RowBox[{"-", "3"}], ",", "3", ",", 
+       RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}], ",", 
+       RowBox[{"ControlType", "\[Rule]", "Slider"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "\[CurlyEpsilon]R", ",", "5.", ",", 
+         "\"\<\!\(\*SubscriptBox[\(\[CurlyEpsilon]\), \(right\)]\)\>\""}], 
+        "}"}], ",", "0.01", ",", "5", ",", 
+       RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}], ",", 
+       RowBox[{"ControlType", "\[Rule]", "Slider"}]}], "}"}]}], "]"}]}], 
   ";"}]}], "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10004.},
  FontFamily->"DejaVu Sans Mono"]
@@ -3132,7 +3497,8 @@ Cell[BoxData[{
                  RowBox[{"Spacer", "[", "10", "]"}], ",", 
                  "\[IndentingNewLine]", 
                  RowBox[{"ProgressIndicator", "[", 
-                  RowBox[{"progress", ",", 
+                  RowBox[{
+                   FractionBox["progress", "T"], ",", 
                    RowBox[{"ImageSize", "\[Rule]", "450"}]}], "]"}]}], 
                 "\[IndentingNewLine]", "}"}], "]"}]}]}], 
             "\[IndentingNewLine]", "}"}], "]"}]}]}], ",", 
@@ -3308,8 +3674,9 @@ Cell[BoxData[{
                    RowBox[{"ImageSize", "\[Rule]", "800"}]}], "]"}], ",", 
                  "\[IndentingNewLine]", 
                  RowBox[{"Deploy", "@", 
-                  RowBox[{"Grid", "[", 
-                   RowBox[{
+                  RowBox[{"Framed", "@", 
+                   RowBox[{"Grid", "[", 
+                    RowBox[{
                     RowBox[{"{", "\[IndentingNewLine]", 
                     RowBox[{
                     RowBox[{"{", 
@@ -3399,7 +3766,7 @@ Cell[BoxData[{
                     "}"}], "]"}], ",", 
                     "\"\<\!\(\*SubscriptBox[\(u\), \(exact\)]\)\>\""}], 
                     "}"}]}], "\[IndentingNewLine]", "}"}], ",", 
-                    RowBox[{"Alignment", "\[Rule]", "Left"}]}], "]"}]}]}], 
+                    RowBox[{"Alignment", "\[Rule]", "Left"}]}], "]"}]}]}]}], 
                 "\[IndentingNewLine]", "}"}], "]"}]}], ",", 
              "\[IndentingNewLine]", 
              RowBox[{
@@ -3508,8 +3875,9 @@ Cell[BoxData[{
                    RowBox[{"ImageSize", "\[Rule]", "800"}]}], "]"}], ",", 
                  "\[IndentingNewLine]", 
                  RowBox[{"Deploy", "@", 
-                  RowBox[{"Grid", "[", 
-                   RowBox[{
+                  RowBox[{"Framed", "@", 
+                   RowBox[{"Grid", "[", 
+                    RowBox[{
                     RowBox[{"{", "\[IndentingNewLine]", 
                     RowBox[{
                     RowBox[{"{", 
@@ -3541,7 +3909,7 @@ Cell[BoxData[{
                     "}"}], "]"}], ",", 
                     "\"\<\!\(\*SubscriptBox[\(\[Rho]\), \(exact\)]\)\>\""}], 
                     "}"}]}], "\[IndentingNewLine]", "}"}], ",", 
-                    RowBox[{"Alignment", "\[Rule]", "Left"}]}], "]"}]}]}], 
+                    RowBox[{"Alignment", "\[Rule]", "Left"}]}], "]"}]}]}]}], 
                 "\[IndentingNewLine]", "}"}], "]"}]}]}], 
             "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
            RowBox[{"Spacer", "[", "10", "]"}]}], 
@@ -3556,8 +3924,7 @@ Cell[CellGroupData[{
 
 Cell[TextData[StyleBox["Main window", "Subsubtitle"]], "Input",
  Evaluatable->False,
- CellGroupingRules->{GroupTogetherGrouping, 10006.},
- FormatType->"TextForm"],
+ CellGroupingRules->{GroupTogetherGrouping, 10006.}],
 
 Cell[BoxData[
  RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
@@ -3665,7 +4032,10 @@ Cell[BoxData[
            "\[Rho]R", ",", "uR", ",", "\[CurlyEpsilon]R", ",", 
           "\[IndentingNewLine]", "progress", ",", "iprint", ",", "sol", ",", 
           "frame", ",", "time", ",", "steps"}], "\[IndentingNewLine]", 
-         "]"}]}]}], "\[IndentingNewLine]", "}"}], ",", 
+         "]"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<PU diagram\>\"", "\[Rule]", "\[IndentingNewLine]", 
+        RowBox[{"DiagramPU", "[", "]"}]}]}], "\[IndentingNewLine]", "}"}], 
+     ",", 
      RowBox[{"Dynamic", "[", "tabn", "]"}]}], "]"}], ",", 
    "\[IndentingNewLine]", 
    RowBox[{"{", 
@@ -3954,8 +4324,8 @@ Cell[BoxData[
  FontFamily->"DejaVu Sans Mono"]
 }, Closed]]
 },
-WindowSize->{1278, 976},
-WindowMargins->{{Automatic, -1278}, {Automatic, 46}},
+WindowSize->{1598, 852},
+WindowMargins->{{Automatic, 1282}, {Automatic, 46}},
 ShowSelection->True,
 TrackCellChangeTimes->False,
 FrontEndVersion->"8.0 for Linux x86 (64-bit) (October 10, 2011)",
@@ -3990,35 +4360,35 @@ Cell[CellGroupData[{
 Cell[23003, 594, 157, 3, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10002.}],
-Cell[23163, 599, 46600, 1103, 3250, "Input",
+Cell[23163, 599, 46788, 1108, 3272, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10002.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[69800, 1707, 176, 3, 31, "Input",
+Cell[69988, 1712, 176, 3, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10003.}],
-Cell[69979, 1712, 18286, 434, 1048, "Input",
+Cell[70167, 1717, 18286, 434, 1070, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10003.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[88302, 2151, 175, 3, 31, "Input",
+Cell[88490, 2156, 150, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10004.}],
-Cell[88480, 2156, 21829, 526, 1545, "Input",
+Cell[88643, 2160, 36220, 887, 2559, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10004.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[110346, 2687, 143, 2, 31, "Input",
+Cell[124900, 3052, 143, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10005.}],
-Cell[110492, 2691, 41055, 860, 3173, "Input",
+Cell[125046, 3056, 41185, 863, 3208, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10005.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[151584, 3556, 162, 3, 31, "Input",
+Cell[166268, 3924, 137, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10006.}],
-Cell[151749, 3561, 14650, 392, 1432, "Input",
+Cell[166408, 3928, 14800, 395, 1469, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10006.}]
 }, Closed]]
 }

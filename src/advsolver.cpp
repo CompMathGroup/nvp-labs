@@ -130,8 +130,8 @@ void AdvectionSolver::step(const Alphas &scheme, const std::vector<int> &where) 
 	/* First, compute f[j + I_2] and f[j - I_2] */
 	for (int j = -1; j < N; j++) {
 		f[j + I_2] = .5 * (u1[j] + u1[j+1]);
-		double du1(u1[j] - u1[j-1]);
-		double du2(u1[j+1] - u1[j]);
+		double du1(u1[j  ] - u1[j-1]);
+		double du2(u1[j+1] - u1[j  ]);
 		double du3(u1[j+2] - u1[j+1]);
 
 		f[j + I_2] += icou * du1 * gamma1;
