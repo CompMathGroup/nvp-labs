@@ -30,10 +30,7 @@ $(TARGET32): $(OBJS32)
 $(TARGET64): $(OBJS64)
 	$(AR) -o $@ $^
 
-purge:
-	$(RM) sod*.csv
-
-clean: purge
+clean: 
 	$(RM) $(OBJS32) $(OBJS64) $(TARGET32) $(TARGET64)
 
 linalg.o:: linalg.cpp linalg.h array.h 

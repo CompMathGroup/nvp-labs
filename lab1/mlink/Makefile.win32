@@ -1,9 +1,10 @@
 CC=gcc
-CFLAGS= -I../src -O3 -g \
+OPT=-O3
+CFLAGS= -I../core $(OPT) -g \
 	-I"/c/Program Files/Wolfram Research/Mathematica/8.0/SystemFiles/Links/MathLink/DeveloperKit/Windows/CompilerAdditions/cygwin/include/"
 CXX=g++
 CXXFLAGS=$(CFLAGS)
-LDFLAGS= -static -L../src \
+LDFLAGS= -static -L../core \
 	-L"/c/Program Files/Wolfram Research/Mathematica/8.0/SystemFiles/Links/MathLink/DeveloperKit/Windows/CompilerAdditions/cygwin/lib/" \
 	-Wl,-subsystem,windows
 
