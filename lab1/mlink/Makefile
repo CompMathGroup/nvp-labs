@@ -1,7 +1,7 @@
 OPT=-O3
 CXXFLAGS=-g -Wall -I../core $(OPT) \
-	-I/usr/local/Wolfram/Mathematica/8.0/SystemFiles/Links/MathLink/DeveloperKit/Linux-x86-64/CompilerAdditions/
-MPREP=/usr/local/Wolfram/Mathematica/8.0/SystemFiles/Links/MathLink/DeveloperKit/Linux-x86-64/CompilerAdditions/mprep
+	-I./$(ARCH)
+MPREP=./$(ARCH)/mprep
 LDFLAGS= \
 	-L$(PREFIX) -L../lib \
 	-static-libstdc++ -static-libgcc
