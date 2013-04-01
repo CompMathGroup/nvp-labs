@@ -1,26 +1,31 @@
-CXX=g++
 OPT=-O3
-CXXFLAGS= -I../core $(OPT) -g \
+CXXFLAGS=-g -Wall -I../core $(OPT) \
 	-I/usr/local/Wolfram/Mathematica/8.0/SystemFiles/Links/MathLink/DeveloperKit/Linux-x86-64/CompilerAdditions/
+MPREP=/usr/local/Wolfram/Mathematica/8.0/SystemFiles/Links/MathLink/DeveloperKit/Linux-x86-64/CompilerAdditions/mprep
+LDFLAGS= \
+	-L$(PREFIX) -L../lib \
+	-static-libstdc++ -static-libgcc
 
-LDFLAGS=-static-libgcc -L../core
-MCC=/usr/local/Wolfram/Mathematica/8.0/Executables/mcc
+LIBS+=-lgassolver
 
-all: unix32 unix64
+TARGET=$(PREFIX)/GasLink.exe
+OBJS=\
+	$(PREFIX)/gate.o \
+	$(PREFIX)/GasLink.o
 
-gate32.o : gate.cpp
-	$(CXX) -m32 $(CXXFLAGS) -c -o $@ $<
+all: $(TARGET)
 
-gate64.o : gate.cpp
-	$(CXX) -m64 $(CXXFLAGS) -c -o $@ $<
+%.cpp : %.tm
+	@echo "[MPREP] "$<
+	@$(MPREP) $< > $@
 
-unix32: GasLink.tm gate32.o
-	mkdir -p Unix_x86
-	$(MCC) $^ -b32 -o Unix_x86/GasLink.exe $(LDFLAGS) -lgassolver32
-	
-unix64: GasLink.tm gate64.o
-	mkdir -p Unix_x86-64
-	$(MCC) $^ -b64 -o Unix_x86-64/GasLink.exe $(LDFLAGS) -lgassolver64
+$(PREFIX)/%.o : %.cpp
+	@echo "[CXX] "$<" => "$@
+	@$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(TARGET): $(OBJS)
+	@echo "[LD] ... => "$@
+	@$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 clean:
-	rm -f *.o
+	rm -f $(OBJS) $(TARGET)

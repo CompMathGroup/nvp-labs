@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    183179,       4389]
-NotebookOptionsPosition[    181224,       4326]
-NotebookOutlinePosition[    181613,       4343]
-CellTagsIndexPosition[    181570,       4340]
+NotebookDataLength[    187263,       4464]
+NotebookOptionsPosition[    185308,       4401]
+NotebookOutlinePosition[    185697,       4418]
+CellTagsIndexPosition[    185654,       4415]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -191,38 +191,31 @@ Cell[BoxData[{
         RowBox[{
          RowBox[{"{", 
           RowBox[{
-          "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m - 2\), \(n + \
-1\)]\)\>\"", ",", 
-           "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m - 1\), \(n + 1\)]\)\
-\>\"", ",", 
-           "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m\), \(n + \
-1\)]\)\>\"", ",", 
-           "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m + 1\), \(n + 1\)]\)\
-\>\"", ",", 
-           "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m + 2\), \(n + 1\)]\)\
-\>\""}], "}"}], ",", "\[IndentingNewLine]", 
+          "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(-2\), \(1\)]\)\>\"", 
+           ",", "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(-1\), \(1\)]\)\>\
+\"", ",", "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(0\), \(1\)]\)\>\"", 
+           ",", "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(1\), \
+\(1\)]\)\>\"", ",", 
+           "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(2\), \(1\)]\)\>\""}], 
+          "}"}], ",", "\[IndentingNewLine]", 
          RowBox[{"{", 
           RowBox[{
-          "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m - 2\), \(n\)]\)\>\"",
-            ",", "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m - 1\), \(n\)]\
-\)\>\"", ",", "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m\), \(n\)]\)\>\"",
-            ",", 
-           "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m + 1\), \
-\(n\)]\)\>\"", ",", 
-           "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m + 2\), \
-\(n\)]\)\>\""}], "}"}], ",", "\[IndentingNewLine]", 
+          "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(-2\), \(0\)]\)\>\"", 
+           ",", "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(-1\), \(0\)]\)\>\
+\"", ",", "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(0\), \(0\)]\)\>\"", 
+           ",", "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(1\), \
+\(0\)]\)\>\"", ",", 
+           "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(2\), \(0\)]\)\>\""}], 
+          "}"}], ",", "\[IndentingNewLine]", 
          RowBox[{"{", 
           RowBox[{
-          "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m - 2\), \(n - \
-1\)]\)\>\"", ",", 
-           "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m - 1\), \(n - 1\)]\)\
-\>\"", ",", 
-           "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m\), \(n - \
-1\)]\)\>\"", ",", 
-           "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m + 1\), \(n - 1\)]\)\
-\>\"", ",", 
-           "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(m + 2\), \(n - 1\)]\)\
-\>\""}], "}"}]}], "}"}]}], ";", "\[IndentingNewLine]", 
+          "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(-2\), \(-1\)]\)\>\"", 
+           ",", "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(-1\), \
+\(-1\)]\)\>\"", ",", 
+           "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(0\), \(-1\)]\)\>\"", 
+           ",", "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(1\), \(-1\)]\)\>\
+\"", ",", "\"\<\!\(\*SubsuperscriptBox[\(\[Alpha]\), \(2\), \(-1\)]\)\>\""}], 
+          "}"}]}], "}"}]}], ";", "\[IndentingNewLine]", 
       RowBox[{"Row", "[", 
        RowBox[{"{", "\[IndentingNewLine]", 
         RowBox[{
@@ -292,6 +285,7 @@ Cell[BoxData[{
         RowBox[{"Table", "[", 
          RowBox[{"0", ",", 
           RowBox[{"{", "13", "}"}]}], "]"}]}], ",", "\[IndentingNewLine]", 
+       "alph", ",", "tr", ",", "\[IndentingNewLine]", 
        RowBox[{"deltas", "=", 
         RowBox[{"Table", "[", 
          RowBox[{"Null", ",", 
@@ -424,121 +418,202 @@ Cell[BoxData[{
       "\[IndentingNewLine]", 
       RowBox[{"coeff", "/=", "r"}], ";", "\[IndentingNewLine]", 
       "\[IndentingNewLine]", 
+      RowBox[{"alph", "=", "\[IndentingNewLine]", 
+       RowBox[{"{", "              ", 
+        RowBox[{
+        "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(^\)], \(-1\)]\)\
+\>\"", ",", 
+         "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(^\)], \(0\)]\)\
+\>\"", ",", 
+         "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(^\)], \(1\)]\)\
+\>\"", ",", "\[IndentingNewLine]", 
+         "\"\<\!\(\*SubscriptBox[\(\[Alpha]\), \(-2\)]\)\>\"", ",", 
+         "\"\<\!\(\*SubscriptBox[\(\[Alpha]\), \(-1\)]\)\>\"", ",", 
+         "\"\<\!\(\*SubscriptBox[\(\[Alpha]\), \(0\)]\)\>\"", ",", 
+         "\"\<\!\(\*SubscriptBox[\(\[Alpha]\), \(1\)]\)\>\"", ",", 
+         "\"\<\!\(\*SubscriptBox[\(\[Alpha]\), \(2\)]\)\>\"", ",", 
+         "\[IndentingNewLine]", 
+         "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(\[Hacek]\)], \
+\(-2\)]\)\>\"", ",", 
+         "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(\[Hacek]\)], \
+\(-1\)]\)\>\"", ",", 
+         "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(\[Hacek]\)], \
+\(0\)]\)\>\"", ",", 
+         "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(\[Hacek]\)], \
+\(1\)]\)\>\"", ",", 
+         "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(\[Hacek]\)], \
+\(2\)]\)\>\""}], "}"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"Do", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"tr", "[", 
+          RowBox[{
+          "alph", "\[LeftDoubleBracket]", "j", "\[RightDoubleBracket]"}], 
+          "]"}], "=", "j"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"j", ",", "13"}], "}"}]}], "]"}], ";", "\[IndentingNewLine]",
+       "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{
        "deltas", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "=", 
        
-       RowBox[{
-       "coeff", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], ";",
-       "\[IndentingNewLine]", 
+       RowBox[{"coeff", "\[LeftDoubleBracket]", 
+        RowBox[{
+        "tr", "@", 
+         "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(^\)], \
+\(-1\)]\)\>\""}], "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{
        "deltas", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], "=", 
        
        RowBox[{
-        RowBox[{
-        "coeff", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], "-", 
-        
+        RowBox[{"coeff", "\[LeftDoubleBracket]", 
+         RowBox[{
+         "tr", "@", 
+          "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(^\)], \
+\(0\)]\)\>\""}], "\[RightDoubleBracket]"}], "-", 
         RowBox[{"1", "/", "2"}]}]}], ";", "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{
        "deltas", "\[LeftDoubleBracket]", "3", "\[RightDoubleBracket]"}], "=", 
        
-       RowBox[{
-       "coeff", "\[LeftDoubleBracket]", "3", "\[RightDoubleBracket]"}]}], ";",
-       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"coeff", "\[LeftDoubleBracket]", 
+        RowBox[{
+        "tr", "@", 
+         "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(^\)], \(1\)]\)\
+\>\""}], "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{
        "deltas", "\[LeftDoubleBracket]", "4", "\[RightDoubleBracket]"}], "=", 
        
-       RowBox[{
-       "coeff", "\[LeftDoubleBracket]", "9", "\[RightDoubleBracket]"}]}], ";",
-       "\[IndentingNewLine]", 
+       RowBox[{"coeff", "\[LeftDoubleBracket]", 
+        RowBox[{
+        "tr", "@", 
+         "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(\[Hacek]\)], \
+\(-2\)]\)\>\""}], "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{
        "deltas", "\[LeftDoubleBracket]", "5", "\[RightDoubleBracket]"}], "=", 
        
        RowBox[{
-        RowBox[{
-        "coeff", "\[LeftDoubleBracket]", "9", "\[RightDoubleBracket]"}], "+", 
-        
-        RowBox[{
-        "coeff", "\[LeftDoubleBracket]", "10", "\[RightDoubleBracket]"}], "-", 
-        RowBox[{
-        "coeff", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}]}], 
-      ";", "\[IndentingNewLine]", 
+        RowBox[{"coeff", "\[LeftDoubleBracket]", 
+         RowBox[{
+         "tr", "@", 
+          "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(\[Hacek]\)], \
+\(-2\)]\)\>\""}], "\[RightDoubleBracket]"}], "+", 
+        RowBox[{"coeff", "\[LeftDoubleBracket]", 
+         RowBox[{
+         "tr", "@", 
+          "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(\[Hacek]\)], \
+\(-1\)]\)\>\""}], "\[RightDoubleBracket]"}], "-", 
+        RowBox[{"coeff", "\[LeftDoubleBracket]", 
+         RowBox[{
+         "tr", "@", 
+          "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(^\)], \(-1\)]\
+\)\>\""}], "\[RightDoubleBracket]"}]}]}], ";", "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{
        "deltas", "\[LeftDoubleBracket]", "6", "\[RightDoubleBracket]"}], "=", 
        
        RowBox[{
         RowBox[{"-", 
+         RowBox[{"coeff", "\[LeftDoubleBracket]", 
+          RowBox[{
+          "tr", "@", 
+           "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(\[Hacek]\)], \
+\(1\)]\)\>\""}], "\[RightDoubleBracket]"}]}], "-", 
+        RowBox[{"coeff", "\[LeftDoubleBracket]", 
          RowBox[{
-         "coeff", "\[LeftDoubleBracket]", "12", "\[RightDoubleBracket]"}]}], 
-        "-", 
-        RowBox[{
-        "coeff", "\[LeftDoubleBracket]", "13", "\[RightDoubleBracket]"}], "+", 
-        RowBox[{
-        "coeff", "\[LeftDoubleBracket]", "3", "\[RightDoubleBracket]"}]}]}], 
-      ";", "\[IndentingNewLine]", 
+         "tr", "@", 
+          "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(\[Hacek]\)], \
+\(2\)]\)\>\""}], "\[RightDoubleBracket]"}], "+", 
+        RowBox[{"coeff", "\[LeftDoubleBracket]", 
+         RowBox[{
+         "tr", "@", 
+          "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(^\)], \
+\(1\)]\)\>\""}], "\[RightDoubleBracket]"}]}]}], ";", "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{
        "deltas", "\[LeftDoubleBracket]", "7", "\[RightDoubleBracket]"}], "=", 
        
        RowBox[{"-", 
-        RowBox[{
-        "coeff", "\[LeftDoubleBracket]", "12", "\[RightDoubleBracket]"}]}]}], 
-      ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"coeff", "\[LeftDoubleBracket]", 
+         RowBox[{
+         "tr", "@", 
+          "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(\[Hacek]\)], \
+\(2\)]\)\>\""}], "\[RightDoubleBracket]"}]}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{
        "deltas", "\[LeftDoubleBracket]", "8", "\[RightDoubleBracket]"}], "=", 
        
        RowBox[{
-        RowBox[{
-        "coeff", "\[LeftDoubleBracket]", "4", "\[RightDoubleBracket]"}], "+", 
-        
-        RowBox[{
-        "coeff", "\[LeftDoubleBracket]", "9", "\[RightDoubleBracket]"}]}]}], 
-      ";", "\[IndentingNewLine]", 
+        RowBox[{"coeff", "\[LeftDoubleBracket]", 
+         RowBox[{
+         "tr", "@", 
+          "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(\[Hacek]\)], \
+\(-2\)]\)\>\""}], "\[RightDoubleBracket]"}], "+", 
+        RowBox[{"coeff", "\[LeftDoubleBracket]", 
+         RowBox[{
+         "tr", "@", "\"\<\!\(\*SubscriptBox[\(\[Alpha]\), \(-2\)]\)\>\""}], 
+         "\[RightDoubleBracket]"}]}]}], ";", "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{
        "deltas", "\[LeftDoubleBracket]", "9", "\[RightDoubleBracket]"}], "=", 
        
        RowBox[{
         RowBox[{"1", "/", "2"}], 
-        RowBox[{"(", 
+        RowBox[{"(", "\[IndentingNewLine]", 
          RowBox[{
-          RowBox[{
-          "coeff", "\[LeftDoubleBracket]", "9", "\[RightDoubleBracket]"}], 
-          "+", 
-          RowBox[{
-          "coeff", "\[LeftDoubleBracket]", "13", "\[RightDoubleBracket]"}], 
-          "-", 
-          RowBox[{
-          "coeff", "\[LeftDoubleBracket]", "11", "\[RightDoubleBracket]"}], 
-          "+", 
-          RowBox[{
-          "coeff", "\[LeftDoubleBracket]", "4", "\[RightDoubleBracket]"}], 
-          "+", 
-          RowBox[{
-          "coeff", "\[LeftDoubleBracket]", "8", "\[RightDoubleBracket]"}], 
-          "-", 
-          RowBox[{
-          "coeff", "\[LeftDoubleBracket]", "6", "\[RightDoubleBracket]"}], 
-          "-", 
-          RowBox[{
-          "coeff", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
-         ")"}]}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"coeff", "\[LeftDoubleBracket]", 
+           RowBox[{
+           "tr", "@", 
+            "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \
+\(\[Hacek]\)], \(-2\)]\)\>\""}], "\[RightDoubleBracket]"}], "-", 
+          RowBox[{"coeff", "\[LeftDoubleBracket]", 
+           RowBox[{
+           "tr", "@", 
+            "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \
+\(\[Hacek]\)], \(0\)]\)\>\""}], "\[RightDoubleBracket]"}], "+", 
+          RowBox[{"coeff", "\[LeftDoubleBracket]", 
+           RowBox[{
+           "tr", "@", 
+            "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \
+\(\[Hacek]\)], \(2\)]\)\>\""}], "\[RightDoubleBracket]"}], 
+          "\[IndentingNewLine]", "+", 
+          RowBox[{"coeff", "\[LeftDoubleBracket]", 
+           RowBox[{
+           "tr", "@", "\"\<\!\(\*SubscriptBox[\(\[Alpha]\), \(-2\)]\)\>\""}], 
+           "\[RightDoubleBracket]"}], "-", 
+          RowBox[{"coeff", "\[LeftDoubleBracket]", 
+           RowBox[{
+           "tr", "@", "\"\<\!\(\*SubscriptBox[\(\[Alpha]\), \(0\)]\)\>\""}], 
+           "\[RightDoubleBracket]"}], "+", 
+          RowBox[{"coeff", "\[LeftDoubleBracket]", 
+           RowBox[{
+           "tr", "@", "\"\<\!\(\*SubscriptBox[\(\[Alpha]\), \(2\)]\)\>\""}], 
+           "\[RightDoubleBracket]"}], "\[IndentingNewLine]", "-", 
+          RowBox[{"coeff", "\[LeftDoubleBracket]", 
+           RowBox[{
+           "tr", "@", 
+            "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(^\)], \
+\(0\)]\)\>\""}], "\[RightDoubleBracket]"}]}], ")"}]}]}], ";", 
+      "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{
        "deltas", "\[LeftDoubleBracket]", "10", "\[RightDoubleBracket]"}], "=", 
        RowBox[{
-        RowBox[{
-        "coeff", "\[LeftDoubleBracket]", "8", "\[RightDoubleBracket]"}], "+", 
-        
-        RowBox[{
-        "coeff", "\[LeftDoubleBracket]", "13", "\[RightDoubleBracket]"}]}]}], 
-      ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"coeff", "\[LeftDoubleBracket]", 
+         RowBox[{
+         "tr", "@", 
+          "\"\<\!\(\*SubscriptBox[OverscriptBox[\(\[Alpha]\), \(\[Hacek]\)], \
+\(2\)]\)\>\""}], "\[RightDoubleBracket]"}], "+", 
+        RowBox[{"coeff", "\[LeftDoubleBracket]", 
+         RowBox[{
+         "tr", "@", "\"\<\!\(\*SubscriptBox[\(\[Alpha]\), \(2\)]\)\>\""}], 
+         "\[RightDoubleBracket]"}]}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
       RowBox[{"Do", "[", "\[IndentingNewLine]", 
        RowBox[{
         RowBox[{
@@ -4324,8 +4399,8 @@ Cell[BoxData[
  FontFamily->"DejaVu Sans Mono"]
 }, Closed]]
 },
-WindowSize->{1598, 852},
-WindowMargins->{{Automatic, 1282}, {Automatic, 46}},
+WindowSize->{1038, 852},
+WindowMargins->{{-566, Automatic}, {Automatic, 46}},
 ShowSelection->True,
 TrackCellChangeTimes->False,
 FrontEndVersion->"8.0 for Linux x86 (64-bit) (October 10, 2011)",
@@ -4353,42 +4428,42 @@ Cell[CellGroupData[{
 Cell[1644, 52, 168, 3, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10001.}],
-Cell[1815, 57, 21151, 532, 1782, "Input",
+Cell[1815, 57, 25235, 607, 2059, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10001.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[23003, 594, 157, 3, 31, "Input",
+Cell[27087, 669, 157, 3, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10002.}],
-Cell[23163, 599, 46788, 1108, 3272, "Input",
+Cell[27247, 674, 46788, 1108, 3272, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10002.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[69988, 1712, 176, 3, 31, "Input",
+Cell[74072, 1787, 176, 3, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10003.}],
-Cell[70167, 1717, 18286, 434, 1070, "Input",
+Cell[74251, 1792, 18286, 434, 1070, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10003.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[88490, 2156, 150, 2, 31, "Input",
+Cell[92574, 2231, 150, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10004.}],
-Cell[88643, 2160, 36220, 887, 2559, "Input",
+Cell[92727, 2235, 36220, 887, 2559, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10004.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[124900, 3052, 143, 2, 31, "Input",
+Cell[128984, 3127, 143, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10005.}],
-Cell[125046, 3056, 41185, 863, 3208, "Input",
+Cell[129130, 3131, 41185, 863, 3208, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10005.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[166268, 3924, 137, 2, 31, "Input",
+Cell[170352, 3999, 137, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10006.}],
-Cell[166408, 3928, 14800, 395, 1469, "Input",
+Cell[170492, 4003, 14800, 395, 1469, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10006.}]
 }, Closed]]
 }

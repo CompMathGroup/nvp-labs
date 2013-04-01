@@ -25,7 +25,7 @@ public:
 		return cells;
 	}
 	
-	~Array() {
+	virtual ~Array() {
 		delete[] cells;
 	}
 

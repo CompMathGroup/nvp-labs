@@ -54,6 +54,7 @@ public:
 
 	virtual double doFirstStep(double C);
 	virtual double doStep(const std::vector<Alphas *> &schemes);
+	virtual ~GDSolver() { }
 };
 
 #endif

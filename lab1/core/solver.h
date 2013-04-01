@@ -37,6 +37,7 @@ struct Solver {
 
 	virtual double doFirstStep(double C) = 0;
 	virtual double doStep(const std::vector<Alphas *> &schemes) = 0;
+	virtual ~Solver() { }
 };
 
 
