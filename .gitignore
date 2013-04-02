@@ -14,6 +14,8 @@
 *eps-converted-to.pdf
 
 #build
-*.exe
-*.o
-*.a
+lab1/build
+lab2/build
+
+lab1/release
+lab2/release

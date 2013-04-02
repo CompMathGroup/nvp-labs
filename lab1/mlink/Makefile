@@ -1,9 +1,9 @@
 OPT=-O3
 CXXFLAGS=-g -Wall -I../core $(OPT) \
-	-I./$(ARCH)
-MPREP=./$(ARCH)/mprep
+	-I../../include/$(ARCH)
+MPREP=../../bin/$(ARCH)/mprep
 LDFLAGS= \
-	-L$(PREFIX) -L../lib \
+	-L$(PREFIX) -L../../lib \
 	-static-libstdc++ -static-libgcc
 
 LIBS+=-lgassolver
@@ -17,7 +17,7 @@ all: $(TARGET)
 
 %.cpp : %.tm
 	@echo "[MPREP] "$<
-	@$(MPREP) $< > $@
+	@$(MPREP) $< > $@ || rm -f $@
 
 $(PREFIX)/%.o : %.cpp
 	@echo "[CXX] "$<" => "$@

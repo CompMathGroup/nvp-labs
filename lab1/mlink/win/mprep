@@ -1,9 +1,0 @@
-#!/bin/bash
-tmpfile=`mktemp`
-cwd=`dirname $0`
-
-$cwd/../unix/mprep $1 | tail -n+26 | head -n-382 > $tmpfile
-
-cat $cwd/header.win $tmpfile $cwd/trailer.win
-
-rm -f $tmpfile
