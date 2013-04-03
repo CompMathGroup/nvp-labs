@@ -2,6 +2,7 @@
 
 pack:
 	make -C ../build
+	mkdir -p Windows_x86 Windows_x86-64 Unix_x86 Unix_x86-64
 	cp ../gui/LabHyperbolic.nb Hyperbolic.nb
 	cp ../build/win32/GasLink.exe Windows_x86/
 	cp ../build/win64/GasLink.exe Windows_x86-64/
