@@ -37,37 +37,36 @@ public:
 		return cells[i + ext];
 	}
 
-	virtual void actualize() { }
+	virtual void actualize(double t) { }
+	virtual void fillAt(double t) { }
+	virtual CT getExtrapolated(const int i, double t) { return 0. / 0.; }
 };
 
-template<class CT>
-class CycledArray : public Array<CT> {
-public:
-	CycledArray(std::ptrdiff_t _n, std::ptrdiff_t _ext) : Array<CT>(_n, _ext) {}
-	void actualize() {
-		std::ptrdiff_t ext = this->ext;
-		std::ptrdiff_t n = this->n;
-		CT *cells = this->cells + ext;
-		for (std::ptrdiff_t i = 1; i <= ext; i++)
-			cells[-i] = cells[n - i];
-		for (std::ptrdiff_t i = 0; i < ext; i++)
-			cells[n + i] = cells[ i];
-	}
-};
-
-template<class CT>
+template<class CT, class E>
 class ExtrapolatingArray : public Array<CT> {
+	E extr;
 public:
-	ExtrapolatingArray(std::ptrdiff_t _n, std::ptrdiff_t _ext) : Array<CT> (_n, _ext) {}
-	void actualize() {
+	ExtrapolatingArray(std::ptrdiff_t _n, std::ptrdiff_t _ext, E _extr) : Array<CT> (_n, _ext), extr(_extr) {}
+	void actualize(double t) {
 		std::ptrdiff_t ext = this->ext;
 		std::ptrdiff_t n = this->n;
 		CT *cells = this->cells + ext;
 		for (std::ptrdiff_t i = 1; i <= ext; i++)
-			cells[-i] = cells[0];
+			cells[-i] = extr(-i, t);
 		for (std::ptrdiff_t i = 0; i < ext; i++)
-			cells[n + i] = cells[n - 1];
+			cells[n + i] = extr(n + i, t);
 	}
+	void fillAt(double t) {
+		std::ptrdiff_t ext = this->ext;
+		std::ptrdiff_t n = this->n;
+		CT *cells = this->cells + ext;
+		for (std::ptrdiff_t i = -ext; i < n + ext; i++)
+			cells[i] = extr(i, t);
+	}
+	CT getExtrapolated(const int i, double t) {
+		return extr(i, t);
+	}
+	virtual ~ExtrapolatingArray() { }
 };
 
 template <class T>

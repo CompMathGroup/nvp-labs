@@ -1,0 +1,193 @@
+\documentclass[10pt]{article}
+\usepackage[cp1251]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage{ifpdf}
+
+\ifpdf\usepackage{epstopdf}\fi
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+\graphicspath{{fig/}}
+
+\title{Разностная схема для нелинейного уравнения теплопроводности в 1D}
+\author{Цыбулин Иван}
+
+\newcommand{\pd}[2]{\frac{\partial{#1}}{\partial {#2}}}
+\newcommand{\td}[2]{\frac{d{#1}}{d {#2}}}
+
+\newcommand{\cutefrac}[2]{{}^{#1\!}\!/{\!}_#2}
+\newcommand{\half}{\cutefrac{1}{2}}
+
+\begin{document}
+\maketitle
+
+\section{Построение квази-консервативных схем на 13-ти точечном шаблоне}
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=.5\textwidth]{gas-0}%
+\caption{13-ти точечный шаблон}
+\end{figure}
+
+Предположим, что некоторым образом на этом шаблоне построена схема для линейного
+уравнения теплопроводности
+\begin{equation}
+\pd{u}{t} + \pd{F(u)}{x} = 0, \qquad F(u) = -\varkappa \pd{u}{x}, \quad \varkappa > 0
+\label{eq:transf}
+\end{equation}
+вида
+\begin{equation}
+u^{n+1}_m = \sum_{(\mu,\nu) \in S} \tilde{\alpha}_\mu^\nu 
+\frac{u^{n + \nu}_{m + \mu} + u^{n + \nu}_{m - \mu}}{2}
+\label{eq:linscheme}
+\end{equation}
+Добавим точку $(0,1)$ в шаблон $S$ (далее будем именовать его полным шаблоном) и введем произвольную
+нормировку коэффициентов
+\begin{equation}
+\sum_{(\mu,\nu) \in S} \alpha_\mu^\nu u^{n + \nu}_{m + \mu} = 0, \qquad \sum_{(\mu,\nu) \in S} \left(\alpha_\mu^\nu\right)^2 \neq 0
+\label{eq:linscheme2}
+\end{equation}
+
+\newcommand{\uu}{\hat{u}}
+\newcommand{\ud}{\check{u}}
+Построим эквивалентную (для линейного уравнения!) полностью консервативную разностную схему в форме
+\begin{equation}
+\frac{u^{n+\half}_{m}-u^{n-\half}_{m}}{\tau} + \frac{F^{n}_{m+\half}-F^{n}_{m-\half}}{h} = 0,
+\label{eq:conserv}
+\end{equation}
+где $u^{n\pm\half}_m$ и $F^n_{m\pm\half}$ --- некоторые линейные комбинации $u^{n+\nu}_{m+\mu}$ и $F^{n+\nu}_{m+\mu}$, вычисляемые
+для <<$+$>> и для <<$-$>> одинаковым способом.
+Пусть
+\begin{align*}
+u^{n + \half}_m &= \frac{1}{2}(\hat{u}_m + u_m) + \\
+& 
+(\beta_1)^{n+\half}_{m-1} (\hat{u}_{m-1} - u_{m-1}) + 
+(\beta_2)^{n+\half}_m (\hat{u}_{m} - u_{m}) + 
+(\beta_1)^{n+\half}_{m+1} (\hat{u}_{m+1} - u_{m+1}) + \\
+& 
++(\beta_3)^n_{m-\cutefrac{3}{2}} (u_{m-1} - u_{m-2}) 
++(\beta_4)^n_{m-\cutefrac{1}{2}} (u_{m} - u_{m-1}) - \\
+& 
+-(\beta_4)^n_{m+\cutefrac{1}{2}} (u_{m+1} - u_{m})  
+-(\beta_3)^n_{m+\cutefrac{3}{2}} (u_{m+2} - u_{m+1})\\
+u^{n - \half}_m &= \frac{1}{2}(\check{u}_m + u_m) + \\
+& 
+(\beta_1)^{n-\half}_{m-1}  (u_{m-1} - \check{u}_{m-1}) + 
+(\beta_2)^{n-\half}_m (u_{m} - \check{u}_{m}) + 
+(\beta_1)^{n-\half}_{m+1} (u_{m+1} - \check{u}_{m+1}) + \\
+& 
++(\beta_3)^{n-1}_{m-\cutefrac{3}{2}} (\check{u}_{m-1} - \check{u}_{m-2})
++(\beta_4)^{n-1}_{m-\cutefrac{1}{2}} (\check{u}_{m} - \check{u}_{m-1}) - \\
+& 
+-(\beta_4)^{n-1}_{m+\cutefrac{1}{2}} (\check{u}_{m+1} - \check{u}_{m}) 
+-(\beta_3)^{n-1}_{m+\cutefrac{3}{2}} (\check{u}_{m+2} - \check{u}_{m+1})\\
+F^{n}_{m + \half} &= -\varkappa_{m + \half} \frac{u_{m+1} - u_m}{h} + \frac{h}{\tau}\times\\
+&
+\left[(\gamma_1)^n_{m-\half} (u_m - u_{m-1}) -
+2(\gamma_1)^n_{m+\half} (u_{m+1} - u_{m}) + 
+(\gamma_1)^n_{m+\cutefrac{3}{2}} (u_{m+2} - u_{m+1})\right]\\
+F^{n}_{m - \half} &= -\varkappa_{m - \half} \frac{u_m - u_{m-1}}{h} + \frac{h}{\tau}\times\\
+&
+\left[(\gamma_1)^n_{m-\cutefrac{3}{2}} (u_{m-1} - u_{m-2}) - 
+2(\gamma_1)^n_{m-\cutefrac{1}{2}} (u_{m} - u_{m-1}) + 
+(\gamma_1)^n_{m+\cutefrac{1}{2}} (u_{m+1} - u_{m})\right]
+\end{align*}
+
+\begin{figure}[ht!]%
+\includegraphics[width=.5\columnwidth]{gas-1}%
+\includegraphics[width=.5\columnwidth]{gas-2}%
+\caption{Шаблоны для аппроксимации $u^{n+\half}_m$ и $F^n_{m+\half}$}%
+\label{}%
+\end{figure}
+
+Здесь использованы обозначения $\check{u}$ для $u^{n-1}$, $\hat{u}$ для $u^{n+1}$ и $u$ для $u^n$.
+Все коэффициенты $\beta_j, \gamma_j$ зависят от локального числа Куранта $\sigma$. 
+Cхема \eqref{eq:conserv} должна с точностью до умножения на константу совпадать с \eqref{eq:linscheme2}.
+Поскольку нормировка $\alpha^\nu_\mu$ пока не фиксирована, потребуем строго равенства:
+\begin{equation}
+\begin{cases}
+\hat{\alpha }_1=2 \beta _1 \\
+\hat{\alpha }_0=\beta _2+\frac{1}{2}\\
+\hat{\alpha }_1=2 \beta _1 \\
+\alpha _2=2 \left(\gamma _1-\beta_3\right) \\
+\alpha _1=2 \left(-2 \beta _1+\beta_3-\beta _4-4 \gamma _1-\sigma\right) \\
+\alpha _0=2 \left(-\beta _2+\beta_4+3 \gamma _1+\sigma \right) \\
+\alpha _1=2 \left(-2 \beta _1+\beta_3-\beta _4-4 \gamma _1-\sigma\right) \\
+\alpha _2=2 \left(\gamma _1-\beta_3\right) \\
+\check{\alpha }_2=2 \beta _3 \\
+\check{\alpha }_1=2 \left(\beta_1-\beta _3+\beta _4\right) \\
+\check{\alpha }_0=\beta _2-2 \beta_4-\frac{1}{2} \\
+\check{\alpha }_1=2 \left(\beta_1-\beta _3+\beta _4\right) \\
+\check{\alpha }_2=2 \beta _3 
+\end{cases}
+\label{eq:atobg}
+\end{equation}
+Здесь введено обозначение $\sigma = \frac{\varkappa \tau}{h^2}$. 
+Система связывает 5 параметров $\beta_j, \gamma_j$.
+Исключая параметры $\beta_j,\gamma_j$ из \eqref{eq:atobg}, получаем три условия разрешимости системы:
+\begin{equation}
+\begin{cases}
+0 &= \sum \alpha^\nu_\mu\\
+1 &= (\hat{\alpha }_{0} + \hat{\alpha }_{1}) - 
+(\check{\alpha }_{0} + \check{\alpha }_{1} + \check{\alpha }_{2}) = \sum \nu \alpha^\nu_\mu\\
+-2\sigma &= 
+(\check{\alpha }_{1} + \hat{\alpha }_{1} + {\alpha }_{1}) 
++4(\check{\alpha }_{2} + {\alpha }_{2}) =\sum \mu^2 \alpha^\nu_\mu
+\end{cases}
+\label{eq:solvable}
+\end{equation}
+Первое условие является условием нулевого порядка аппроксимации схемы \eqref{eq:linscheme2} (в терминах полного шаблона).
+Следующие два условия равносильны выполнению
+\begin{equation}
+\sum \left(
+	\frac{\mu^2}{2} + \sigma \nu
+	\right) \alpha^\nu_\mu = 0
+\label{eq:secord}
+\end{equation}
+при некоторой нормировке коэффициентов $\alpha^\nu_\mu$ (задаваемой $\sum \nu \alpha^\nu_\mu = 1,$ например), что представляет собой
+условие первого порядка аппроксимации (снова, для полного шаблона).
+С учетом \eqref{eq:solvable} уравнения \eqref{eq:atobg} разрешимы относительно $\beta_j, \gamma_j$:
+\begin{equation}
+\begin{cases}
+\beta _1=\frac{\hat{\alpha }_1}{2} \\
+\beta _2=\hat{\alpha }_0-\frac{1}{2}\\
+\beta _3=\frac{1}{2}\check{\alpha}_2\\
+\beta _4=\frac{1}{2}\left(\hat{\alpha}_0-\check{\alpha}_0-1\right) \\
+\gamma _1=\frac{1}{2}\left(\check{\alpha }_2+\alpha_2\right) \\
+\end{cases}
+\label{eq:bg}
+\end{equation}
+
+Для схемы $u_m^{n+1} = \sigma u_{m-1}^n - 2 \sigma u_{m}^n + \sigma u^n_{m+1}$
+\begin{equation}
+\begin{cases}
+\hat{\alpha}_0 &= 1\\
+{\alpha}_0 &= 2\sigma - 1\\
+{\alpha}_1 &= -2\sigma\\
+\end{cases}
+\end{equation}
+Эти коэффициенты удовлетворяют $\sum \nu \alpha^\nu_\mu = 1$. Найдем
+соответствующие $\beta_j, \gamma_j$:
+\begin{equation}
+\begin{cases}
+\beta _1=0 \\
+\beta _2=\frac{1}{2}\\
+\beta _3=0\\
+\beta _4=0\\
+\gamma _1=0.
+\end{cases}
+\end{equation}
+Аппроксимации:
+\begin{equation}
+\begin{cases}
+u^{n+\half}_m &= u^{n+1}_m\\
+u^{n-\half}_m &= u^{n}_m\\
+F^{n}_{m+\half} &= 
+\varkappa_{m+\half} \frac{u^n_{m+1} - u^n_m}{h}\\
+F^{n}_{m-\half} &= 
+\varkappa_{m-\half} \frac{u^n_m - u^n_{m-1}}{h}\\
+\end{cases}
+\end{equation}
+
+\end{document}

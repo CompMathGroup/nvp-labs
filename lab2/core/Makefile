@@ -3,16 +3,12 @@ OPT=-O3
 CFLAGS= $(OPT) -g -Wall -funroll-loops
 CXXFLAGS=$(CFLAGS)
 AR=ar -rcs
-TARGET=$(PREFIX)/libgassolver.a
+TARGET=$(PREFIX)/libheatsolver.a
 SRC= \
-	gdsolver.cpp \
-	advsolver.cpp \
-	riemann.cpp
+	heatsolver.cpp
 
 OBJS= \
-	$(PREFIX)/gdsolver.o \
-	$(PREFIX)/advsolver.o \
-	$(PREFIX)/riemann.o
+	$(PREFIX)/heatsolver.o
 
 .PHONY: clean all
 
@@ -28,7 +24,3 @@ $(TARGET): $(OBJS)
 
 clean: 
 	$(RM) $(OBJS) $(TARGET)
-
-linalg.o:: linalg.cpp linalg.h array.h 
-
-solver.o:: solver.cpp solver.h array.h 

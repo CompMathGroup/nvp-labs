@@ -3,11 +3,9 @@
 
 double InitializeSolver(
 	const char *solv, 
-	double gamma,
+	double k, double c,
 	const char *prob, 
-	int n, double C,
-	double rL, double uL, double eL,
-	double rR, double uR, double eR);
+	int n, double Cou);
 int AddScheme(double *coeff, int sz);
 void DoSteps(int count);
 

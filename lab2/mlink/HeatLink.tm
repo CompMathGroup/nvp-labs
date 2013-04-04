@@ -1,8 +1,8 @@
 :Begin:
 :Function: InitializeSolver
-:Pattern: InitializeSolver[solver_String, gamma_Real, prob_String, n_Integer, s_Real, rL_Real, uL_Real, eL_Real, rR_Real, uR_Real, eR_Real]
-:Arguments: {solver, gamma, prob, n, s, rL, uL, eL, rR, uR, eR}
-:ArgumentTypes: {String, Real, String, Integer, Real, Real, Real, Real, Real, Real, Real}
+:Pattern: InitializeSolver[solver_String, k_Real, c_Real, prob_String, n_Integer, s_Real]
+:Arguments: {solver, k, c, prob, n, s}
+:ArgumentTypes: {String, Real, Real, String, Integer, Real}
 :ReturnType: Real
 :End:
 

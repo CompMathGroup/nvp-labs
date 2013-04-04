@@ -52,26 +52,21 @@ struct Rational {
 };
 
 struct Alphas {
-	const Rational b1, b2, b3;
-	const Rational b4, b5, b6, b7;
-	const Rational g1, g2, g3;
+	const Rational b1, b2;
+	const Rational b3, b4;
+	const Rational g1;
 	Alphas(
 		const Rational &b1,
 		const Rational &b2,
+
 		const Rational &b3,
-
 		const Rational &b4,
-		const Rational &b5,
-		const Rational &b6,
-		const Rational &b7,
 
-		const Rational &g1,
-		const Rational &g2,
-		const Rational &g3
+		const Rational &g1
 	) : 
-		b1(b1), b2(b2), b3(b3),
-		b4(b4), b5(b5), b6(b6), b7(b7),
-		g1(g1), g2(g2), g3(g3)
+		b1(b1), b2(b2), 
+		b3(b3), b4(b4), 
+		g1(g1)
 	{}
 	bool sanity() {
 		/* No checks for this type */
@@ -82,96 +77,35 @@ struct Alphas {
 struct Gamma1 : public Alphas {
 	Gamma1( const Alphas &o) : Alphas(o) {}
 	double operator()(double sigma) const {
-		if (sigma > 0)
-			return g1(+sigma);
-		else
-			return g3(-sigma);
-	}
-};
-
-struct Gamma2 : public Alphas {
-	Gamma2( const Alphas &o) : Alphas(o) {}
-	double operator()(double sigma) const {
-		double s = std::fabs(sigma);
-		return g2(s);
-	}
-};
-
-struct Gamma3 : public Alphas {
-	Gamma3( const Alphas &o) : Alphas(o) {}
-	double operator()(double sigma) const {
-		if (sigma > 0)
-			return g3(+sigma);
-		else
-			return g1(-sigma);
+		return g1(+sigma);
 	}
 };
 
 struct Beta1 : public Alphas {
 	Beta1( const Alphas &o ) : Alphas(o) {}
 	double operator()(double sigma) const {
-		if (sigma > 0)
-			return b1(+sigma);
-		else
-			return b3(-sigma);
-	}
-};
-
-struct Beta3 : public Alphas {
-	Beta3( const Alphas &o) : Alphas(o) {}
-	double operator()(double sigma) const {
-		if (sigma > 0)
-			return b3(+sigma);
-		else
-			return b1(-sigma);
+		return b1(+sigma);
 	}
 };
 
 struct Beta2 : public Alphas {
 	Beta2( const Alphas &o ) : Alphas(o) {}
 	double operator()(double sigma) const {
-		double s = std::fabs(sigma);
-		return b2(s);
+		return b2(+sigma);
+	}
+};
+
+struct Beta3 : public Alphas {
+	Beta3( const Alphas &o) : Alphas(o) {}
+	double operator()(double sigma) const {
+		return b3(+sigma);
 	}
 };
 
 struct Beta4 : public Alphas {
 	Beta4( const Alphas &o ) : Alphas(o) {}
 	double operator()(double sigma) const {
-		if (sigma > 0)
-			return +b4(+sigma);
-		else
-			return -b7(-sigma);
-	}
-};
-
-struct Beta7 : public Alphas {
-	Beta7( const Alphas &o ) : Alphas(o) {}
-	double operator()(double sigma) const {
-		if (sigma > 0)
-			return +b7(+sigma);
-		else
-			return -b4(-sigma);
-	}
-};
-
-struct Beta5 : public Alphas {
-	Beta5( const Alphas &o ) : Alphas(o) {}
-	double operator()(double sigma) const {
-		if (sigma > 0)
-			return +b5(+sigma);
-		else
-			return -b6(-sigma);
-	}
-};
-
-struct Beta6 : public Alphas {
-	Beta6( const Alphas &o ) : Alphas(o) {}
-	double operator()(double sigma) const {
-		if (sigma > 0)
-			return +b6(+sigma);
-		else
-			return -b7(-sigma);
+		return +b4(+sigma);
 	}
 };
 

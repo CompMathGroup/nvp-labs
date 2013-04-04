@@ -2,7 +2,6 @@
 #define __LINALG_H__
 
 #include "array.h"
-#include "matrix.h"
 
 template <typename M, typename V>
 void TridiagonalSolve(

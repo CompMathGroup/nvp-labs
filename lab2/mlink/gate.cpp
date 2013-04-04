@@ -2,203 +2,186 @@
 
 #include <string.h>
 
-#include <riemann.h>
 #include <array.h>
-#include <gdsolver.h>
-#include <advsolver.h>
+#include <heatsolver.h>
 
 #include <mathlink.h>
+#include <cmath>
 
-#ifndef TOLERANCE
-#define TOLERANCE 1e-6
-#endif
+static HeatSolver *sol = 0;
 
-bool linear;
+static Array<double> *u0 = 0;
+static Array<double> *u1 = 0;
+static Array<double> *u2 = 0;
 
-static Riemann *rie = 0;
-static GDSolver *sol = 0;
-static AdvectionSolver *adv = 0;
-
-static Array<Vars> *u0 = 0;
-static Array<Vars> *u1 = 0;
-static Array<Vars> *u2 = 0;
-
-static Array<double> *w0 = 0;
-static Array<double> *w1 = 0;
-static Array<double> *w2 = 0;
-
-static bool csproblem;
 static double *x = 0;
 static double *data = 0;
 
-static double *ra;
 static double *ua;
-static double *ea;
-static double *r;
 static double *u;
-static double *e;
-static double *snum;
 
 static bool firsttime;
 
 std::vector<Alphas *> chain;
 
-double step(double x) {
-	if ((x < 0.4) || (x >= 0.6))
-		return 0;
-	return 1;
-}
+class Solution {
+};
 
-double cap(double x) {
-	if ((x < 0.4) || (x >= 0.6))
-		return 0;
-	return 1 - std::pow(10*x - 5, 2);
-}
+class ExpWave : public Solution {
+public:	
+	double operator()(double x, double t) const {
+		const double c = 2.;
+		return std::exp(c * (c * (t - 1.) - x));
+	}
+};
 
-double tri(double x) {
-	if ((x < 0.4) || (x >= 0.6))
-		return 0;
-	return 1 - std::fabs(10*x - 5);
-}
+class Smooth : public Solution {
+public:
+	double operator()(double x, double t) const {
+		if (t > 0)
+			return 0.5 - 0.5 * erf(.5 * (x - .5) / std::sqrt(t));
+		return (x < .499999) ? 1 : (x > 0.500001 ? 0 : .5);
+	}
+};
 
-double wtf(double x) {
-	return std::sin(100 * x);
-}
+class FixedWave : public Solution {
+	const double k, tmax;
+public:	
+	FixedWave(const double _k, const double _c) : k(_k), tmax(_c) {}
+	double operator()(double x, double t) const {
+		if (x < .5)
+			return std::pow(.5 * k * (.5 - x) * (.5 - x) / (k + 2.) / (tmax - t), 1. / k);
+		return 0.;
+	}
+};
 
-double (*f)(double);
+class ConstSpeed : public Solution {
+	const double k, c; 
+public:	
+	ConstSpeed(const double _k, const double _c) : k(_k), c(_c) {}
+	double operator()(double x, double t) const {
+		if (x > 1 - 1e-10)
+			return 0; /* right bc */
+		if (x < c * t) 
+			return std::pow(c * k * (c * t - x), 1. / k);
+		return 0.;
+	}
+};
+
+class ConstVal : public Solution {
+	const double k, c;
+	double c1, c2, c3;
+	double xi0;
+	double sum(double eta) const {
+		double z = 1 - eta;
+		double z2 = z * z;
+		double z3 = z2 * z;
+		return 1 + c1 * z + c2 * z2 + c3 * z3;
+	}
+public:	
+	ConstVal(const double _k, const double _c) : k(_k), c(_c) {
+		c1 = -.5 / k;
+		c2 = (4 * k * k + 6 * k + 3) / (24 * k * k * (2 * k * k + 3 * k + 1));
+		c3 = (2 * k * k * k - 2 * k * k - 3 * k - 1) / (48 * k * k * k * (3 * k + 1) * (2 * k * k + 3 * k + 1));
+		xi0 = std::pow(std::pow(.5 * k, 1 + 1. / k) * sum(0), - .5 * k / (k + 1));
+	}
+	double operator()(double x, double t) const {
+		if (t < 1e-10)
+			return 0.;
+		if (x > 1 - 1e-10)
+			return 0.;
+		double xi = x / std::sqrt(t);
+		if (xi < xi0) 
+			return std::pow(.5 * k * xi0 * (xi0 - xi), 1. / k) * std::pow(sum(xi / xi0), 1. / (k + 1));
+		return 0.;
+	}
+};
+
+template <class T, class BC>
+class Extrapolator {
+	const double h;
+	const BC sol;
+public:
+	Extrapolator(const double _h, BC _sol) : h(_h), sol(_sol) {}
+	T operator()(const int idx, const double t) {
+		return sol(idx * h + h, t);
+	}
+};
 
 double InitializeSolver(
-	const char *solver, double CpCv, const char *prob, int n, double C,
-	double rL, double uL, double eL,
-	double rR, double uR, double eR) 
+	const char *solver, double k, double c, const char *problem, int n, double cou) 
 {
-	if (rie) delete rie;
 	if (sol) delete sol;
-	if (adv) delete adv;
 	
 	if (u0) delete u0;
 	if (u1)	delete u1;
 	if (u2)	delete u2;
 
-	if (w0) delete w0;
-	if (w1)	delete w1;
-	if (w2)	delete w2;
-
 	if (x) delete[] x;
 	if (data) delete[] data;
 
-	rie = 0; sol = 0; adv = 0;
+	sol = 0; 
 	u0 = u1 = u2 = 0;
-	w0 = w1 = w2 = 0;
 	x = data = 0;
 
-	linear = 0 == strcasecmp(solver, "linear");
+	if (0 == strcasecmp(solver, "linear"))
+		k = 0;
 
-	x = new double[n];
-	double h = 1.0 / n;
+	x = new double[n+1];
+	double h = 1. / n;
 
-	for (int i = 0; i < n; i++)
-		x[i] = (i + 0.5) * h;
+	for (int i = 0; i <= n; i++)
+		x[i] = i * h;
 
-	if (!linear) {
-		
-		csproblem = 0 != strcasecmp(prob, "riemann");
-		
-		rie = new Riemann(CpCv);
-		rie->solve(rL, uL, eL, rR, uR, eR);
+	data = new double[2 * (n + 1)];
+	ua = data;
+	u = data + n + 1;
 
-		data = new double[7 * n];
-		ra = data;
-		ua = data + n;
-		ea = data + 2*n;
-		r = data + 3*n;
-		u = data + 4*n;
-		e = data + 5*n;
-		snum = data + 6*n;
+#define DECL(x, y, z) \
+		x = new ExtrapolatingArray<double, Extrapolator<double, y> >(n - 1, 2, Extrapolator<double, y>(h, y z))
 
-		if (csproblem) {
-			u0 = new CycledArray<Vars>(n, 2);
-			u1 = new CycledArray<Vars>(n, 2);
-			u2 = new CycledArray<Vars>(n, 2);
-			sol = new GDSolver(n, true, *u0, *u1, *u2);
-
-			bool isstep = 0 == strcasecmp(prob, "contacts");
-			bool iscap =  0 == strcasecmp(prob, "contactc");
-			bool istri =  0 == strcasecmp(prob, "contactt");
-			f = isstep ? step : (iscap ? cap : (istri ? tri : wtf));
-
-			/* Left -> inner, Right -> outer 
-			* z = outer + (inner - outer) * f
-			*/
-
-			for (int i = 0; i < n; i++) {
-				double rX = rR + (rL - rR) * f(x[i]);
-				double uX = uR + (uL - uR) * f(x[i]);
-				double eX = eR + (eL - eR) * f(x[i]);
-				(*u0)[i] = Vars(Vector(rX, uX, eX), CpCv);
-			}
-		} else {
-			u0 = new ExtrapolatingArray<Vars>(n, 2);
-			u1 = new ExtrapolatingArray<Vars>(n, 2);
-			u2 = new ExtrapolatingArray<Vars>(n, 2);
-			sol = new GDSolver(n, false, *u0, *u1, *u2);
-			for (int i = 0; i < n / 2; i++)
-				(*u0)[i] = Vars(Vector(rL, uL, eL), CpCv);
-			for (int i = n / 2; i < n; i++)
-				(*u0)[i] = Vars(Vector(rR, uR, eR), CpCv);
-		}
-		sol->tolerance = TOLERANCE;
-		for (std::vector<Alphas *>::iterator j = chain.begin(); j != chain.end(); j++)
-			delete *j;
-		chain.clear();
-		firsttime = true;
-		return sol->doFirstStep(C);
-	} else {
-		data = new double[3 * n];
-		
-		ra = data;
-		r = data + n;
-		snum = data + 2*n;
-
-		bool isstep = 0 == strcasecmp(prob, "step");
-		bool iscap =  0 == strcasecmp(prob, "cap");
-		bool istri =  0 == strcasecmp(prob, "triangle");
-		f = isstep ? step : (iscap ? cap : (istri ? tri : wtf));
-
-		w0 = new CycledArray<double>(n, 2);
-		w1 = new CycledArray<double>(n, 2);
-		w2 = new CycledArray<double>(n, 2);
-
-		adv = new AdvectionSolver(n, *w0, *w1, *w2);
-		adv->tolerance = TOLERANCE;
-		sol = 0;
-
-		for (int j = 0; j < n; j++) {
-			double y = x[j] - C * h;
-			y -= std::floor(y);
-			(*w0)[j] = f(x[j]);
-			(*w1)[j] = f(y);
-		}
-		chain.clear();
-		firsttime = true;
-		return adv->doFirstStep(C);
+	if (0 == strcasecmp(problem, "exp")) {
+		DECL(u0, ExpWave, ());
+		DECL(u1, ExpWave, ());
+		DECL(u2, ExpWave, ());
+	} else if (0 == strcasecmp(problem, "smooth")) {
+		DECL(u0, Smooth, ());
+		DECL(u1, Smooth, ());
+		DECL(u2, Smooth, ());
+	} else if (0 == strcasecmp(problem, "fixed")) {
+		DECL(u0, FixedWave, (k, c));
+		DECL(u1, FixedWave, (k, c));
+		DECL(u2, FixedWave, (k, c));
+	} else if (0 == strcasecmp(problem, "constc")) {
+		DECL(u0, ConstSpeed, (k, c));
+		DECL(u1, ConstSpeed, (k, c));
+		DECL(u2, ConstSpeed, (k, c));
+	} else if (0 == strcasecmp(problem, "constt")) {
+		DECL(u0, ConstVal, (k, c));
+		DECL(u1, ConstVal, (k, c));
+		DECL(u2, ConstVal, (k, c));
 	}
+
+	sol = new HeatSolver(n, k, *u0, *u1, *u2);
+
+	u0->fillAt(0);
+
+	for (std::vector<Alphas *>::iterator j = chain.begin(); j != chain.end(); j++)
+		delete *j;
+	chain.clear();
+	firsttime = true;
+	return sol->doFirstStep(cou);
 }
 
 int AddScheme(double *coeff, int sz) {
-	if (sz != 10 * 2 * 16)
+	if (sz != 5 * 2 * 16)
 		return -1;
 	Alphas *shm = new Alphas(
 		Rational(&coeff[0 * 32], &coeff[0 * 32 + 16]),
 		Rational(&coeff[1 * 32], &coeff[1 * 32 + 16]),
 		Rational(&coeff[2 * 32], &coeff[2 * 32 + 16]),
 		Rational(&coeff[3 * 32], &coeff[3 * 32 + 16]),
-		Rational(&coeff[4 * 32], &coeff[4 * 32 + 16]),
-		Rational(&coeff[5 * 32], &coeff[5 * 32 + 16]),
-		Rational(&coeff[6 * 32], &coeff[6 * 32 + 16]),
-		Rational(&coeff[7 * 32], &coeff[7 * 32 + 16]),
-		Rational(&coeff[8 * 32], &coeff[8 * 32 + 16]),
-		Rational(&coeff[9 * 32], &coeff[9 * 32 + 16])
+		Rational(&coeff[4 * 32], &coeff[4 * 32 + 16])
 	);
 	chain.push_back(shm);
 	return 0;
@@ -209,55 +192,23 @@ void DoSteps(int count) {
 		firsttime = false;
 		count--;
 	}
-	if (!linear) {
-		for (;count;count--)
-			sol->doStep(chain);
+	for (;count;count--)
+		sol->doStep(chain);
 
-		double t = sol->getTime();
-		if (csproblem)
-			rie->twoCS(t, u1->size(), x, f, ra, ua, ea);
-		else
-			rie->evaluate(t, u1->size(), x, ra, ua, ea);
+	double t = sol->getTime();
 
-		const Array<int> &ss = sol->getSchemeNums();
-		for (int i = 0; i < u1->size(); i++) {
-			Vector w = (*u1)[i].to_nconserv();
-			r[i] = std::isnormal(w(0)) ? w(0) : 0;
-			u[i] = std::isnormal(w(1)) ? w(1) : 0;
-			e[i] = std::isnormal(w(2)) ? w(2) : 0;
-			snum[i] = ss[i];
-		}
-
-		int dims[2];
-		char *heads[2] = {(char *)"List", (char *)"List"};
-		int depth = 2;
-		
-		dims[0] = 7;
-		dims[1] = u1->size();
-		MLPutReal64Array(stdlink, data, dims, heads, depth);
-	} else {
-		for (;count;count--)
-			adv->doStep(chain);
-
-		double t = adv->getTime();
-		for (int i = 0; i < w1->size(); i++) {
-			r[i] = (*w1)[i];
-		}
-
-		const Array<int> &ss = adv->getSchemeNums();
-		for (int j = 0; j < w1->size(); j++) {
-			double y = x[j] - t;
-			y -= std::floor(y);
-			ra[j] = f(y);
-			snum[j] = ss[j];
-		}
-
-		int dims[2];
-		char *heads[2] = {(char *)"List", (char *)"List"};
-		int depth = 2;
-		
-		dims[0] = 3;
-		dims[1] = w1->size();
-		MLPutReal64Array(stdlink, data, dims, heads, depth);
+	for (int i = -1; i <= u1->size(); i++) {
+		double w = (*u1)[i];
+		u[i+1] = std::isnormal(w) ? w : 0;
+		w = u1->getExtrapolated(i, t);
+		ua[i+1] = std::isnormal(w) ? w : 0;
 	}
+
+	int dims[2];
+	char *heads[2] = {(char *)"List", (char *)"List"};
+	int depth = 2;
+	
+	dims[0] = 2;
+	dims[1] = u1->size() + 2;
+	MLPutReal64Array(stdlink, data, dims, heads, depth);
 }

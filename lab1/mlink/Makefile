@@ -23,7 +23,7 @@ $(PREFIX)/%.o : %.cpp
 	@echo "[CXX] "$<" => "$@
 	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(TARGET): $(OBJS)
+$(TARGET): $(OBJS) $(PREFIX)/libgassolver.a
 	@echo "[LD] ... => "$@
 	@$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
 
