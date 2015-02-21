@@ -1,10 +1,11 @@
 OPT=-O3
-CXXFLAGS=-g -Wall -I../core $(OPT) \
+CXXFLAGS=-s -Wall -I../core $(OPT) \
 	-I../../include/$(ARCH)
 MPREP=../../bin/$(ARCH)/mprep
 LDFLAGS= \
 	-L$(PREFIX) -L../../lib \
-	-static-libstdc++ -static-libgcc
+
+#-Wl,-dynamic-linker \
 
 LIBS+=-lgassolver
 
@@ -24,7 +25,7 @@ $(PREFIX)/%.o : %.cpp
 	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(TARGET): $(OBJS) $(PREFIX)/libgassolver.a
-	@echo "[LD] ... => "$@
+	@echo "[LD] "$^" => "$@
 	@$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 clean:
