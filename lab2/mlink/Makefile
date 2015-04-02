@@ -4,7 +4,6 @@ CXXFLAGS=-g -Wall -I../core $(OPT) \
 MPREP=../../bin/$(ARCH)/mprep
 LDFLAGS= \
 	-L$(PREFIX) -L../../lib \
-	-static-libstdc++ -static-libgcc
 
 LIBS+=-lheatsolver
 
