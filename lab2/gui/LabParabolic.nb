@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    132971,       3230]
-NotebookOptionsPosition[    131022,       3167]
-NotebookOutlinePosition[    131412,       3184]
-CellTagsIndexPosition[    131369,       3181]
+NotebookDataLength[    132874,       3228]
+NotebookOptionsPosition[    130925,       3165]
+NotebookOutlinePosition[    131315,       3182]
+CellTagsIndexPosition[    131272,       3179]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -2680,26 +2680,24 @@ Cell[BoxData[{
               RowBox[{"frame", ",", "2"}], "\[RightDoubleBracket]"}]}], ";", 
             "\[IndentingNewLine]", "\[IndentingNewLine]", 
             RowBox[{"minv", "=", 
-             RowBox[{"Min", "[", 
-              RowBox[{"Flatten", "@", 
-               RowBox[{"sol", "\[LeftDoubleBracket]", 
-                RowBox[{";;", ",", 
-                 RowBox[{"1", ";;", "2"}]}], "\[RightDoubleBracket]"}]}], 
-              "]"}]}], ";", "\[IndentingNewLine]", 
-            RowBox[{"maxv", "=", 
              RowBox[{"Max", "[", 
-              RowBox[{"Flatten", "@", 
-               RowBox[{"sol", "\[LeftDoubleBracket]", 
-                RowBox[{";;", ",", 
-                 RowBox[{"1", ";;", "2"}]}], "\[RightDoubleBracket]"}]}], 
-              "]"}]}], ";", "\[IndentingNewLine]", 
-            RowBox[{"minv", "=", 
-             RowBox[{"Max", "[", 
-              RowBox[{"minv", ",", 
+              RowBox[{
+               RowBox[{"Min", "[", 
+                RowBox[{"Flatten", "@", 
+                 RowBox[{"sol", "\[LeftDoubleBracket]", 
+                  RowBox[{";;", ",", 
+                   RowBox[{"1", ";;", "2"}]}], "\[RightDoubleBracket]"}]}], 
+                "]"}], ",", 
                RowBox[{"-", "10"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
             RowBox[{"maxv", "=", 
              RowBox[{"Min", "[", 
-              RowBox[{"maxv", ",", "10"}], "]"}]}], ";", 
+              RowBox[{
+               RowBox[{"Max", "[", 
+                RowBox[{"Flatten", "@", 
+                 RowBox[{"sol", "\[LeftDoubleBracket]", 
+                  RowBox[{";;", ",", 
+                   RowBox[{"1", ";;", "2"}]}], "\[RightDoubleBracket]"}]}], 
+                "]"}], ",", "10"}], "]"}]}], ";", "\[IndentingNewLine]", 
             "\[IndentingNewLine]", 
             RowBox[{"x", "=", 
              RowBox[{
@@ -3166,7 +3164,7 @@ Cell[BoxData[
 }, Closed]]
 },
 WindowSize->{1598, 852},
-WindowMargins->{{Automatic, -1811}, {39, Automatic}},
+WindowMargins->{{Automatic, -1711}, {53, Automatic}},
 ShowSelection->True,
 TrackCellChangeTimes->False,
 FrontEndVersion->"8.0 for Linux x86 (64-bit) (October 10, 2011)",
@@ -3215,21 +3213,21 @@ Cell[CellGroupData[{
 Cell[78084, 1903, 150, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10004.}],
-Cell[78237, 1907, 19584, 474, 1603, "Input",
+Cell[78237, 1907, 19584, 474, 1597, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10004.}]
 }, Closed]],
 Cell[CellGroupData[{
 Cell[97858, 2386, 143, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10005.}],
-Cell[98004, 2390, 20123, 428, 2237, "Input",
+Cell[98004, 2390, 20026, 426, 2215, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10005.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[118164, 2823, 137, 2, 31, "Input",
+Cell[118067, 2821, 137, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10006.}],
-Cell[118304, 2827, 12702, 337, 1363, "Input",
+Cell[118207, 2825, 12702, 337, 1363, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10006.}]
 }, Closed]]
 }

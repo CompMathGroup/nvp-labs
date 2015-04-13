@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    195844,       4667]
-NotebookOptionsPosition[    193892,       4604]
-NotebookOutlinePosition[    194277,       4621]
-CellTagsIndexPosition[    194234,       4618]
+NotebookDataLength[    184697,       4409]
+NotebookOptionsPosition[    182742,       4346]
+NotebookOutlinePosition[    183132,       4363]
+CellTagsIndexPosition[    183089,       4360]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -52,8 +52,7 @@ Cell[CellGroupData[{
 
 Cell[TextData[StyleBox["Utility functions", "Subsubtitle"]], "Input",
  Evaluatable->False,
- CellGroupingRules->{GroupTogetherGrouping, 10001.},
- FormatType->"TextForm"],
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
 
 Cell[BoxData[{
  RowBox[{
@@ -1787,8 +1786,7 @@ Cell[CellGroupData[{
 
 Cell[TextData[StyleBox["Inspect scheme properties", "Subsubtitle"]], "Input",
  Evaluatable->False,
- CellGroupingRules->{GroupTogetherGrouping, 10003.},
- FormatType->"TextForm"],
+ CellGroupingRules->{GroupTogetherGrouping, 10003.}],
 
 Cell[BoxData[{
  RowBox[{
@@ -2505,261 +2503,9 @@ step\>\"", ",",
          RowBox[{"Alignment", "\[Rule]", "Left"}]}], "]"}]}]}]}], 
     "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{
-   RowBox[{"SetAttributes", "[", 
-    RowBox[{"StencilBox", ",", "HoldAll"}], "]"}], ";"}], 
-  "\[IndentingNewLine]", 
-  RowBox[{"(*", 
-   RowBox[{
-    RowBox[{
-     RowBox[{"StencilBox", "[", 
-      RowBox[{"stencil_", ",", "localStencil_", ",", "\[Sigma]_"}], "]"}], ":=", 
-     RowBox[{"Module", "[", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{"StencilPoint", ",", "GrayPoint", ",", "Checker", ",", 
-         RowBox[{"size", "=", "20"}]}], "}"}], ",", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"StencilPoint", "[", "x_", "]"}], ":=", 
-         RowBox[{"Toggler", "[", 
-          RowBox[{"x", ",", "\[IndentingNewLine]", 
-           RowBox[{"{", 
-            RowBox[{
-             RowBox[{"False", "\[Rule]", 
-              RowBox[{"Deploy", "[", 
-               RowBox[{"Graphics", "[", 
-                RowBox[{
-                 RowBox[{"{", 
-                  RowBox[{"Circle", "[", "]"}], "}"}], ",", 
-                 RowBox[{"ImageSize", "\[Rule]", "size"}]}], "]"}], "]"}]}], 
-             ",", "\[IndentingNewLine]", 
-             RowBox[{"1", "\[Rule]", 
-              RowBox[{"Deploy", "[", 
-               RowBox[{"Graphics", "[", 
-                RowBox[{
-                 RowBox[{"{", 
-                  RowBox[{
-                   RowBox[{"Disk", "[", "]"}], ",", 
-                   RowBox[{"Text", "[", 
-                    RowBox[{
-                    RowBox[{"Style", "[", 
-                    RowBox[{
-                    "\"\<1\>\"", ",", "Medium", ",", "Bold", ",", "White"}], 
-                    "]"}], ",", 
-                    RowBox[{"FormatType", "\[Rule]", "StandardForm"}]}], 
-                    "]"}]}], "}"}], ",", 
-                 RowBox[{"ImageSize", "\[Rule]", "size"}]}], "]"}], "]"}]}], 
-             ",", "\[IndentingNewLine]", 
-             RowBox[{"2", "\[Rule]", 
-              RowBox[{"Deploy", "[", 
-               RowBox[{"Graphics", "[", 
-                RowBox[{
-                 RowBox[{"{", 
-                  RowBox[{
-                   RowBox[{"Disk", "[", "]"}], ",", 
-                   RowBox[{"Text", "[", 
-                    RowBox[{
-                    RowBox[{"Style", "[", 
-                    RowBox[{
-                    "\"\<2\>\"", ",", "Medium", ",", "Bold", ",", "White"}], 
-                    "]"}], ",", 
-                    RowBox[{"FormatType", "\[Rule]", "StandardForm"}]}], 
-                    "]"}]}], "}"}], ",", 
-                 RowBox[{"ImageSize", "\[Rule]", "size"}]}], "]"}], "]"}]}], 
-             ",", "\[IndentingNewLine]", 
-             RowBox[{"3", "\[Rule]", 
-              RowBox[{"Deploy", "[", 
-               RowBox[{"Graphics", "[", 
-                RowBox[{
-                 RowBox[{"{", 
-                  RowBox[{
-                   RowBox[{"Disk", "[", "]"}], ",", 
-                   RowBox[{"Text", "[", 
-                    RowBox[{
-                    RowBox[{"Style", "[", 
-                    RowBox[{
-                    "\"\<3\>\"", ",", "Medium", ",", "Bold", ",", "White"}], 
-                    "]"}], ",", 
-                    RowBox[{"FormatType", "\[Rule]", "StandardForm"}]}], 
-                    "]"}]}], "}"}], ",", 
-                 RowBox[{"ImageSize", "\[Rule]", "size"}]}], "]"}], "]"}]}], 
-             ",", "\[IndentingNewLine]", 
-             RowBox[{"4", "\[Rule]", 
-              RowBox[{"Deploy", "[", 
-               RowBox[{"Graphics", "[", 
-                RowBox[{
-                 RowBox[{"{", 
-                  RowBox[{
-                   RowBox[{"Disk", "[", "]"}], ",", 
-                   RowBox[{"Text", "[", 
-                    RowBox[{
-                    RowBox[{"Style", "[", 
-                    RowBox[{
-                    "\"\<4\>\"", ",", "Medium", ",", "Bold", ",", "White"}], 
-                    "]"}], ",", 
-                    RowBox[{"FormatType", "\[Rule]", "StandardForm"}]}], 
-                    "]"}]}], "}"}], ",", 
-                 RowBox[{"ImageSize", "\[Rule]", "size"}]}], "]"}], "]"}]}]}],
-             "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
-        RowBox[{"GrayPoint", "=", 
-         RowBox[{"Deploy", "[", 
-          RowBox[{"Graphics", "[", 
-           RowBox[{
-            RowBox[{"{", 
-             RowBox[{"Rotate", "[", 
-              RowBox[{
-               RowBox[{"Rectangle", "[", "]"}], ",", 
-               RowBox[{"45", "Degree"}]}], "]"}], "}"}], ",", 
-            RowBox[{"ImageSize", "\[Rule]", "size"}]}], "]"}], "]"}]}], ";", 
-        "\[IndentingNewLine]", 
-        RowBox[{"Checker", ":=", 
-         RowBox[{"Module", "[", 
-          RowBox[{
-           RowBox[{"{", "v", "}"}], ",", "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"v", "=", 
-             RowBox[{
-              RowBox[{"(", 
-               RowBox[{"4", "==", 
-                RowBox[{"Total", "@", 
-                 RowBox[{"Map", "[", 
-                  RowBox[{
-                   RowBox[{
-                    RowBox[{"If", "[", 
-                    RowBox[{
-                    RowBox[{"UnsameQ", "[", 
-                    RowBox[{"False", ",", "#"}], "]"}], ",", "1", ",", "0"}], 
-                    "]"}], "&"}], ",", 
-                   RowBox[{"Flatten", "[", "localStencil", "]"}]}], "]"}]}]}],
-                ")"}], "\[IndentingNewLine]", "&&", 
-              RowBox[{"(", 
-               RowBox[{"1", "==", 
-                RowBox[{"Total", "@", 
-                 RowBox[{"Map", "[", 
-                  RowBox[{
-                   RowBox[{
-                    RowBox[{"If", "[", 
-                    RowBox[{
-                    RowBox[{"SameQ", "[", 
-                    RowBox[{"1", ",", "#"}], "]"}], ",", "1", ",", "0"}], 
-                    "]"}], "&"}], ",", 
-                   RowBox[{"Flatten", "[", "localStencil", "]"}]}], "]"}]}]}],
-                ")"}], "\[IndentingNewLine]", "&&", 
-              RowBox[{"(", 
-               RowBox[{"1", "==", 
-                RowBox[{"Total", "@", 
-                 RowBox[{"Map", "[", 
-                  RowBox[{
-                   RowBox[{
-                    RowBox[{"If", "[", 
-                    RowBox[{
-                    RowBox[{"SameQ", "[", 
-                    RowBox[{"2", ",", "#"}], "]"}], ",", "1", ",", "0"}], 
-                    "]"}], "&"}], ",", 
-                   RowBox[{"Flatten", "[", "localStencil", "]"}]}], "]"}]}]}],
-                ")"}], "\[IndentingNewLine]", "&&", 
-              RowBox[{"(", 
-               RowBox[{"1", "==", 
-                RowBox[{"Total", "@", 
-                 RowBox[{"Map", "[", 
-                  RowBox[{
-                   RowBox[{
-                    RowBox[{"If", "[", 
-                    RowBox[{
-                    RowBox[{"SameQ", "[", 
-                    RowBox[{"3", ",", "#"}], "]"}], ",", "1", ",", "0"}], 
-                    "]"}], "&"}], ",", 
-                   RowBox[{"Flatten", "[", "localStencil", "]"}]}], "]"}]}]}],
-                ")"}], "\[IndentingNewLine]", "&&", 
-              RowBox[{"(", 
-               RowBox[{"1", "==", 
-                RowBox[{"Total", "@", 
-                 RowBox[{"Map", "[", 
-                  RowBox[{
-                   RowBox[{
-                    RowBox[{"If", "[", 
-                    RowBox[{
-                    RowBox[{"SameQ", "[", 
-                    RowBox[{"4", ",", "#"}], "]"}], ",", "1", ",", "0"}], 
-                    "]"}], "&"}], ",", 
-                   RowBox[{"Flatten", "[", "localStencil", "]"}]}], "]"}]}]}],
-                ")"}]}]}], ";", "\[IndentingNewLine]", "v"}]}], "]"}]}], ";", 
-        "\[IndentingNewLine]", 
-        RowBox[{"Panel", "[", 
-         RowBox[{"Deploy", "@", 
-          RowBox[{"Column", "[", 
-           RowBox[{
-            RowBox[{"{", "\[IndentingNewLine]", 
-             RowBox[{
-              RowBox[{"Row", "@", 
-               RowBox[{"{", "\"\<Stencil\>\"", "}"}]}], ",", 
-              "\[IndentingNewLine]", 
-              RowBox[{"Row", "@", 
-               RowBox[{"{", 
-                RowBox[{
-                 RowBox[{"StencilPoint", "[", 
-                  RowBox[{"Dynamic", "@", 
-                   RowBox[{"localStencil", "\[LeftDoubleBracket]", 
-                    RowBox[{"1", ",", "2"}], "\[RightDoubleBracket]"}]}], 
-                  "]"}], ",", "GrayPoint", ",", 
-                 RowBox[{"StencilPoint", "[", 
-                  RowBox[{"Dynamic", "@", 
-                   RowBox[{"localStencil", "\[LeftDoubleBracket]", 
-                    RowBox[{"1", ",", "4"}], "\[RightDoubleBracket]"}]}], 
-                  "]"}]}], "}"}]}], ",", "\[IndentingNewLine]", 
-              RowBox[{"Row", "@", 
-               RowBox[{"Table", "[", 
-                RowBox[{
-                 RowBox[{"StencilPoint", "[", 
-                  RowBox[{"With", "[", 
-                   RowBox[{
-                    RowBox[{"{", 
-                    RowBox[{"i", "=", "i"}], "}"}], ",", 
-                    RowBox[{"Dynamic", "@", 
-                    RowBox[{"localStencil", "\[LeftDoubleBracket]", 
-                    RowBox[{"2", ",", "i"}], "\[RightDoubleBracket]"}]}]}], 
-                   "]"}], "]"}], ",", 
-                 RowBox[{"{", 
-                  RowBox[{"i", ",", "5"}], "}"}]}], "]"}]}], ",", 
-              "\[IndentingNewLine]", 
-              RowBox[{"Row", "@", 
-               RowBox[{"Table", "[", 
-                RowBox[{
-                 RowBox[{"StencilPoint", "[", 
-                  RowBox[{"With", "[", 
-                   RowBox[{
-                    RowBox[{"{", 
-                    RowBox[{"i", "=", "i"}], "}"}], ",", 
-                    RowBox[{"Dynamic", "@", 
-                    RowBox[{"localStencil", "\[LeftDoubleBracket]", 
-                    RowBox[{"3", ",", "i"}], "\[RightDoubleBracket]"}]}]}], 
-                   "]"}], "]"}], ",", 
-                 RowBox[{"{", 
-                  RowBox[{"i", ",", "5"}], "}"}]}], "]"}]}], ",", 
-              "\[IndentingNewLine]", 
-              RowBox[{"Row", "@", 
-               RowBox[{"{", 
-                RowBox[{
-                 RowBox[{"Spacer", "[", "50", "]"}], ",", 
-                 RowBox[{"Dynamic", "@", 
-                  RowBox[{"If", "[", 
-                   RowBox[{"Checker", ",", "\[IndentingNewLine]", 
-                    RowBox[{
-                    RowBox[{"stencil", "=", "localStencil"}], ";", 
-                    RowBox[{"Framed", "[", 
-                    RowBox[{"\"\<OK\>\"", ",", 
-                    RowBox[{"Background", "\[Rule]", "Green"}]}], "]"}]}], 
-                    ",", "\[IndentingNewLine]", 
-                    RowBox[{"Framed", "[", 
-                    RowBox[{"\"\<Bad\>\"", ",", 
-                    RowBox[{"Background", "\[Rule]", "Red"}]}], "]"}]}], 
-                   "]"}]}]}], "}"}]}]}], "\[IndentingNewLine]", "}"}], ",", 
-            RowBox[{"Alignment", "\[Rule]", 
-             RowBox[{"{", 
-              RowBox[{"Center", ",", "Top"}], "}"}]}]}], "]"}]}], 
-         "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
-    ";"}], "*)"}]}], "\[IndentingNewLine]", 
+  RowBox[{"SetAttributes", "[", 
+   RowBox[{"StencilBox", ",", "HoldAll"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"StencilBox", "[", 
@@ -3844,26 +3590,24 @@ Cell[BoxData[{
                 RowBox[{"frame", ",", "7"}], "\[RightDoubleBracket]"}]}], ";",
                "\[IndentingNewLine]", "\[IndentingNewLine]", 
               RowBox[{"minv", "=", 
-               RowBox[{"Min", "[", 
-                RowBox[{"Flatten", "@", 
-                 RowBox[{"sol", "\[LeftDoubleBracket]", 
-                  RowBox[{";;", ",", 
-                   RowBox[{"1", ";;", "6"}]}], "\[RightDoubleBracket]"}]}], 
-                "]"}]}], ";", "\[IndentingNewLine]", 
-              RowBox[{"maxv", "=", 
                RowBox[{"Max", "[", 
-                RowBox[{"Flatten", "@", 
-                 RowBox[{"sol", "\[LeftDoubleBracket]", 
-                  RowBox[{";;", ",", 
-                   RowBox[{"1", ";;", "6"}]}], "\[RightDoubleBracket]"}]}], 
-                "]"}]}], ";", "\[IndentingNewLine]", 
-              RowBox[{"minv", "=", 
-               RowBox[{"Max", "[", 
-                RowBox[{"minv", ",", 
+                RowBox[{
+                 RowBox[{"Min", "[", 
+                  RowBox[{"Flatten", "@", 
+                   RowBox[{"sol", "\[LeftDoubleBracket]", 
+                    RowBox[{";;", ",", 
+                    RowBox[{"1", ";;", "6"}]}], "\[RightDoubleBracket]"}]}], 
+                  "]"}], ",", 
                  RowBox[{"-", "20"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
               RowBox[{"maxv", "=", 
                RowBox[{"Min", "[", 
-                RowBox[{"maxv", ",", "20"}], "]"}]}], ";", 
+                RowBox[{
+                 RowBox[{"Max", "[", 
+                  RowBox[{"Flatten", "@", 
+                   RowBox[{"sol", "\[LeftDoubleBracket]", 
+                    RowBox[{";;", ",", 
+                    RowBox[{"1", ";;", "6"}]}], "\[RightDoubleBracket]"}]}], 
+                  "]"}], ",", "20"}], "]"}]}], ";", "\[IndentingNewLine]", 
               "\[IndentingNewLine]", 
               RowBox[{"x", "=", 
                RowBox[{
@@ -4061,26 +3805,24 @@ Cell[BoxData[{
                 RowBox[{"frame", ",", "3"}], "\[RightDoubleBracket]"}]}], ";",
                "\[IndentingNewLine]", "\[IndentingNewLine]", 
               RowBox[{"minv", "=", 
-               RowBox[{"Min", "[", 
-                RowBox[{"Flatten", "@", 
-                 RowBox[{"sol", "\[LeftDoubleBracket]", 
-                  RowBox[{";;", ",", 
-                   RowBox[{"1", ";;", "2"}]}], "\[RightDoubleBracket]"}]}], 
-                "]"}]}], ";", "\[IndentingNewLine]", 
-              RowBox[{"maxv", "=", 
                RowBox[{"Max", "[", 
-                RowBox[{"Flatten", "@", 
-                 RowBox[{"sol", "\[LeftDoubleBracket]", 
-                  RowBox[{";;", ",", 
-                   RowBox[{"1", ";;", "2"}]}], "\[RightDoubleBracket]"}]}], 
-                "]"}]}], ";", "\[IndentingNewLine]", 
-              RowBox[{"minv", "=", 
-               RowBox[{"Max", "[", 
-                RowBox[{"minv", ",", 
+                RowBox[{
+                 RowBox[{"Min", "[", 
+                  RowBox[{"Flatten", "@", 
+                   RowBox[{"sol", "\[LeftDoubleBracket]", 
+                    RowBox[{";;", ",", 
+                    RowBox[{"1", ";;", "2"}]}], "\[RightDoubleBracket]"}]}], 
+                  "]"}], ",", 
                  RowBox[{"-", "3"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
               RowBox[{"maxv", "=", 
                RowBox[{"Min", "[", 
-                RowBox[{"maxv", ",", "3"}], "]"}]}], ";", 
+                RowBox[{
+                 RowBox[{"Max", "[", 
+                  RowBox[{"Flatten", "@", 
+                   RowBox[{"sol", "\[LeftDoubleBracket]", 
+                    RowBox[{";;", ",", 
+                    RowBox[{"1", ";;", "2"}]}], "\[RightDoubleBracket]"}]}], 
+                  "]"}], ",", "3"}], "]"}]}], ";", "\[IndentingNewLine]", 
               "\[IndentingNewLine]", 
               RowBox[{"x", "=", 
                RowBox[{
@@ -4603,7 +4345,7 @@ Cell[BoxData[
 }, Closed]]
 },
 WindowSize->{1598, 852},
-WindowMargins->{{0, Automatic}, {2, Automatic}},
+WindowMargins->{{Automatic, -1743}, {Automatic, 50}},
 ShowSelection->True,
 TrackCellChangeTimes->False,
 FrontEndVersion->"8.0 for Linux x86 (64-bit) (October 10, 2011)",
@@ -4624,49 +4366,49 @@ Cell[CellGroupData[{
 Cell[579, 22, 203, 4, 37, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
-Cell[785, 28, 822, 19, 66, "Input",
+Cell[785, 28, 822, 19, 70, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[1644, 52, 168, 3, 31, "Input",
+Cell[1644, 52, 143, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10001.}],
-Cell[1815, 57, 25235, 607, 2061, "Input",
+Cell[1790, 56, 25235, 607, 2012, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10001.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[27087, 669, 157, 3, 31, "Input",
+Cell[27062, 668, 157, 3, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10002.}],
-Cell[27247, 674, 46788, 1108, 3272, "Input",
+Cell[27222, 673, 46788, 1108, 3043, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10002.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[74072, 1787, 176, 3, 31, "Input",
+Cell[74047, 1786, 151, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10003.}],
-Cell[74251, 1792, 18286, 434, 1070, "Input",
+Cell[74201, 1790, 18286, 434, 956, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10003.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[92574, 2231, 150, 2, 31, "Input",
+Cell[92524, 2229, 150, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10004.}],
-Cell[92727, 2235, 44804, 1090, 2918, "Input",
+Cell[92677, 2233, 33910, 838, 2484, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10004.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[137568, 3330, 143, 2, 31, "Input",
+Cell[126624, 3076, 143, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10005.}],
-Cell[137714, 3334, 41185, 863, 3208, "Input",
+Cell[126770, 3080, 40979, 859, 3240, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10005.}]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[178936, 4202, 137, 2, 31, "Input",
+Cell[167786, 3944, 137, 2, 31, "Input",
  Evaluatable->False,
  CellGroupingRules->{GroupTogetherGrouping, 10006.}],
-Cell[179076, 4206, 14800, 395, 1469, "Input",
+Cell[167926, 3948, 14800, 395, 1435, "Input",
  CellGroupingRules->{GroupTogetherGrouping, 10006.}]
 }, Closed]]
 }
