@@ -154,8 +154,7 @@ void Riemann::twoCS(double t, int np, double *x, double (*f)(double), double *r,
 	/* also p1 = p2 <=> r1 e1 = r2 e2 */
 	for (int i = 0; i < np; i++) {
 		double y = x[i] - v * t;
-		if (y < 0)
-			y = y - floor(y);
+		y -= floor(y);
 		r[i] = r2 + (r1 - r2) * f(y);
 		e[i] = e2 + (e1 - e2) * f(y);
 	}
