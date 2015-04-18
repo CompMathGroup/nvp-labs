@@ -171,7 +171,7 @@ struct Beta6 : public Alphas {
 		if (sigma > 0)
 			return +b6(+sigma);
 		else
-			return -b7(-sigma);
+			return -b5(-sigma);
 	}
 };
 

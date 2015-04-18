@@ -26,9 +26,11 @@ $(TARGET): $(OBJS)
 	@echo "[AR] ... => "$(TARGET)
 	@$(AR) -o $@ $^
 
-clean: 
+clean:
 	$(RM) $(OBJS) $(TARGET)
 
-linalg.o:: linalg.cpp linalg.h array.h 
+$(PREFIX)/linalg.o:: linalg.cpp linalg.h array.h
 
-solver.o:: solver.cpp solver.h array.h 
+$(PREFIX)/gdsolver.o:: gdsolver.cpp solver.h array.h coeff.h
+
+$(PREFIX)/advsolver.o:: advsolver.cpp solver.h array.h coeff.h
