@@ -202,5 +202,7 @@ void HeatSolver::correct(const Alphas &scheme) {
 		for (int j = 0; j < N - 1; j++) {
 			u2[j] = sol[j] < tolerance ? 0 : sol[j];
 		}
-	}
+	} else
+		for (int j = 0; j < N - 1; j++)
+			u2[j] = sol[j];
 } // }}}
