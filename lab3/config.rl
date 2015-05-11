@@ -22,113 +22,94 @@ code = '{' (^'}')* '}';
 
 main := |*
 	'intersect' | '*' => {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 		tok = Parser::token::INTERSECT;
 		fbreak;
 	};
 	'union' | '+' | '|' => {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 		tok = Parser::token::UNION;
 		fbreak;
 	};
 	'subtract' | '-' | '\\' => {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 		tok = Parser::token::SUBTRACT;
 		fbreak;
 	};
 	'polygon' => {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 		tok = Parser::token::POLYGON;
 		fbreak;
 	};
 	'close' => {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 		tok = Parser::token::CLOSE;
 		fbreak;
 	};
 	'circle' => {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 		tok = Parser::token::CIRCLE;
 		fbreak;
 	};
 	'radius' => {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 		tok = Parser::token::RADIUS;
 		fbreak;
 	};
-	'dirichlet' => {
-		lloc->step();
-		lloc->columns(te - ts);
-		tok = Parser::token::DIRICHLET;
-		fbreak;
-	};
-	'neumann' => {
-		lloc->step();
-		lloc->columns(te - ts);
-		tok = Parser::token::NEUMANN;
-		fbreak;
-	};
-	'robin' => {
-		lloc->step();
-		lloc->columns(te - ts);
-		tok = Parser::token::ROBIN;
+	'bndcond' => {
+		lloc->step(); lloc->columns(te - ts);
+		tok = Parser::token::BNDCOND;
 		fbreak;
 	};
 	'solve' => {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 		tok = Parser::token::SOLVE;
 		fbreak;
 	};
 	'elliptic' => {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 		tok = Parser::token::ELLIPTIC;
 		fbreak;
 	};
+	'in' => {
+		lloc->step(); lloc->columns(te - ts);
+		tok = Parser::token::IN;
+		fbreak;
+	};
+	'meshsize' => {
+		lloc->step(); lloc->columns(te - ts);
+		tok = Parser::token::MESHSIZE;
+		fbreak;
+	};
 	code => {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 		lval->sval = new std::string(ts + 1, te - 1);
 		tok = Parser::token::CODE;
 		fbreak;
 	};
 	identifier => {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 		lval->sval = new std::string(ts, te);
 		tok = Parser::token::IDENTIFIER;
 		fbreak;
 	};
 	number => {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 		lval->dval = strtod(ts, te);
 		tok = Parser::token::NUMBER;
 		fbreak;
 	};
 	comment {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 	};
 	[ ;\t\v\f\r]+ {
-		lloc->step();
-		lloc->columns(te - ts);
+		lloc->step(); lloc->columns(te - ts);
 	};
 	[\n]+ => {
-		lloc->step();
-		lloc->lines(te - ts);
+		lloc->step(); lloc->lines(te - ts);
 	};
 	any => {
-		lloc->step();
-		lloc->columns(1);
+		lloc->step(); lloc->columns(1);
 		unsigned char tc = *ts;
 		tok = static_cast<Parser::token_type>(tc);
 		fbreak;

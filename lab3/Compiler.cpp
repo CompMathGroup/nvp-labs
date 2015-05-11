@@ -12,7 +12,14 @@ void BoundaryCondition::compile() {
 
 BcVal BoundaryCondition::eval(const Point &p) const {
  /*   std::cout << "eval at (" << p.x << ", " << p.y << ")" << std::endl; */
-    return BcVal{1.,2,3.};
+    return BcVal{1, 2, 3};
+}
+
+void Problem::compile() {
+}
+
+RhsVal Problem::eval(const Point &p) const {
+    return RhsVal{1, 0, 0};
 }
 
 }

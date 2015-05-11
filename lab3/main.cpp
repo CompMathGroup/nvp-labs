@@ -12,6 +12,7 @@ using namespace config;
 struct IntPoint {
     Point p;
     bool bnd;
+    RhsVal rhs;
 };
 
 struct BndPoint {
@@ -24,7 +25,7 @@ typedef Container<BndPoint> Boundary;
 
 std::ofstream logfile;
 
-void mesh(const Region *r, Boundary &bnd, Interior &inter, double hbord, double h, int lays) {
+void mesh(const Region *r, const Problem *p, Boundary &bnd, Interior &inter, double hbord, double h, double aspect, int lays) {
     const auto &cont = r->contour(hbord);
 
     for (const auto &p : cont) {
@@ -37,7 +38,7 @@ void mesh(const Region *r, Boundary &bnd, Interior &inter, double hbord, double 
         bnd.add(BndPoint{p, n, bc});
         inter.add_nomerge(IntPoint{p,true});
 
-        double s = 1;
+        double s = aspect;
 
         for (int i = 1; i <= lays; i++) {
             const Point pp(p.x - s * i * hbord * n.x, p.y - s * i * hbord * n.y);
@@ -60,7 +61,7 @@ void mesh(const Region *r, Boundary &bnd, Interior &inter, double hbord, double 
         for (double x = ll.x + 0.5 * row * h; x <= ur.x; x += h) {
             Point p(x, y);
             if (r->inside(p))
-                inter.add_nomerge(IntPoint{p,false});
+                inter.add_nomerge(IntPoint{p, false, });
         }
         row = 1 - row;
     }
@@ -68,7 +69,7 @@ void mesh(const Region *r, Boundary &bnd, Interior &inter, double hbord, double 
 }
 
 bool computeInternalEquation(
-        const Point &pc,
+        const IntPoint &ipoint,
         const std::vector<std::pair<IntPoint, Bucket<IntPoint> *>> &idata,
         std::vector<std::pair<int, double>> &neibs,
         std::vector<double> &alpha,
@@ -76,6 +77,8 @@ bool computeInternalEquation(
         std::vector<Point> &bad
 )
 {
+    const Point &pc = ipoint.p;
+
     double e0 = 0;
     double e1 = 0;
     double e2 = 0;
@@ -166,15 +169,16 @@ bool computeInternalEquation(
 }
 
 bool computeBoundaryEquation(
-        const Point &pc,
-        const std::vector<std::pair<IntPoint, Bucket<IntPoint> *>> &idata,
         const BndPoint &bdata,
+        const std::vector<std::pair<IntPoint, Bucket<IntPoint> *>> &idata,
         std::vector<std::pair<int, double>> &neibs,
         std::vector<double> &alpha,
         double &alpha0, double &beta,
         std::vector<Point> &bad
 )
 {
+    const Point &pc = bdata.p;
+
     double nux = bdata.n.x;
     double nuy = bdata.n.y;
 
@@ -346,11 +350,9 @@ std::vector<Point> build_coeff(
     int badbnd = 0;
 
     for (size_t i = 0; i < neibs.size(); i++) {
-        const Point &pc = idata[i].first.p;
-
 //        std::cout << "p = " << pc<< " i = " << i << " Ns = " << neibs[i].size() << std::endl;
         if (!idata[i].first.bnd) {
-            bool f = computeInternalEquation(pc, idata, neibs[i], alpha[i], alpha0[i], beta[i], bad);
+            bool f = computeInternalEquation(idata[i].first, idata, neibs[i], alpha[i], alpha0[i], beta[i], bad);
             if (!f)
                 badint++;
         }
@@ -358,10 +360,8 @@ std::vector<Point> build_coeff(
 
     for (size_t ib = 0; ib < bdata.size(); ib++) {
         size_t i = bndidx[ib];
-        const Point &pc = bdata[ib].first.p;
-
 //        std::cout << "p = " << pc << " i = " << i << " Ns = " << neibs[i].size() << std::endl;
-        bool f = computeBoundaryEquation(pc, idata, bdata[ib].first, neibs[i], alpha[i], alpha0[i], beta[i], bad);
+        bool f = computeBoundaryEquation(bdata[ib].first, idata, neibs[i], alpha[i], alpha0[i], beta[i], bad);
         if (!f)
             badbnd++;
     }
@@ -382,18 +382,21 @@ int main(int argc, char **argv) {
 	std::fstream f(argv[1], std::ios::in);
 	Lexer lexer(f, argv[1]);
 
-	const Region *config = 0;
-	Parser parser(lexer, config);
+	const Config *allconfig = 0;
+	Parser parser(lexer, allconfig);
 //    parser.set_debug_level(10);
 
 	if (parser.parse())
 		return 1;
 
+    const Region *config = allconfig->r;
+
     std::cout << config->print() << std::endl;
 
-    double hbord = 0.2;
+    double hbord = allconfig->ms.hbound;
+    double h = allconfig->ms.hinter;
+    double aspect = allconfig->ms.aspect;
     int lays = 3;
-    double h = 0.2;
 
     const auto &bnds = config->bounds();
     Point ll = bnds.first;
@@ -407,7 +410,7 @@ int main(int argc, char **argv) {
     Interior inter(ll, ur, 5 * h, 0.005);
     Boundary bnd(ll, ur, 5 * h, 0.005);
 
-    mesh(config, bnd, inter, hbord, h, lays);
+    mesh(config, bnd, inter, hbord, h, aspect, lays);
 
     std::vector<std::pair<IntPoint, Bucket<IntPoint> *>> idata;
     std::vector<int> bndidx;
@@ -457,7 +460,7 @@ int main(int argc, char **argv) {
             bnd.remove(p);
         }
 
-        if (iter > maxiter) {
+        if (iter >= maxiter) {
             std::cerr << "Could not remove all bad points in " << maxiter << " iterations. Try different stepsize" << std::endl;
             abort();
         }

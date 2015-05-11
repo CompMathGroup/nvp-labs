@@ -17,6 +17,7 @@
 	typedef Register<Region> RegRegister;
 	typedef Register<BoundaryCondition> BcRegister;
 	typedef Register<Point> PointRegister;
+	typedef Register<Problem> ProblemRegister;
 
 	class Lexer;
 
@@ -43,13 +44,18 @@
 	Path *path;
 	const BoundaryCondition *bc;
 	const Region *reg;
-	Region *ret;
+	const MeshSize *ms;
+	const Config *ret;
+	const Problem *prob;
 }
 
 %type<point> point cpoint
 %type<path>  path
 %type<bc>    bc cbc
-%type<reg>	 region polygon circle cregion config
+%type<reg>	 region polygon circle cregion
+%type<ms>	 meshsize
+%type<prob>  problem cproblem
+%type<ret>	 config
 
 %token<dval> NUMBER
 %token<sval> IDENTIFIER
@@ -59,18 +65,27 @@
 %token       CLOSE
 %token       CIRCLE
 %token       RADIUS
-%token       NEUMANN
-%token       DIRICHLET
-%token       ROBIN
+%token       BNDCOND
+%token       SOLVE
+%token       ELLIPTIC
+%token       MESHSIZE
+%token       IN
 %left        UNION SUBTRACT
 %left        INTERSECT
 
 %parse-param { config::Lexer &lexer}
-%parse-param { const Region *&config }
+%parse-param { const Config *&config }
 %lex-param { config::Lexer &lexer }
 
 %start config
 %%
+
+cproblem : ELLIPTIC CODE { $$ = new Problem(*$2); delete $2; ProblemRegister::add($$); }
+		 ;
+
+problem : cproblem   { $$ = $1; }
+		| IDENTIFIER { $$ = ProblemRegister::lookup(*$1, @1); delete $1; }
+		;
 
 cpoint	: '(' NUMBER ',' NUMBER ')' { $$ = new Point($2, $4); PointRegister::add($$); }
 		;
@@ -79,9 +94,7 @@ point	: cpoint
 		| IDENTIFIER				{ $$ = PointRegister::lookup(*$1, @1); delete $1; }
 		;
 
-cbc		: DIRICHLET CODE	{ $$ = new Diriclet(*$2); delete $2; BcRegister::add($$); }
-		| NEUMANN CODE		{ $$ = new Neumann(*$2); delete $2; BcRegister::add($$); }
-		| ROBIN CODE CODE	{ $$ = new Robin(*$2, *$3); delete $2; delete $3; BcRegister::add($$); }
+cbc		: BNDCOND CODE	{ $$ = new BoundaryCondition(*$2); delete $2; BcRegister::add($$); }
 		;
 
 bc		: cbc				{ $$ = $1; }
@@ -108,13 +121,20 @@ cregion	: polygon					{ $$ = $1; }
 
 region	: cregion					{ $$ = $1; }
 		| IDENTIFIER				{ $$ = RegRegister::lookup(*$1, @1); delete $1; }
+		;
 
 statement : IDENTIFIER '=' cregion	{ RegRegister::add($3, *$1); delete $1; }
 		  | IDENTIFIER '=' cbc		{ BcRegister::add($3, *$1); delete $1; }
 		  | IDENTIFIER '=' cpoint	{ PointRegister::add($3, *$1); delete $1; }
+		  | IDENTIFIER '=' cproblem	{ ProblemRegister::add($3, *$1); delete $1; }
 		  ;
 
-config	: region			{ config = $1; }
+meshsize : MESHSIZE NUMBER NUMBER NUMBER { $$ = new MeshSize($2, $3, $4); }
+		 | MESHSIZE NUMBER NUMBER        { $$ = new MeshSize($2, $3); }
+		 | MESHSIZE NUMBER               { $$ = new MeshSize($2); }
+		 ;
+
+config	: SOLVE problem IN region meshsize { config = new Config($2, $4, *$5); delete $5; }
 		| statement config	{ $$ = $2; }
 		;
 %%

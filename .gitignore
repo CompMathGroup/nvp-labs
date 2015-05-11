@@ -16,6 +16,8 @@
 #build
 lab1/build
 lab2/build
+lab3/build
 
 lab1/release
 lab2/release
+lab3/release

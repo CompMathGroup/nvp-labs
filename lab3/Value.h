@@ -23,34 +23,29 @@ struct BcVal {
     double a, b, g;
 };
 
+struct RhsVal {
+    double f, fx, fy;
+};
+
 struct BoundaryCondition {
-    const std::string a, b, g;
-    BoundaryCondition(const std::string &a, const std::string &b, const std::string &g)
-        : a(a), b(b), g(g)
+    const std::string code;
+    BoundaryCondition(const std::string &code)
+        : code(code)
     {
         compile();
     }
     void compile();
     BcVal eval(const Point &p) const;
-    virtual ~BoundaryCondition() { }
 };
 
-struct Diriclet : public BoundaryCondition {
-    Diriclet(const std::string &g)
-        : BoundaryCondition("return 0;", "return 1;", g)
-    { }
-};
-
-struct Robin : public BoundaryCondition {
-    Robin(const std::string &b, const std::string &g)
-        : BoundaryCondition("return 1;", b, g)
-    { }
-};
-
-struct Neumann : public Robin {
-    Neumann(const std::string &g)
-        : Robin("return 0;", g)
-    { }
+struct Problem {
+    const std::string eq;
+    double e11, e12, e22, e1, e2, e0;
+    Problem(const std::string &eq) : eq(eq) {
+        compile();
+    }
+    void compile();
+    RhsVal eval(const Point &p) const;
 };
 
 struct Path {
@@ -275,6 +270,21 @@ struct Intersect : public Region {
             Point(std::max(b1.second.x, b2.second.x), std::max(b1.second.y, b2.second.y))
         );
     }
+};
+
+struct MeshSize {
+    double hinter, hbound, aspect;
+    MeshSize(double hinter, double hbound, double aspect = 1)
+        : hinter(hinter), hbound(hbound), aspect(aspect)
+    { }
+    MeshSize(double h) : MeshSize(h, h) { }
+};
+
+struct Config {
+    const Problem *p;
+    const Region *r;
+    MeshSize ms;
+    Config(const Problem *p, const Region *r, const MeshSize &ms) : p(p), r(r), ms(ms) { }
 };
 
 }

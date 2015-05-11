@@ -1,7 +1,7 @@
 #ifndef __CONFIG__LEXER_H__
 #define __CONFIG__LEXER_H__
 
-#include "config.tab.hh"
+#include "parser.hpp"
 #include <istream>
 #include <vector>
 #include <string>
