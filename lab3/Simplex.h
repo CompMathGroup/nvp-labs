@@ -9,7 +9,8 @@ namespace simplex {
 enum class Status {
     Solved = 0,
     Unbounded = 1,
-    Infeasible = -1
+    Infeasible = -1,
+    FailedToStop = -2
 };
 
 inline std::string textStatus(Status s) {
@@ -19,6 +20,8 @@ inline std::string textStatus(Status s) {
         return "Unbounded";
     if (s == Status::Infeasible)
         return "Infeasible";
+    if (s == Status::FailedToStop)
+        return "FailedToStop";
     return "???";
 }
 

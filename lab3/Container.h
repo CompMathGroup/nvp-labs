@@ -14,22 +14,22 @@ struct Bucket {
     std::list<T> data;
 
     Bucket() : c(0, 0), a(0) { }
-    bool incore(const Point &p) {
+    bool incore(const Point &p) const {
         bool xin = (p.x > c.x - 0.5 * a) && (p.x <= c.x + 0.5 * a);
         bool yin = (p.y > c.y - 0.5 * a) && (p.y <= c.y + 0.5 * a);
         return xin && yin;
     }
-    bool inall(const Point &p) {
+    bool inall(const Point &p) const {
         bool xin = (p.x > c.x - a) && (p.x <= c.x + a);
         bool yin = (p.y > c.y - a) && (p.y <= c.y + a);
         return xin && yin;
     }
-    double distance(const Point &p1, const Point &p2) {
+    double distance(const Point &p1, const Point &p2) const {
         return std::abs(p2.x - p1.x) + std::abs(p2.y - p1.y);
     }
-    typename std::list<T>::iterator find_closest(const Point &p, double &dist) {
+    typename std::list<T>::const_iterator find_closest(const Point &p, double &dist) const {
         dist = distance(p, data.front().p);
-        typename std::list<T>::iterator ret = data.begin();
+        typename std::list<T>::const_iterator ret = data.begin();
         for (auto it = data.begin(); it != data.end(); ++it) {
             double dd = distance(p, it->p);
             if (dd < dist) {
@@ -91,12 +91,21 @@ struct Container {
         for (auto &b : bucks)
             b.remove(p, b.a * merge_tol);
     }
-    std::vector<std::pair<T, Bucket<T> *> > data() {
-        std::vector<std::pair<T, Bucket<T> *> > ret;
-        for (auto &b : bucks)
+    std::vector<std::pair<T, const Bucket<T> *> > data() const {
+        std::vector<std::pair<T, const Bucket<T> *> > ret;
+        for (size_t ib = 0; ib < bucks.size(); ib++) {
+            const auto &b = bucks[ib];
             for (const auto &v : b.data)
-                if (b.incore(v.p))
-                    ret.push_back(std::make_pair(v, &b));
+                if (b.incore(v.p)) {
+                    bool used = false;
+                    for (size_t j = 0; j < ib; j++)
+                        if (bucks[j].incore(v.p))
+                            used = true;
+                    if (!used)
+                        ret.push_back(std::make_pair(v, &b));
+                }
+        }
+
         return ret;
     }
 };

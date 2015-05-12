@@ -104,7 +104,8 @@ Status simplexMethod(MatrixXd &A, VectorXd &b, RowVectorXd &c, vector<int> &basi
         c -= A.row(i) * c[j];
     }
 
-    while (true) {
+    const int maxiters = 1000;
+    for (int iter = 0; iter < maxiters; iter++) {
         if (debug)
             print_program(A, b, c, basis, obj);
         int ev = 0;
@@ -148,6 +149,8 @@ Status simplexMethod(MatrixXd &A, VectorXd &b, RowVectorXd &c, vector<int> &basi
         c -= p2 * A.row(lvr);
         obj += p2 * b[lvr];
     }
+
+    return Status::FailedToStop;
 }
 
 /* On exit A(:, basis) = E

@@ -74,7 +74,7 @@ void mesh(const Region *r, const Problem *prob, Boundary &bnd, Interior &inter, 
 bool computeInternalEquation(
         const Problem *prob,
         const IntPoint &ipoint,
-        const std::vector<std::pair<IntPoint, Bucket<IntPoint> *>> &idata,
+        const std::vector<std::pair<IntPoint, const Bucket<IntPoint> *>> &idata,
         std::vector<std::pair<int, double>> &neibs,
         std::vector<double> &alpha,
         double &alpha0, double &beta,
@@ -175,7 +175,7 @@ bool computeInternalEquation(
 bool computeBoundaryEquation(
         const Problem *prob, double f,
         const BndPoint &bdata,
-        const std::vector<std::pair<IntPoint, Bucket<IntPoint> *>> &idata,
+        const std::vector<std::pair<IntPoint, const Bucket<IntPoint> *>> &idata,
         std::vector<std::pair<int, double>> &neibs,
         std::vector<double> &alpha,
         double &alpha0, double &beta,
@@ -288,7 +288,7 @@ bool computeBoundaryEquation(
 
 std::vector<Point> buildCoeff(
     Interior inter, Boundary bnd, const Region *reg, const Problem *prob,
-    std::vector<std::pair<IntPoint, Bucket<IntPoint> *> > &idata,
+    std::vector<std::pair<IntPoint, const Bucket<IntPoint> *> > &idata,
     std::vector<int> &bndidx,
     std::vector<std::vector<std::pair<int, double> > > &neibs,
     std::vector<std::vector<double> > &alpha,
@@ -361,7 +361,6 @@ std::vector<Point> buildCoeff(
     int badbnd = 0;
 
     for (size_t i = 0; i < neibs.size(); i++) {
-//        std::cout << "p = " << pc<< " i = " << i << " Ns = " << neibs[i].size() << std::endl;
         if (!idata[i].first.bnd) {
             bool f = computeInternalEquation(prob, idata[i].first, idata, neibs[i], alpha[i], alpha0[i], beta[i], bad);
             if (!f)
@@ -372,7 +371,6 @@ std::vector<Point> buildCoeff(
     for (size_t ib = 0; ib < bdata.size(); ib++) {
         size_t i = bndidx[ib];
         double rhsf = idata[i].first.rhs.f;
-//        std::cout << "p = " << pc << " i = " << i << " Ns = " << neibs[i].size() << std::endl;
         bool f = computeBoundaryEquation(prob, rhsf, bdata[ib].first, idata, neibs[i], alpha[i], alpha0[i], beta[i], bad);
         if (!f)
             badbnd++;
@@ -422,14 +420,16 @@ int main(int argc, char **argv) {
     ur.x += 10 * h;
     ur.y += 10 * h;
 
-    Interior inter(ll, ur, 5 * h, 0.005);
-    Boundary bnd(ll, ur, 5 * h, 0.005);
+    const double q = 5;
+
+    Interior inter(ll, ur, q * h);
+    Boundary bnd(ll, ur, q * h);
 
     const Problem *prob = config->p;
 
     mesh(reg, prob, bnd, inter, hbord, h, aspect, lays);
 
-    std::vector<std::pair<IntPoint, Bucket<IntPoint> *>> idata;
+    std::vector<std::pair<IntPoint, const Bucket<IntPoint> *>> idata;
     std::vector<int> bndidx;
     std::vector<std::vector<std::pair<int, double> > > neibs;
     std::vector<std::vector<double> > alpha;
@@ -443,7 +443,7 @@ int main(int argc, char **argv) {
                 idata, bndidx, neibs, alpha, alpha0, beta
             );
         std::cout << "From " << idata.size() << " points "<< bad.size() << " are marked as bad" << std::endl;
-
+#if 0
         std::ofstream f("neibs." + std::to_string(iter));
         for (size_t i = 0; i < neibs.size(); i++)
             if (!idata[i].first.bnd)
@@ -468,7 +468,7 @@ int main(int argc, char **argv) {
         for (size_t i = 0; i < bad.size(); i++)
             g << bad[i].x << " " << bad[i].y << std::endl;
         g.close();
-
+#endif
         if (bad.empty())
             break;
 
@@ -544,13 +544,19 @@ int main(int argc, char **argv) {
     std::vector<double> U(numpts, 0);
     std::vector<double> Unew(numpts, 0);
 
+    std::ofstream debug("debug");
+    for (const auto &v : idata) {
+        debug << v.first.p << " " << v.second << std::endl;
+    }
+    debug.close();
+
+    const auto ref = idata[0].second;
+
     for (size_t i = 0; i < numpts; i++) {
-        Unew[i] = alpha0[i];
-        for (size_t j = 0; j < neibs[i].size(); j++)
-            Unew[i] += alpha[i][j];
+        Unew[i] = (idata[i].second - ref) & 1;
     }
 
-//    save("amplificaton", 0, points, trifilt, Unew);
+    save("amplificaton", 0, points, trifilt, Unew);
 
     for (int iteration = 0; iteration < 10000000; iteration ++) {
         double diff = 0;
