@@ -383,7 +383,7 @@ std::vector<Point> buildCoeff(
 
 int main(int argc, char **argv) {
 	if (argc < 2) {
-		std::cerr << "USAGE: driver <config file>" << std::endl;
+		std::cerr << "USAGE: ellipt <config.geom>" << std::endl;
 		return 1;
 	}
 
@@ -544,6 +544,7 @@ int main(int argc, char **argv) {
     std::vector<double> U(numpts, 0);
     std::vector<double> Unew(numpts, 0);
 
+#if 0
     std::ofstream debug("debug");
     for (const auto &v : idata) {
         debug << v.first.p << " " << v.second << std::endl;
@@ -557,6 +558,7 @@ int main(int argc, char **argv) {
     }
 
     save("amplificaton", 0, points, trifilt, Unew);
+#endif
 
     for (int iteration = 0; iteration < 10000000; iteration ++) {
         double diff = 0;
@@ -574,7 +576,7 @@ int main(int argc, char **argv) {
 
         if ((iteration % 10000 == 0) || converged) {
             std::cout << "iteration " << iteration << ", difference = " << diff << std::endl;
-            save("solution", iteration, points, trifilt, U);
+            save(argv[1], iteration, points, trifilt, U);
         }
 
         if (converged)

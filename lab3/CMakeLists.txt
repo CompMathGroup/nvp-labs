@@ -34,6 +34,6 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/delaunay)
 
 set(SOURCES Polygon.cpp Simplex.cpp exprwrap.cpp main.cpp vtk.cpp)
 
-add_executable(main ${BISON_ConfigParser_OUTPUTS} ${RAGEL_ConfigTokens_OUTPUTS} ${SOURCES})
-target_link_libraries(main delaunay)
+add_executable(ellipt ${BISON_ConfigParser_OUTPUTS} ${RAGEL_ConfigTokens_OUTPUTS} ${SOURCES})
+target_link_libraries(ellipt delaunay)
 
