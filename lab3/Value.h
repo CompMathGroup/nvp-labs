@@ -6,6 +6,9 @@
 #include <ostream>
 #include <cmath>
 #include <cassert>
+#include <iostream>
+
+#include "exprwrap.h"
 
 namespace config {
 
@@ -28,24 +31,67 @@ struct RhsVal {
 };
 
 struct BoundaryCondition {
-    const std::string code;
+    interpreted::Expression e;
     BoundaryCondition(const std::string &code)
-        : code(code)
+        : e(code, {"x", "y", "u", "dudn"})
     {
-        compile();
     }
-    void compile();
-    BcVal eval(const Point &p) const;
+    BcVal eval(const Point &p) const {
+        double x = p.x;
+        double y = p.y;
+        // g - a dudn - b u = 0
+        double g = e(x, y, 0, 0);
+        double a = g - e(x, y, 0, 1);
+        double b = g - e(x, y, 1, 0);
+        return BcVal{a, b, g};
+    }
 };
 
 struct Problem {
-    const std::string eq;
+    interpreted::Expression e;
     double e11, e12, e22, e1, e2, e0;
-    Problem(const std::string &eq) : eq(eq) {
-        compile();
+    Problem(const std::string &eq) : e(eq, {"x", "y", "uxx", "uxy", "uyy", "ux", "uy", "u"}) {
+        double x = 0;
+        double y = 0;
+
+        // uxx + uyy - f = 0
+        double f = -e(x, y, 0, 0, 0, 0, 0, 0);
+        e11 = e(x, y, 1, 0, 0, 0, 0, 0) + f;
+        e12 = e(x, y, 0, 1, 0, 0, 0, 0) + f;
+        e22 = e(x, y, 0, 0, 1, 0, 0, 0) + f;
+        e1  = e(x, y, 0, 0, 0, 1, 0, 0) + f;
+        e2  = e(x, y, 0, 0, 0, 0, 1, 0) + f;
+        e0  = e(x, y, 0, 0, 0, 0, 0, 1) + f;
+
+        std::cout << "Lu = "
+            << "(" << e11 << ") * uxx + "
+            << "(" << e12 << ") * uxy + "
+            << "(" << e22 << ") * uyy + "
+            << "(" << e1  << ") * ux + "
+            << "(" << e2  << ") * uy + "
+            << "(" << e0  << ") * u" << std::endl;
+
+        if (e11 <= 0 || e22 <= 0 || e11 * e22 < 4 * e12 * e12) {
+            std::cerr << "The problem is not of elliptic type. Try changing sign." << std::endl;
+        }
     }
-    void compile();
-    RhsVal eval(const Point &p) const;
+    RhsVal eval(const Point &p) const {
+        double x = p.x;
+        double y = p.y;
+
+        double h = 1e-6;
+        double f = -e(x, y, 0, 0, 0, 0, 0, 0);
+
+        double f1 = -e(x + h, y, 0, 0, 0, 0, 0, 0);
+        double f2 = -e(x - h, y, 0, 0, 0, 0, 0, 0);
+        double f3 = -e(x, y + h, 0, 0, 0, 0, 0, 0);
+        double f4 = -e(x, y - h, 0, 0, 0, 0, 0, 0);
+
+        double fx = (f1 - f2) / (2 * h);
+        double fy = (f3 - f4) / (2 * h);
+
+        return RhsVal{f, fx, fy};
+    }
 };
 
 struct Path {
@@ -86,7 +132,8 @@ struct Polygon : public Region {
     virtual std::pair<Point, Point> bounds() const override;
     virtual std::string print() const override {
         std::string ret = "Poly[";
-        for (const auto &p : ps) {
+        for (size_t j = 0; j < ps.size() - 2; j++) {
+            const auto &p = ps[j];
             ret += "{";
             ret += std::to_string(p.x);
             ret += ", ";
@@ -103,7 +150,7 @@ struct Circle : public Region {
     const double radius;
     const BoundaryCondition *bc;
     Circle(const Point &p, const double r, const BoundaryCondition *bc)
-        : center(p), radius(r)
+        : center(p), radius(r), bc(bc)
     { }
     virtual bool inside(const Point &p) const override {
         double dx = p.x - center.x;

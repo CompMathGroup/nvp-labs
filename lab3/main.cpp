@@ -7,6 +7,9 @@
 #include <cassert>
 #include <algorithm>
 
+#include <delaunay2.h>
+#include "vtk.h"
+
 using namespace config;
 
 struct IntPoint {
@@ -25,7 +28,7 @@ typedef Container<BndPoint> Boundary;
 
 std::ofstream logfile;
 
-void mesh(const Region *r, const Problem *p, Boundary &bnd, Interior &inter, double hbord, double h, double aspect, int lays) {
+void mesh(const Region *r, const Problem *prob, Boundary &bnd, Interior &inter, double hbord, double h, double aspect, int lays) {
     const auto &cont = r->contour(hbord);
 
     for (const auto &p : cont) {
@@ -36,14 +39,14 @@ void mesh(const Region *r, const Problem *p, Boundary &bnd, Interior &inter, dou
         const BcVal bc = r->condition(p);
 
         bnd.add(BndPoint{p, n, bc});
-        inter.add_nomerge(IntPoint{p,true});
+        inter.add(IntPoint{p, true, prob->eval(p)});
 
         double s = aspect;
 
         for (int i = 1; i <= lays; i++) {
             const Point pp(p.x - s * i * hbord * n.x, p.y - s * i * hbord * n.y);
             if (r->inside(pp))
-                inter.add_nomerge(IntPoint{pp,false});
+                inter.add(IntPoint{pp, false, prob->eval(p)});
         }
     }
 
@@ -61,7 +64,7 @@ void mesh(const Region *r, const Problem *p, Boundary &bnd, Interior &inter, dou
         for (double x = ll.x + 0.5 * row * h; x <= ur.x; x += h) {
             Point p(x, y);
             if (r->inside(p))
-                inter.add_nomerge(IntPoint{p, false, });
+                inter.add(IntPoint{p, false, prob->eval(p)});
         }
         row = 1 - row;
     }
@@ -69,6 +72,7 @@ void mesh(const Region *r, const Problem *p, Boundary &bnd, Interior &inter, dou
 }
 
 bool computeInternalEquation(
+        const Problem *prob,
         const IntPoint &ipoint,
         const std::vector<std::pair<IntPoint, Bucket<IntPoint> *>> &idata,
         std::vector<std::pair<int, double>> &neibs,
@@ -79,16 +83,16 @@ bool computeInternalEquation(
 {
     const Point &pc = ipoint.p;
 
-    double e0 = 0;
-    double e1 = 0;
-    double e2 = 0;
-    double e11 = 1;
-    double e12 = 0;
-    double e22 = 1;
+    double e0  = prob->e0;
+    double e1  = prob->e1;
+    double e2  = prob->e2;
+    double e11 = prob->e11;
+    double e12 = prob->e12;
+    double e22 = prob->e22;
 
-    double f = 1;
-    double fx = 0;
-    double fy = 0;
+    double f  = ipoint.rhs.f;
+    double fx = ipoint.rhs.fx;
+    double fy = ipoint.rhs.fy;
 
     const int K = 7;
 
@@ -169,6 +173,7 @@ bool computeInternalEquation(
 }
 
 bool computeBoundaryEquation(
+        const Problem *prob, double f,
         const BndPoint &bdata,
         const std::vector<std::pair<IntPoint, Bucket<IntPoint> *>> &idata,
         std::vector<std::pair<int, double>> &neibs,
@@ -186,17 +191,23 @@ bool computeBoundaryEquation(
     double sigma = bdata.bc.b;
     double rho = bdata.bc.g;
 
-    double e0 = 0;
-    double e1 = 0;
-    double e2 = 0;
-    double e11 = 1;
-    double e12 = 0;
-    double e22 = 1;
+    double e0  = prob->e0;
+    double e1  = prob->e1;
+    double e2  = prob->e2;
+    double e11 = prob->e11;
+    double e12 = prob->e12;
+    double e22 = prob->e22;
 
-    double f = 1;
+    double eps = 1e-6;
 
-    if (omega < 0) {
+    if (omega <= -eps) {
         omega = -omega;
+        sigma = -sigma;
+        rho = -rho;
+    }
+
+    if (std::abs(omega) < eps && sigma < 0) {
+        omega = 0;
         sigma = -sigma;
         rho = -rho;
     }
@@ -275,8 +286,8 @@ bool computeBoundaryEquation(
     return true;
 }
 
-std::vector<Point> build_coeff(
-    Interior inter, Boundary bnd, const Region *reg,
+std::vector<Point> buildCoeff(
+    Interior inter, Boundary bnd, const Region *reg, const Problem *prob,
     std::vector<std::pair<IntPoint, Bucket<IntPoint> *> > &idata,
     std::vector<int> &bndidx,
     std::vector<std::vector<std::pair<int, double> > > &neibs,
@@ -330,7 +341,7 @@ std::vector<Point> build_coeff(
             continue;
         for (size_t j = 0; j < bdata.size(); j++)
             if (idata[i].second->incore(bdata[j].first.p)) {
-                if (idata[i].second->distance(idata[i].first.p, bdata[j].first.p) < 1e-10)
+                if (idata[i].second->distance(idata[i].first.p, bdata[j].first.p) < 1.01 * idata[i].second->a * inter.merge_tol)
                     bndidx[j] = i;
             }
     }
@@ -352,7 +363,7 @@ std::vector<Point> build_coeff(
     for (size_t i = 0; i < neibs.size(); i++) {
 //        std::cout << "p = " << pc<< " i = " << i << " Ns = " << neibs[i].size() << std::endl;
         if (!idata[i].first.bnd) {
-            bool f = computeInternalEquation(idata[i].first, idata, neibs[i], alpha[i], alpha0[i], beta[i], bad);
+            bool f = computeInternalEquation(prob, idata[i].first, idata, neibs[i], alpha[i], alpha0[i], beta[i], bad);
             if (!f)
                 badint++;
         }
@@ -360,8 +371,9 @@ std::vector<Point> build_coeff(
 
     for (size_t ib = 0; ib < bdata.size(); ib++) {
         size_t i = bndidx[ib];
+        double rhsf = idata[i].first.rhs.f;
 //        std::cout << "p = " << pc << " i = " << i << " Ns = " << neibs[i].size() << std::endl;
-        bool f = computeBoundaryEquation(bdata[ib].first, idata, neibs[i], alpha[i], alpha0[i], beta[i], bad);
+        bool f = computeBoundaryEquation(prob, rhsf, bdata[ib].first, idata, neibs[i], alpha[i], alpha0[i], beta[i], bad);
         if (!f)
             badbnd++;
     }
@@ -382,35 +394,40 @@ int main(int argc, char **argv) {
 	std::fstream f(argv[1], std::ios::in);
 	Lexer lexer(f, argv[1]);
 
-	const Config *allconfig = 0;
-	Parser parser(lexer, allconfig);
+	const Config *configraw = 0;
+	Parser parser(lexer, configraw);
 //    parser.set_debug_level(10);
 
 	if (parser.parse())
 		return 1;
 
-    const Region *config = allconfig->r;
+    std::unique_ptr<const Config> config(configraw);
 
-    std::cout << config->print() << std::endl;
+    const Region *reg = config->r;
 
-    double hbord = allconfig->ms.hbound;
-    double h = allconfig->ms.hinter;
-    double aspect = allconfig->ms.aspect;
+    std::cout << reg->print() << std::endl;
+
+    double hbord = config->ms.hbound;
+    double h = config->ms.hinter;
+    double aspect = config->ms.aspect;
     int lays = 3;
 
-    const auto &bnds = config->bounds();
+    const auto &bnds = reg->bounds();
     Point ll = bnds.first;
     Point ur = bnds.second;
+    const double diam = ur.x - ll.x + ur.y - ll.y;
 
-    ll.x -= h;
-    ll.y -= h;
-    ur.x -= h;
-    ur.y -= h;
+    ll.x -= 10 * h;
+    ll.y -= 10 * h;
+    ur.x += 10 * h;
+    ur.y += 10 * h;
 
     Interior inter(ll, ur, 5 * h, 0.005);
     Boundary bnd(ll, ur, 5 * h, 0.005);
 
-    mesh(config, bnd, inter, hbord, h, aspect, lays);
+    const Problem *prob = config->p;
+
+    mesh(reg, prob, bnd, inter, hbord, h, aspect, lays);
 
     std::vector<std::pair<IntPoint, Bucket<IntPoint> *>> idata;
     std::vector<int> bndidx;
@@ -422,7 +439,7 @@ int main(int argc, char **argv) {
     int maxiter = 10;
 
     for (int iter = 0; ; iter++) {
-        const auto bad = build_coeff(inter, bnd, config,
+        const auto bad = buildCoeff(inter, bnd, reg, prob,
                 idata, bndidx, neibs, alpha, alpha0, beta
             );
         std::cout << "From " << idata.size() << " points "<< bad.size() << " are marked as bad" << std::endl;
@@ -464,6 +481,98 @@ int main(int argc, char **argv) {
             std::cerr << "Could not remove all bad points in " << maxiter << " iterations. Try different stepsize" << std::endl;
             abort();
         }
+    }
+
+    ll.x -= diam / 2;
+    ll.y -= diam / 2;
+    ur.x += diam / 2;
+    ur.y += diam / 2;
+
+    std::vector<del_point2d_t> points;
+    for (const auto &v : idata)
+        points.push_back(del_point2d_t{v.first.p.x, v.first.p.y});
+
+    // Add bounding box
+    points.push_back(del_point2d_t{ll.x, ll.y});
+    points.push_back(del_point2d_t{ur.x, ll.y});
+    points.push_back(del_point2d_t{ur.x, ur.y});
+    points.push_back(del_point2d_t{ll.x, ur.y});
+
+    size_t numpts = idata.size();
+
+    delaunay2d_t *tri = delaunay2d_from(points.data(), points.size(), nullptr);
+    std::vector<del_triface_t> trifilt;
+    int k = 0;
+    for (unsigned i = 0; i < tri->num_faces; i++) {
+        unsigned nvert = tri->faces[k++];
+        unsigned center = tri->faces[k++];
+        unsigned next = tri->faces[k++];
+        Point pc(points[center].x, points[center].y);
+        for (unsigned j = 0; j < nvert - 2; j++) {
+            unsigned prev = next;
+            next = tri->faces[k++];
+            Point pp(points[prev].x, points[prev].y);
+            Point pn(points[next].x, points[next].y);
+            Point c((pc.x + pp.x + pn.x) / 3, (pc.y + pp.y + pn.y) / 3);
+            if (reg->inside(c) && center < numpts && prev < numpts && next < numpts)
+                trifilt.push_back(del_triface_t{center, prev, next});
+        }
+    }
+    delaunay2d_release(tri);
+
+    points.pop_back();
+    points.pop_back();
+    points.pop_back();
+    points.pop_back();
+
+    /**
+     *
+     * uhat - u
+     * -------- = alpha0 u + sum over neibs alpha uneib - beta
+     *    dt
+     *
+     * 1 + alpha0 dt > 0
+     * */
+
+    double dt = 1e6;
+    for (size_t i = 0; i < numpts; i++)
+        if (1 + alpha0[i] * dt < 0)
+            dt = -1 / alpha0[i];
+
+    std::cout << "Maximum possible dt = " << dt << std::endl;
+
+    std::vector<double> U(numpts, 0);
+    std::vector<double> Unew(numpts, 0);
+
+    for (size_t i = 0; i < numpts; i++) {
+        Unew[i] = alpha0[i];
+        for (size_t j = 0; j < neibs[i].size(); j++)
+            Unew[i] += alpha[i][j];
+    }
+
+//    save("amplificaton", 0, points, trifilt, Unew);
+
+    for (int iteration = 0; iteration < 10000000; iteration ++) {
+        double diff = 0;
+        for (size_t i = 0; i < numpts; i++) {
+            Unew[i] = -dt * beta[i] + (1 + dt * alpha0[i]) * U[i];
+            const auto &myneibs = neibs[i];
+            for (size_t j = 0; j < myneibs.size(); j++)
+                Unew[i] += dt * alpha[i][j] * U[myneibs[j].first];
+            diff += std::abs(U[i] - Unew[i]);
+        }
+
+        std::swap(U, Unew);
+
+        bool converged = diff < 1e-6;
+
+        if ((iteration % 10000 == 0) || converged) {
+            std::cout << "iteration " << iteration << ", difference = " << diff << std::endl;
+            save("solution", iteration, points, trifilt, U);
+        }
+
+        if (converged)
+            break;
     }
 
 	return 0;

@@ -1,6 +1,6 @@
 #include "exprwrap.h"
 
-#include "exprtk.hpp"
+#include <exprtk.hpp>
 
 #include <vector>
 
@@ -25,7 +25,8 @@ Expression::Expression(const std::string &s, const std::vector<std::string> &arg
     pimpl->expr.register_symbol_table(pimpl->vars);
 
     parser p;
-    p.compile(s, pimpl->expr);
+    if (!p.compile(s, pimpl->expr))
+        throw std::invalid_argument("Failed to compile expression `" + s + "'");
 }
 
 Expression::~Expression() {

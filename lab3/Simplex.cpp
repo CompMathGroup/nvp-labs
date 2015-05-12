@@ -245,12 +245,7 @@ Status solveProblem(
         *pes = es;
 
     if (es & ExtraStatus::Inconsistent) {
-        cerr << "The system is not consistent!" << endl;
         return Status::Infeasible;
-    }
-
-    if (es & ExtraStatus::IncompleteRank) {
-        cout << "The system rank is deficient" << endl;
     }
 
     basis.resize(m);

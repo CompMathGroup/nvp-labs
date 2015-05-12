@@ -87,11 +87,6 @@ struct Container {
             if (b.inall(v.p))
                 b.add(v);
     }
-    void add_nomerge(const T &v) {
-        for (auto &b : bucks)
-            if (b.inall(v.p))
-                b.add(v);
-    }
     void remove(const Point &p) {
         for (auto &b : bucks)
             b.remove(p, b.a * merge_tol);

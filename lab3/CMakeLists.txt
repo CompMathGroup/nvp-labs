@@ -28,7 +28,12 @@ find_package(Eigen3 REQUIRED)
 
 include_directories(${EIGEN3_INCLUDE_DIR})
 
-set(SOURCES Compiler.cpp Polygon.cpp Simplex.cpp exprwrap.cpp main.cpp)
+include_directories(${PROJECT_SOURCE_DIR}/exprtk)
+include_directories(${PROJECT_SOURCE_DIR}/delaunay)
+add_subdirectory(${PROJECT_SOURCE_DIR}/delaunay)
+
+set(SOURCES Polygon.cpp Simplex.cpp exprwrap.cpp main.cpp vtk.cpp)
 
 add_executable(main ${BISON_ConfigParser_OUTPUTS} ${RAGEL_ConfigTokens_OUTPUTS} ${SOURCES})
+target_link_libraries(main delaunay)
 
