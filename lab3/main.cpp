@@ -40,15 +40,20 @@ void mesh(const Region *r, const Problem *prob, Boundary &bnd, Interior &inter, 
         const BcVal bc = r->condition(p);
 
         const Point *qp = new Point(p);
-        bnd.add(BndPoint{qp, n, bc});
-        inter.add(IntPoint{qp, true, prob->eval(p)});
+        bool added = bnd.add(BndPoint{qp, n, bc});
+        added = inter.add(IntPoint{qp, true, prob->eval(p)});
+        if (!added)
+            delete qp;
 
         double s = aspect;
 
         for (int i = 1; i <= lays; i++) {
-            const Point *pp = new Point(p.x - s * i * hbord * n.x, p.y - s * i * hbord * n.y);
-            if (r->inside(*pp)) {
-                inter.add(IntPoint{pp, false, prob->eval(p)});
+            const Point pp(p.x - s * i * hbord * n.x, p.y - s * i * hbord * n.y);
+            if (r->inside(pp)) {
+                const Point *qp = new Point(pp);
+                bool added = inter.add(IntPoint{qp, false, prob->eval(pp)});
+                if (!added)
+                    delete qp;
             }
         }
     }
@@ -65,9 +70,13 @@ void mesh(const Region *r, const Problem *prob, Boundary &bnd, Interior &inter, 
     int row = 0;
     for (double y = ll.y; y <= ur.y; y += 0.866025 * h) {
         for (double x = ll.x + 0.5 * row * h; x <= ur.x; x += h) {
-            const Point *p = new Point(x, y);
-            if (r->inside(*p))
-                inter.add(IntPoint{p, false, prob->eval(*p)});
+            const Point p(x, y);
+            if (r->inside(p)) {
+                const Point *q = new Point(p);
+                bool added = inter.add(IntPoint{q, false, prob->eval(p)});
+                if (!added)
+                    delete q;
+            }
         }
         row = 1 - row;
     }
@@ -578,21 +587,8 @@ int main(int argc, char **argv) {
     std::vector<double> U(numpts, 0);
     std::vector<double> Unew(numpts, 0);
 
-#if 0
-    std::ofstream debug("debug");
-    for (const auto &v : idata) {
-        debug << v.first.p << " " << v.second << std::endl;
-    }
-    debug.close();
-
-    const auto ref = idata[0].second;
-
-    for (size_t i = 0; i < numpts; i++) {
-        Unew[i] = (idata[i].second - ref) & 1;
-    }
-
-    save("amplificaton", 0, points, trifilt, Unew);
-#endif
+    for (const auto &v : idata)
+        delete v.p;
 
     for (int iteration = 0; iteration < 10000000; iteration ++) {
         double diff = 0;

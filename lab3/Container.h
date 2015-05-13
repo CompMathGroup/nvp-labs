@@ -83,17 +83,19 @@ struct Container {
     const Bucket<T> &lookupBucket(const Point &p) const {
         return bucks[lookupBucketIdx(p)];
     }
-    void add(const T &v) {
+    __attribute__((warn_unused_result))
+    bool add(const T &v) {
         auto &b = lookupBucket(*v.p);
         double dist;
         const auto &w = b.find_closest(*v.p, dist);
         if (dist < b.a * merge_tol) {
             std::cout << "Point " << *v.p << " was merged with " << *w->p << std::endl;
-            return;
+            return false;
         }
         for (auto &b : bucks)
             if (b.inall(*v.p))
                 b.add(v);
+        return true;
     }
     void remove(const Point *p) {
         for (auto &b : bucks)
