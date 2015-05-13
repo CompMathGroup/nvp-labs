@@ -13,12 +13,6 @@ struct Bucket {
     double a;
     std::list<T> data;
 
-    Bucket() : c(0, 0), a(0) { }
-    bool incore(const Point &p) const {
-        bool xin = (p.x > c.x - 0.5 * a) && (p.x <= c.x + 0.5 * a);
-        bool yin = (p.y > c.y - 0.5 * a) && (p.y <= c.y + 0.5 * a);
-        return xin && yin;
-    }
     bool inall(const Point &p) const {
         bool xin = (p.x > c.x - a) && (p.x <= c.x + a);
         bool yin = (p.y > c.y - a) && (p.y <= c.y + a);
@@ -28,10 +22,10 @@ struct Bucket {
         return std::abs(p2.x - p1.x) + std::abs(p2.y - p1.y);
     }
     typename std::list<T>::const_iterator find_closest(const Point &p, double &dist) const {
-        dist = distance(p, data.front().p);
+        dist = 10 * a;
         typename std::list<T>::const_iterator ret = data.begin();
         for (auto it = data.begin(); it != data.end(); ++it) {
-            double dd = distance(p, it->p);
+            double dd = distance(p, *it->p);
             if (dd < dist) {
                 dist = dd;
                 ret = it;
@@ -42,68 +36,77 @@ struct Bucket {
     void add(const T &v) {
         data.push_back(v);
     }
-    void remove(const Point &p, double da) {
-        if (!inall(p))
-            return;
-        data.remove_if([this, &p, da](const T &v) -> bool { return this->distance(p, v.p) < da; });
+    void remove(const Point *p) {
+        data.remove_if([this, p](const T &v) -> bool { return p == v.p; });
     }
 };
 
 template<class T>
 struct Container {
+    const Point ll, ur;
     std::vector<Bucket<T> > bucks;
     double merge_tol;
+    int nx, ny;
 
     Container(const Point &ll, const Point &ur, const double bucketSize, const double merge_tol = 1e-3)
-        : merge_tol(merge_tol)
+        : ll(ll), ur(ur), merge_tol(merge_tol)
     {
         double dx = ur.x - ll.x;
         double dy = ur.y - ll.y;
-        const int nx = 2 + dx / bucketSize;
-        const int ny = 2 + dy / bucketSize;
-        bucks.resize(nx * ny);
+        nx = 2 + dx / bucketSize;
+        ny = 2 + dy / bucketSize;
 
         double a = bucketSize;
 
         for (int i = 0; i < nx; i++)
-            for (int j = 0; j < ny; j++) {
-                Bucket<T> b;
-                b.a = bucketSize;
-                b.c = Point(ll.x + i * a, ll.y + j * a);
-                bucks.push_back(b);
-            }
+            for (int j = 0; j < ny; j++)
+                bucks.push_back(Bucket<T>{Point(ll.x + i * a, ll.y + j * a), bucketSize});
+
+//        std::cout << "Created " << nx << " x " << ny << " buckets" << std::endl;
+    }
+    size_t lookupBucketIdx(const Point &p) const {
+        double a = bucks[0].a;
+//        std::cout << p << " " << ll << " " << a << std::endl;
+        double di = (p.x - ll.x) / a;
+        double dj = (p.y - ll.y) / a;
+        di += .5;
+        dj += .5;
+        int i = di;
+        int j = dj;
+        size_t ret = i * ny + j;
+//        std::cout << "For point " << p << " bucket id = (" << i << ", " << j << ") = " << ret << std::endl;
+        return ret;
+    }
+    Bucket<T> &lookupBucket(const Point &p) {
+        return bucks[lookupBucketIdx(p)];
+    }
+    const Bucket<T> &lookupBucket(const Point &p) const {
+        return bucks[lookupBucketIdx(p)];
     }
     void add(const T &v) {
+        auto &b = lookupBucket(*v.p);
+        double dist;
+        const auto &w = b.find_closest(*v.p, dist);
+        if (dist < b.a * merge_tol) {
+            std::cout << "Point " << *v.p << " was merged with " << *w->p << std::endl;
+            return;
+        }
         for (auto &b : bucks)
-            if (b.incore(v.p)) {
-                double dist;
-                const auto &w = b.find_closest(v.p, dist);
-                if (dist < b.a * merge_tol) {
-                    std::cout << "Point " << v.p << " was merged with " << w->p << std::endl;
-                    return;
-                }
-            }
-        for (auto &b : bucks)
-            if (b.inall(v.p))
+            if (b.inall(*v.p))
                 b.add(v);
     }
-    void remove(const Point &p) {
+    void remove(const Point *p) {
         for (auto &b : bucks)
-            b.remove(p, b.a * merge_tol);
+            b.remove(p);
     }
-    std::vector<std::pair<T, const Bucket<T> *> > data() const {
-        std::vector<std::pair<T, const Bucket<T> *> > ret;
+    std::vector<T> data() const {
+        std::vector<T> ret;
         for (size_t ib = 0; ib < bucks.size(); ib++) {
             const auto &b = bucks[ib];
-            for (const auto &v : b.data)
-                if (b.incore(v.p)) {
-                    bool used = false;
-                    for (size_t j = 0; j < ib; j++)
-                        if (bucks[j].incore(v.p))
-                            used = true;
-                    if (!used)
-                        ret.push_back(std::make_pair(v, &b));
-                }
+            for (const auto &v : b.data) {
+                if (ib == lookupBucketIdx(*v.p))
+                    ret.push_back(v);
+            }
         }
 
         return ret;

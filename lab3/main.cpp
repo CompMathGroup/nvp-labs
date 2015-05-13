@@ -13,13 +13,14 @@
 using namespace config;
 
 struct IntPoint {
-    Point p;
+    const Point *p;
     bool bnd;
     RhsVal rhs;
 };
 
 struct BndPoint {
-    Point p, n;
+    const Point *p;
+    Point n;
     BcVal bc;
 };
 
@@ -38,15 +39,17 @@ void mesh(const Region *r, const Problem *prob, Boundary &bnd, Interior &inter, 
         const Point n = r->normal(p);
         const BcVal bc = r->condition(p);
 
-        bnd.add(BndPoint{p, n, bc});
-        inter.add(IntPoint{p, true, prob->eval(p)});
+        const Point *qp = new Point(p);
+        bnd.add(BndPoint{qp, n, bc});
+        inter.add(IntPoint{qp, true, prob->eval(p)});
 
         double s = aspect;
 
         for (int i = 1; i <= lays; i++) {
-            const Point pp(p.x - s * i * hbord * n.x, p.y - s * i * hbord * n.y);
-            if (r->inside(pp))
+            const Point *pp = new Point(p.x - s * i * hbord * n.x, p.y - s * i * hbord * n.y);
+            if (r->inside(*pp)) {
                 inter.add(IntPoint{pp, false, prob->eval(p)});
+            }
         }
     }
 
@@ -62,9 +65,9 @@ void mesh(const Region *r, const Problem *prob, Boundary &bnd, Interior &inter, 
     int row = 0;
     for (double y = ll.y; y <= ur.y; y += 0.866025 * h) {
         for (double x = ll.x + 0.5 * row * h; x <= ur.x; x += h) {
-            Point p(x, y);
-            if (r->inside(p))
-                inter.add(IntPoint{p, false, prob->eval(p)});
+            const Point *p = new Point(x, y);
+            if (r->inside(*p))
+                inter.add(IntPoint{p, false, prob->eval(*p)});
         }
         row = 1 - row;
     }
@@ -74,14 +77,14 @@ void mesh(const Region *r, const Problem *prob, Boundary &bnd, Interior &inter, 
 bool computeInternalEquation(
         const Problem *prob,
         const IntPoint &ipoint,
-        const std::vector<std::pair<IntPoint, const Bucket<IntPoint> *>> &idata,
+        const std::vector<IntPoint> &idata,
         std::vector<std::pair<int, double>> &neibs,
         std::vector<double> &alpha,
         double &alpha0, double &beta,
-        std::vector<Point> &bad
+        std::vector<const Point *> &bad
 )
 {
-    const Point &pc = ipoint.p;
+    const Point *pc = ipoint.p;
 
     double e0  = prob->e0;
     double e1  = prob->e1;
@@ -103,9 +106,9 @@ bool computeInternalEquation(
     int k = 0;
     for (const auto &jv : neibs) {
         int j = jv.first;
-        const Point &p = idata[j].first.p;
-        double x = p.x - pc.x;
-        double y = p.y - pc.y;
+        const Point &p = *idata[j].p;
+        double x = p.x - pc->x;
+        double y = p.y - pc->y;
         A[K * k + 0] = x - e0 / e11 * x * x * x / 6;
         A[K * k + 1] = y - e0 / e22 * y * y * y / 6;
         A[K * k + 2] = x * x / 2 - e1 / e11 * x * x * x / 6;
@@ -129,12 +132,12 @@ bool computeInternalEquation(
     simplex::ExtraStatus es;
     simplex::Status res = simplex::solveProblem(A, b, c, nonzero, alp, nullptr, &es);
     if (res != simplex::Status::Solved) {
-        logfile << "Failed to solve problem at interior point " << pc << ". Neibs = {" << std::endl;
+        logfile << "Failed to solve problem at interior point " << *pc << ". Neibs = {" << std::endl;
         for (const auto &jv : neibs) {
             int j = jv.first;
-            const Point &p = idata[j].first.p;
-            double x = p.x - pc.x;
-            double y = p.y - pc.y;
+            const Point &p = *idata[j].p;
+            double x = p.x - pc->x;
+            double y = p.y - pc->y;
             logfile << "{" << x << ", " << y << "}, " << std::endl;;
         }
         logfile << "}" << std::endl;
@@ -161,9 +164,9 @@ bool computeInternalEquation(
 
     beta = f;
     for (size_t j = 0; j < neibs.size(); j++) {
-        const Point &p = idata[neibs[j].first].first.p;
-        double x = p.x - pc.x;
-        double y = p.y - pc.y;
+        const Point &p = *idata[neibs[j].first].p;
+        double x = p.x - pc->x;
+        double y = p.y - pc->y;
 
         alpha0 -= alp[j];
         beta += alp[j] * (x * x * x * fx / 6 / e11 + y * y * y * fy / 6 / e22);
@@ -175,14 +178,14 @@ bool computeInternalEquation(
 bool computeBoundaryEquation(
         const Problem *prob, double f,
         const BndPoint &bdata,
-        const std::vector<std::pair<IntPoint, const Bucket<IntPoint> *>> &idata,
+        const std::vector<IntPoint> &idata,
         std::vector<std::pair<int, double>> &neibs,
         std::vector<double> &alpha,
         double &alpha0, double &beta,
-        std::vector<Point> &bad
+        std::vector<const Point *> &bad
 )
 {
-    const Point &pc = bdata.p;
+    const Point *pc = bdata.p;
 
     double nux = bdata.n.x;
     double nuy = bdata.n.y;
@@ -221,9 +224,9 @@ bool computeBoundaryEquation(
     int k = 0;
     for (const auto &jv : neibs) {
         int j = jv.first;
-        const Point &p = idata[j].first.p;
-        double x = p.x - pc.x;
-        double y = p.y - pc.y;
+        const Point &p = *idata[j].p;
+        double x = p.x - pc->x;
+        double y = p.y - pc->y;
         A[K * k + 0] = x - 0.5 * e1 * (x * x + y * y) / (e11 + e22);
         A[K * k + 1] = y - 0.5 * e2 * (x * x + y * y) / (e11 + e22);
         A[K * k + 2] = x * y - 0.5 * e12 * (x * x + y * y) / (e11 + e22);
@@ -242,12 +245,12 @@ bool computeBoundaryEquation(
     simplex::ExtraStatus es;
     simplex::Status res = simplex::solveProblem(A, b, c, nonzero, alp, nullptr, &es);
     if (res != simplex::Status::Solved) {
-        logfile << "Failed to solve problem at boundary point " << pc << std::endl;
+        logfile << "Failed to solve problem at boundary point " << *pc << std::endl;
         for (const auto &jv : neibs) {
             int j = jv.first;
-            const Point &p = idata[j].first.p;
-            double x = p.x - pc.x;
-            double y = p.y - pc.y;
+            const Point &p = *idata[j].p;
+            double x = p.x - pc->x;
+            double y = p.y - pc->y;
             logfile << "Neib " << j << ": delta = " << Point(x, y) << std::endl;;
         }
     }
@@ -273,9 +276,9 @@ bool computeBoundaryEquation(
     beta = -rho;
 
     for (size_t j = 0; j < neibs.size(); j++) {
-        const Point &p = idata[neibs[j].first].first.p;
-        double x = p.x - pc.x;
-        double y = p.y - pc.y;
+        const Point &p = *idata[neibs[j].first].p;
+        double x = p.x - pc->x;
+        double y = p.y - pc->y;
         double gj = 0.5 / (e11 + e22) * (x * x + y * y);
 
         alpha0 -= alp[j];
@@ -286,9 +289,9 @@ bool computeBoundaryEquation(
     return true;
 }
 
-std::vector<Point> buildCoeff(
+std::vector<const Point *> buildCoeff(
     Interior inter, Boundary bnd, const Region *reg, const Problem *prob,
-    std::vector<std::pair<IntPoint, const Bucket<IntPoint> *> > &idata,
+    std::vector<IntPoint> &idata,
     std::vector<int> &bndidx,
     std::vector<std::vector<std::pair<int, double> > > &neibs,
     std::vector<std::vector<double> > &alpha,
@@ -300,7 +303,6 @@ std::vector<Point> buildCoeff(
     const double diam = bnds.second.x - bnds.first.x + bnds.second.y - bnds.first.y;
 
     const int nneib = 20;
-    std::vector<Point> bad;
     idata = inter.data();
     const auto &bdata = bnd.data();
 
@@ -317,33 +319,29 @@ std::vector<Point> buildCoeff(
     bndidx.assign(bdata.size(), -1);
 
     for (size_t i = 0; i < idata.size(); i++) {
-        for (size_t j = i + 1; j < idata.size(); j++)
-            if (idata[i].second->inall(idata[j].first.p)) { // same bucket
-                double dd = idata[i].second->distance(idata[i].first.p, idata[j].first.p);
+        const Point pa(*idata[i].p);
+        const auto &b = inter.lookupBucket(pa);
 
-                const Point pa(idata[i].first.p);
-                const Point pb(idata[j].first.p);
-
-                for (double s = 0.05; s < 1; s += 0.1) {
-                    Point mid(
-                            s * pa.x + (1 - s) * pb.x,
-                            s * pa.y + (1 - s) * pb.y
-                        );
-                    if (!reg->inside(mid))
-                        dd = diam;
-                }
-
-                neibs[i].push_back(std::make_pair(j, dd));
-                neibs[j].push_back(std::make_pair(i, dd));
+        for (size_t j = i + 1; j < idata.size(); j++) {
+            const Point pb(*idata[j].p);
+            if (!b.inall(pb))
+                continue;
+            double dd = b.distance(pa, pb);
+            for (double s = 0.05; s < 1; s += 0.1) {
+                Point mid(s * pa.x + (1 - s) * pb.x, s * pa.y + (1 - s) * pb.y);
+                if (!reg->inside(mid))
+                    dd = diam;
             }
-        bool isbnd = idata[i].first.bnd;
+            neibs[i].push_back(std::make_pair(j, dd));
+            neibs[j].push_back(std::make_pair(i, dd));
+        }
+
+        bool isbnd = idata[i].bnd;
         if (!isbnd)
             continue;
         for (size_t j = 0; j < bdata.size(); j++)
-            if (idata[i].second->incore(bdata[j].first.p)) {
-                if (idata[i].second->distance(idata[i].first.p, bdata[j].first.p) < 1.01 * idata[i].second->a * inter.merge_tol)
-                    bndidx[j] = i;
-            }
+            if (idata[i].p == bdata[j].p)
+                bndidx[j] = i;
     }
     for (size_t i = 0; i < idata.size(); i++) {
         std::sort(neibs[i].begin(), neibs[i].end(),
@@ -352,7 +350,7 @@ std::vector<Point> buildCoeff(
             }
         );
         if (neibs[i].size() < nneib)
-            std::cerr << "Point " << idata[i].first.p << " has only " << neibs[i].size() << " neibs!" << std::endl;
+            std::cerr << "Point " << idata[i].p << " has only " << neibs[i].size() << " neibs!" << std::endl;
         else
             neibs[i].erase(neibs[i].begin() + nneib, neibs[i].end());
     }
@@ -360,9 +358,11 @@ std::vector<Point> buildCoeff(
     int badint = 0;
     int badbnd = 0;
 
+    std::vector<const Point *> bad;
+
     for (size_t i = 0; i < neibs.size(); i++) {
-        if (!idata[i].first.bnd) {
-            bool f = computeInternalEquation(prob, idata[i].first, idata, neibs[i], alpha[i], alpha0[i], beta[i], bad);
+        if (!idata[i].bnd) {
+            bool f = computeInternalEquation(prob, idata[i], idata, neibs[i], alpha[i], alpha0[i], beta[i], bad);
             if (!f)
                 badint++;
         }
@@ -370,8 +370,8 @@ std::vector<Point> buildCoeff(
 
     for (size_t ib = 0; ib < bdata.size(); ib++) {
         size_t i = bndidx[ib];
-        double rhsf = idata[i].first.rhs.f;
-        bool f = computeBoundaryEquation(prob, rhsf, bdata[ib].first, idata, neibs[i], alpha[i], alpha0[i], beta[i], bad);
+        double rhsf = idata[i].rhs.f;
+        bool f = computeBoundaryEquation(prob, rhsf, bdata[ib], idata, neibs[i], alpha[i], alpha0[i], beta[i], bad);
         if (!f)
             badbnd++;
     }
@@ -390,6 +390,12 @@ int main(int argc, char **argv) {
     logfile.open("bad_points.log");
 
 	std::fstream f(argv[1], std::ios::in);
+
+    if (!f) {
+        std::cerr << "Could not open file `" << argv[1] << "'" << std::endl;
+        return 1;
+    }
+
 	Lexer lexer(f, argv[1]);
 
 	const Config *configraw = 0;
@@ -429,7 +435,7 @@ int main(int argc, char **argv) {
 
     mesh(reg, prob, bnd, inter, hbord, h, aspect, lays);
 
-    std::vector<std::pair<IntPoint, const Bucket<IntPoint> *>> idata;
+    std::vector<IntPoint> idata;
     std::vector<int> bndidx;
     std::vector<std::vector<std::pair<int, double> > > neibs;
     std::vector<std::vector<double> > alpha;
@@ -446,27 +452,27 @@ int main(int argc, char **argv) {
 #if 0
         std::ofstream f("neibs." + std::to_string(iter));
         for (size_t i = 0; i < neibs.size(); i++)
-            if (!idata[i].first.bnd)
+            if (!idata[i].bnd)
                 for (const auto &jv : neibs[i]) {
                     int j = jv.first;
-                    f << idata[i].first.p.x << " " << idata[i].first.p.y << std::endl;
-                    f << idata[j].first.p.x << " " << idata[j].first.p.y << std::endl << std::endl;
+                    f << idata[i].p->x << " " << idata[i].p->y << std::endl;
+                    f << idata[j].p->x << " " << idata[j].p->y << std::endl << std::endl;
                 }
         f.close();
 
         std::ofstream ff("bnds." + std::to_string(iter));
         for (size_t i = 0; i < neibs.size(); i++)
-            if (idata[i].first.bnd)
+            if (idata[i].bnd)
                 for (const auto &jv : neibs[i]) {
                     int j = jv.first;
-                    ff << idata[i].first.p.x << " " << idata[i].first.p.y << std::endl;
-                    ff << idata[j].first.p.x << " " << idata[j].first.p.y << std::endl << std::endl;
+                    ff << idata[i].p->x << " " << idata[i].p->y << std::endl;
+                    ff << idata[j].p->x << " " << idata[j].p->y << std::endl << std::endl;
                 }
         ff.close();
 
         std::ofstream g("bad." + std::to_string(iter));
         for (size_t i = 0; i < bad.size(); i++)
-            g << bad[i].x << " " << bad[i].y << std::endl;
+            g << bad[i]->x << " " << bad[i]->y << std::endl;
         g.close();
 #endif
         if (bad.empty())
@@ -490,7 +496,7 @@ int main(int argc, char **argv) {
 
     std::vector<del_point2d_t> points;
     for (const auto &v : idata)
-        points.push_back(del_point2d_t{v.first.p.x, v.first.p.y});
+        points.push_back(del_point2d_t{v.p->x, v.p->y});
 
     // Add bounding box
     points.push_back(del_point2d_t{ll.x, ll.y});
@@ -499,6 +505,34 @@ int main(int argc, char **argv) {
     points.push_back(del_point2d_t{ll.x, ur.y});
 
     size_t numpts = idata.size();
+#if 0
+    double dmin = diam;
+    const Bucket<IntPoint> &b = inter.bucks[0];
+    int i0 = -1, j0 = -1;
+    for (size_t i = 0; i < numpts; i++)
+        for (size_t j = i + 1; j < numpts; j++) {
+            double d = b.distance(Point(points[i].x, points[i].y), Point(points[j].x, points[j].y));
+            if (d < dmin) {
+                dmin = d;
+                i0 = i;
+                j0 = j;
+            }
+        }
+    std::cout << "dmin = " << dmin << ", i0 = " << i0 << ", j0 = " << j0 << std::endl;
+
+    std::ofstream fpts("points");
+    fpts.precision(30);
+    for (const auto &p : points) {
+        fpts << p.x << " " << p.y << std::endl;
+    }
+    fpts.close();
+
+    std::ifstream ipts("points");
+    for (auto &p : points) {
+        ipts >> p.x >> p.y;
+    }
+    ipts.close();
+#endif
 
     delaunay2d_t *tri = delaunay2d_from(points.data(), points.size(), nullptr);
     std::vector<del_triface_t> trifilt;
