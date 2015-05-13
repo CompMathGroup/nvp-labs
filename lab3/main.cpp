@@ -590,7 +590,7 @@ int main(int argc, char **argv) {
     for (const auto &v : idata)
         delete v.p;
 
-    for (int iteration = 0; iteration < 10000000; iteration ++) {
+    for (int iteration = 1; iteration < 10000001; iteration ++) {
         double diff = 0;
         for (size_t i = 0; i < numpts; i++) {
             Unew[i] = -dt * beta[i] + (1 + dt * alpha0[i]) * U[i];
