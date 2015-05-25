@@ -21,7 +21,7 @@ void save(const std::string &prefix, int step,
         const std::vector<double> &U)
 {
     std::string filename(prefix + "." + std::to_string(step) + ".vtk");
-    std::ofstream f(filename);
+    std::ofstream f(filename, std::ios::binary);
 
     if (!f) {
         std::cerr << "Could not write output file `" + filename+ "'" << std::endl;

@@ -73,6 +73,7 @@ struct Problem {
 
         if (e11 <= 0 || e22 <= 0 || e11 * e22 < 4 * e12 * e12) {
             std::cerr << "The problem is not of elliptic type. Try changing sign." << std::endl;
+            abort();
         }
     }
     RhsVal eval(const Point &p) const {
