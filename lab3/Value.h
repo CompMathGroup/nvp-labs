@@ -125,6 +125,7 @@ struct Polygon : public Region {
     std::vector<Point> psouter;
 
     Polygon(const Path &path);
+    bool near(const Point &a, const Point &b, const Point &p) const;
     virtual bool inside(const Point &p) const override;
     virtual bool outside(const Point &p) const override;
     virtual Point normal(const Point &p) const override;

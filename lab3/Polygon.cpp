@@ -11,6 +11,7 @@ Polygon::Polygon(const Path &path) {
     }
     ps.push_back(path.path[0].first);
     ps.push_back(path.path[1].first);
+    double s = 0;
     for (size_t i = 1; i < ps.size() - 1; i++) {
         const Point &p =  ps[i];
         const Point &pp = ps[i-1];
@@ -40,9 +41,16 @@ Polygon::Polygon(const Path &path) {
             p.x - alpha * n1x - beta * n2x,
             p.y - alpha * n1y - beta * n2y
         ));
+
+        s += 0.5 * (p.y * pp.x - p.x * pp.y);
     }
     psinner.push_back(psinner[0]);
     psouter.push_back(psouter[0]);
+
+    if (s < 0) {
+        std::cerr << "Polygon " << print() << " has wrong orientation (surface = " << s << ")" << std::endl;
+        abort();
+    }
 }
 
 std::pair<Point, Point> Polygon::bounds() const {
@@ -90,27 +98,55 @@ bool Polygon::outside(const Point &p) const {
     return !insideTest(p, psouter);
 }
 
+bool Polygon::near(const Point &a, const Point &b, const Point &p) const {
+    double dx = b.x - a.x;
+    double dy = b.y - a.y;
+    double dr2 = dx * dx + dy * dy;
+    double tdr = tol * (std::abs(dx) + std::abs(dy));
+
+    double xmin = std::min(a.x, b.x);
+    double xmax = std::max(a.x, b.x);
+    double ymin = std::min(a.y, b.y);
+    double ymax = std::max(a.y, b.y);
+
+    if (p.x > xmax + tdr)
+        return false;
+    if (p.y > ymax + tdr)
+        return false;
+    if (p.x < xmin - tdr)
+        return false;
+    if (p.y < ymin - tdr)
+        return false;
+
+    if (std::abs(isLeft(a, b, p)) >= tol * dr2)
+        return false;
+
+    return true;
+}
+
 Point Polygon::normal(const Point &p) const {
     assert(border(p));
+    Point avg(0, 0);
     for (size_t i = 0; i < bc.size(); i++) {
         double dx = ps[i+1].x - ps[i].x;
         double dy = ps[i+1].y - ps[i].y;
         double dr2 = dx * dx + dy * dy;
-        if (isLeft(ps[i], ps[i+1], p) < tol * dr2) {
+        if (near(ps[i], ps[i+1], p)) {
             double dr = std::sqrt(dr2);
-            return Point(dy / dr, -dx / dr);
+            avg.x += dy / dr;
+            avg.y += -dx / dr;
         }
     }
-    return Point(0, 0);
+    double avgnorm = sqrt(avg.x * avg.x + avg.y * avg.y);
+    avg.x /= avgnorm;
+    avg.y /= avgnorm;
+    return avg;
 }
 
 BcVal Polygon::condition(const Point &p) const {
     assert(border(p));
     for (size_t i = 0; i < bc.size(); i++) {
-        double dx = ps[i+1].x - ps[i].x;
-        double dy = ps[i+1].y - ps[i].y;
-        double dr2 = dx * dx + dy * dy;
-        if (isLeft(ps[i], ps[i+1], p) < tol * dr2)
+        if (near(ps[i], ps[i+1], p))
             return bc[i]->eval(p);
     }
     return BcVal();

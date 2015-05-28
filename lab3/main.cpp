@@ -140,6 +140,34 @@ bool computeInternalEquation(
     std::vector<double> alp;
     simplex::ExtraStatus es;
     simplex::Status res = simplex::solveProblem(A, b, c, nonzero, alp, nullptr, &es);
+
+    if (res != simplex::Status::Solved) {
+        logfile << "Re-solving at interior point " << *pc << " with first order" << std::endl;
+        const int K = 5;
+        int k = 0;
+        A.resize(K * neibs.size());
+        b.resize(K);
+
+        for (const auto &jv : neibs) {
+            int j = jv.first;
+            const Point &p = *idata[j].p;
+            double x = p.x - pc->x;
+            double y = p.y - pc->y;
+            A[K * k + 0] = x;
+            A[K * k + 1] = y;
+            A[K * k + 2] = x * x / 2;
+            A[K * k + 3] = x * y;
+            A[K * k + 4] = y * y / 2;
+            c[k] = pow(x * x + y * y, 1.5);
+            k++;
+        }
+        b[0] = e1;
+        b[1] = e2;
+        b[2] = e11;
+        b[3] = e12;
+        b[4] = e22;
+        res = simplex::solveProblem(A, b, c, nonzero, alp, nullptr, &es);
+    }
     if (res != simplex::Status::Solved) {
         logfile << "Failed to solve problem at interior point " << *pc << ". Neibs = {" << std::endl;
         for (const auto &jv : neibs) {
@@ -253,15 +281,39 @@ bool computeBoundaryEquation(
     std::vector<double> alp;
     simplex::ExtraStatus es;
     simplex::Status res = simplex::solveProblem(A, b, c, nonzero, alp, nullptr, &es);
+
     if (res != simplex::Status::Solved) {
-        logfile << "Failed to solve problem at boundary point " << *pc << std::endl;
+        logfile << "Re-solving at boundary point " << *pc << " with first order" << std::endl;
+        const int K = 2;
+        int k = 0;
+        A.resize(K * neibs.size());
+        b.resize(K);
         for (const auto &jv : neibs) {
             int j = jv.first;
             const Point &p = *idata[j].p;
             double x = p.x - pc->x;
             double y = p.y - pc->y;
-            logfile << "Neib " << j << ": delta = " << Point(x, y) << std::endl;;
+            A[K * k + 0] = x;
+            A[K * k + 1] = y;
+            c[k] = pow(x * x + y * y, 1.5);
+            k++;
         }
+
+        b[0] = -omega * nux;
+        b[1] = -omega * nuy;
+        res = simplex::solveProblem(A, b, c, nonzero, alp, nullptr, &es);
+    }
+
+    if (res != simplex::Status::Solved) {
+        logfile << "Failed to solve problem at boundary point " << *pc << ". Neibs = {" << std::endl;
+        for (const auto &jv : neibs) {
+            int j = jv.first;
+            const Point &p = *idata[j].p;
+            double x = p.x - pc->x;
+            double y = p.y - pc->y;
+            logfile << "{ " << x << ", " << y << "}," << std::endl;;
+        }
+        logfile << "}" << std::endl;
     }
 
     const auto oldneibs = neibs;
@@ -359,7 +411,7 @@ std::vector<const Point *> buildCoeff(
             }
         );
         if (neibs[i].size() < nneib)
-            std::cerr << "Point " << idata[i].p << " has only " << neibs[i].size() << " neibs!" << std::endl;
+            std::cerr << "Point " << *idata[i].p << " has only " << neibs[i].size() << " neibs!" << std::endl;
         else
             neibs[i].erase(neibs[i].begin() + nneib, neibs[i].end());
     }
