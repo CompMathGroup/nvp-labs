@@ -2,7 +2,7 @@ RM=rm -f
 OPT=-O3
 CFLAGS= $(OPT) -g -Wall -funroll-loops
 CXXFLAGS=$(CFLAGS)
-AR=ar -rcs
+AR=ar rcs
 TARGET=$(PREFIX)/libgassolver.a
 SRC= \
 	gdsolver.cpp \
@@ -24,7 +24,7 @@ all: $(TARGET)
 
 $(TARGET): $(OBJS)
 	@echo "[AR] ... => "$(TARGET)
-	@$(AR) -o $@ $^
+	@$(AR) $@ $^
 
 clean:
 	$(RM) $(OBJS) $(TARGET)
