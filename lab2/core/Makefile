@@ -2,7 +2,7 @@ RM=rm -f
 OPT=-O3
 CFLAGS= $(OPT) -g -Wall -funroll-loops
 CXXFLAGS=$(CFLAGS)
-AR=ar -rcs
+AR?=ar
 TARGET=$(PREFIX)/libheatsolver.a
 SRC= \
 	heatsolver.cpp
@@ -20,7 +20,11 @@ all: $(TARGET)
 
 $(TARGET): $(OBJS)
 	@echo "[AR] ... => "$(TARGET)
-	@$(AR) -o $@ $^
+	@$(AR) rcs $@ $^
 
-clean: 
+clean:
 	$(RM) $(OBJS) $(TARGET)
+
+$(PREFIX)/linalg.o:: linalg.cpp linalg.h array.h
+
+$(PREFIX)/heatsolver.o:: heatsolver.cpp array.h coeff.h heatsolver.h solver.h

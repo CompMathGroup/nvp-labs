@@ -1,6 +1,8 @@
-.PHONY: unix32 unix64 win32 win64
+.PHONY: unix32 unix64 win32 win64 osx
 
-all: unix32 unix64 win32 win64
+all: unix32 unix64 win32 win64 osx
+
+OSXCROSS=/home/uranix/osxcross/target/bin/
 
 unix32:
 	env PREFIX=`pwd`/$@ CXX="g++ -m32" make -C ../core all
@@ -9,6 +11,10 @@ unix32:
 unix64:
 	env PREFIX=`pwd`/$@ CXX="g++ -m64" make -C ../core all
 	env PREFIX=`pwd`/$@ CXX="g++ -m64" LIBS="-Wl,-Bdynamic -lML64i3 -lrt" ARCH=unix make -C ../mlink all
+
+osx:
+	env PREFIX=`pwd`/$@ CXX="${OSXCROSS}x86_64-apple-darwin15-clang++ -stdlib=libstdc++" AR="${OSXCROSS}x86_64-apple-darwin15-ar" make -C ../core all
+	env PREFIX=`pwd`/$@ CXX="${OSXCROSS}x86_64-apple-darwin15-clang++ -stdlib=libstdc++" LIBS="-lMLi3 -framework Foundation" ARCH=osx make -C ../mlink all
 
 win32:
 	env PREFIX=`pwd`/$@ CC="i686-w64-mingw32-gcc -mwindows" CXX="i686-w64-mingw32-g++ -mwindows" make -C ../core all
@@ -26,6 +32,10 @@ clean_unix64:
 	env PREFIX=`pwd`/unix64 make -C ../core clean
 	env PREFIX=`pwd`/unix64 make -C ../mlink clean
 
+clean_osx:
+	env PREFIX=`pwd`/osx make -C ../core clean
+	env PREFIX=`pwd`/osx make -C ../mlink clean
+
 clean_win32:
 	env PREFIX=`pwd`/win32 make -C ../core clean
 	env PREFIX=`pwd`/win32 make -C ../mlink clean
@@ -34,4 +44,4 @@ clean_win64:
 	env PREFIX=`pwd`/win64 make -C ../core clean
 	env PREFIX=`pwd`/win64 make -C ../mlink clean
 
-clean: clean_unix32 clean_unix64 clean_win32 clean_win64
+clean: clean_unix32 clean_unix64 clean_win32 clean_win64 clean_osx
