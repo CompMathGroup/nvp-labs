@@ -9,4 +9,4 @@ pack:
 	cp ../build/unix32/GasLink.exe Unix_x86/
 	cp ../build/unix64/GasLink.exe Unix_x86-64/
 	cp ../build/osx/GasLink.exe MacOSX_x86-64/
-	zip -r Lab1.zip Hyperbolic.nb Unix_* Windows_*
+	zip -r Lab1.zip Hyperbolic.nb Unix_* Windows_* MacOSX_*
