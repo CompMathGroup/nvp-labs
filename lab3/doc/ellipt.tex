@@ -1,0 +1,237 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage{amsmath,amssymb}
+
+\author{Цыбулин Иван}
+\title{Построение схем с положительной аппроксимацией для эллиптических уравнений безсеточным методом}
+
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+
+\newcommand{\pd}[2]{\frac{\partial{#1}}{\partial {#2}}}
+\newcommand{\td}[2]{\frac{d{#1}}{d {#2}}}
+
+\newcommand{\cutefrac}[2]{{}^{#1\!}\!/{\!}_#2}
+\newcommand{\half}{\cutefrac{1}{2}}
+
+\begin{document}
+\maketitle
+
+\section{Постановка задачи}
+
+Рассмотрим общий вид эллиптической задачи с постоянными коэффициентами ($e_{11} > 0, e_{22} > 0, 4e_{11}e_{22} > e_{12}^2$)
+\begin{equation}
+\begin{cases}
+\mathcal{L} u \equiv
+e_{11} u_{xx} + e_{12} u_{xy} + e_{22} u_{yy}
++ e_1 u_x + e_2 u_y + e_0 u = f(x, y), &\vec r \in G\\
+a(x,y) u + b(x,y) \pd{u}{n} = g(x,y), &\vec r \in \partial G.\\
+\end{cases}
+\label{eq:problem}
+\end{equation}
+
+Схемой с положительной аппроксимацией для \eqref{eq:problem} назовем такую схему
+\[
+\sum_{\mu \in N(m)} \alpha_{\mu}^{(m)} u_{m+\mu} = \beta^{(m)},
+\]
+где $N(m)$ --- некоторый набор соседей для точки $m$, $m+\mu$ --- $\mu$-й сосед точки $m$. Обозначение $(m)$ показывает, что коэффициент относится к уравнению для точки $m$. 
+
+Заметим, что для параболической задачи
+\[
+\pd{u}{t} = \mathcal{L} u - f
+\]
+простейшая схема может иметь вид
+\[
+\frac{\hat u_m - u_m}{\tau} = 
+\sum_{\mu \in N(m)} \alpha_{\mu}^{(m)} u_{m+\mu} - \beta^{(m)}
+\]
+и использоваться как метод установления для решения исходной эллиптической задачи.
+
+Условием монотонности данной схемы установления будет 
+\begin{gather*}
+\alpha_{\mu}^{(m)} \geqslant 0, \quad \mu \neq 0\\
+1 + \tau \alpha_0^{(m)} \geqslant 0 \Leftrightarrow \alpha_0^{(m)} \geqslant -\frac{1}{\tau}.
+\end{gather*}
+Последнее уравнение, фактически, задает ограничение на шаг по времени $\tau$:
+\[
+\tau \leqslant \frac{1}{-\operatorname{absmax}_m \alpha_0^{(m)}}.
+\]
+
+\subsection{Аппроксимация дифференциального оператора}
+Пусть точка $m$ окружена множеством $N(m)$ соседей, причем радиус вектор из точки $m$ в точку $m + \mu$ обозначим как $\vec r_\mu^{(m)}$. Далее будем отпускать верхний индекс $(m)$, подразумевая некую фиксированную точку.
+\[u_{m+\mu} = \exp\{\vec r_{\mu}^{(m)}\nabla\} u_m = 
+\sum_{k=0}^\infty \frac{\left(x_\mu\pd{}{x} + y_\mu\pd{}{y}\right)^k}{k!} u_m
+\]
+Чтобы аппроксимировать $\mathcal{L}u$ с минимальным порядком $O(h)$, напишем разложения с точностью до $O(h^3)$ (учитываем, что $\alpha = O(h^{-2})$).
+\[
+u_{m+\mu} = u_m +
+x_\mu (u_x)_m + y_\mu (u_y)_m + 
+\frac{x_\mu^2}{2} (u_{xx})_m +
+x_\mu y_\mu (u_{xy})_m +
+\frac{y_\mu^2}{2} (u_{yy})_m + O(h^3).
+\]
+Из условия аппроксимации
+\[
+\sum \alpha_\mu u_{m+\mu} - \beta_m = \mathcal{L} u_m - f_m + O(h)
+\]
+можно получить систему уравнений на $\alpha_\mu$:
+\[
+\begin{aligned}
+u: &\sum_\mu \alpha_\mu = e_0\\
+u_x: &\sum_\mu \alpha_\mu x_\mu = e_1\\
+u_y: &\sum_\mu \alpha_\mu y_\mu = e_2
+\end{aligned}
+\qquad\qquad
+\begin{aligned}
+u_{xx}: &\sum_\mu \alpha_\mu \frac{x_\mu^2}{2} = e_{11}\\
+u_{xy}: &\sum_\mu \alpha_\mu x_\mu y_\mu = e_{12}\\
+u_{yy}: &\sum_\mu \alpha_\mu \frac{y_\mu^2}{2} = e_{22}.
+\end{aligned}
+\]
+
+При общем положении необходимо $5$ соседей (плюс сама точка, итого $6$ коэффициентов $\alpha$), чтобы разрешить 6 уравнений относительно $\alpha_\mu$. На шаблоне <<крест>> достаточно четырех соседей. Приравнивая правые части, получаем условие для $\beta_m$
+\[
+\beta_m = f_m + O(h).
+\]
+
+Чтобы повысить порядок аппроксимации хотя бы до $O(h^2)$ \emph{на решениях уравнения} можно воспользоваться следствиями дифференциального уравнения
+\[
+\mathcal{L} u_x = f_x, \qquad \mathcal{L} u_y = f_y.
+\]
+Необходимо построить аппроксимацию
+\begin{multline*}
+\sum \alpha_\mu u_{m+\mu} - \beta_m = \mathcal{L} u_m - f_m + \\
++ \gamma_1 \left[\mathcal{L} (u_x)_m - (f_x)_m\right]
++ \gamma_2 \left[\mathcal{L} (u_y)_m - (f_y)_m\right]
++ O(h^2)
+\end{multline*}
+где $\gamma_1, \gamma_2$ --- произвольные коэффициенты порядка $O(h)$.
+\[
+\begin{aligned}
+u: &\sum_\mu \alpha_\mu = e_0\\
+u_x: &\sum_\mu \alpha_\mu x_\mu = e_1 + \gamma_1 e_0\\
+u_y: &\sum_\mu \alpha_\mu y_\mu = e_2 + \gamma_2 e_0\\
+u_{xx}: &\sum_\mu \alpha_\mu \frac{x_\mu^2}{2} = e_{11} + \gamma_1 e_1\\
+u_{xy}: &\sum_\mu \alpha_\mu x_\mu y_\mu = e_{12} + \gamma_1 e_2 + \gamma_2 e_1\\
+u_{yy}: &\sum_\mu \alpha_\mu \frac{y_\mu^2}{2} = e_{22} + \gamma_2 e_2
+\end{aligned}
+\qquad
+\begin{aligned}
+u_{xxx}: &\sum_\mu \alpha_\mu \frac{x_\mu^3}{2} = \gamma_1 e_{11}\\
+u_{xxy}: &\sum_\mu \alpha_\mu \frac{x_\mu^2 y_\mu}{2} = \gamma_1 e_{12} + \gamma_2 e_{22}\\
+u_{xyy}: &\sum_\mu \alpha_\mu \frac{x_\mu y_\mu^2}{2} = \gamma_1 e_{22} + \gamma_2 e_{12}\\
+u_{yyy}: &\sum_\mu \alpha_\mu \frac{y_\mu^3}{2} = \gamma_2 e_{22}.
+\end{aligned}
+\]
+При этом для $\beta$ имеем
+\[
+\beta = f + \gamma_1 f_x + \gamma_2 f_y.
+\]
+
+Исключая из уравнений для $u_{xxx}, u_{yyy}$ величины $\gamma_{1,2}$, имеем систему из 8 уравнений
+\begin{align*}
+u: &\sum_\mu \alpha_\mu = e_0\\
+u_x: &\sum_\mu \alpha_\mu x_\mu = e_1 + \frac{e_0}{e_{11}}\sum_\mu \alpha_\mu \frac{x_\mu^3}{6}\\
+u_y: &\sum_\mu \alpha_\mu y_\mu = e_2 + \frac{e_0}{e_{22}}\sum_\mu \alpha_\mu \frac{y_\mu^3}{6}\\
+u_{xx}: &\sum_\mu \alpha_\mu \frac{x_\mu^2}{2} = e_{11} + \frac{e_1}{e_{11}}\sum_\mu \alpha_\mu \frac{x_\mu^3}{6}\\
+u_{xy}: &\sum_\mu \alpha_\mu x_\mu y_\mu = e_{12} + \frac{e_2}{e_{11}}\sum_\mu \alpha_\mu \frac{x_\mu^3}{6} + \frac{e_1}{e_{22}}\sum_\mu \alpha_\mu \frac{y_\mu^3}{6}\\
+u_{yy}: &\sum_\mu \alpha_\mu \frac{y_\mu^2}{2} = e_{22} + \frac{e_2}{e_{22}}\sum_\mu \alpha_\mu \frac{y_\mu^3}{6}\\
+u_{xxy}: &\sum_\mu \alpha_\mu \frac{x_\mu^2 y_\mu}{2} = \frac{e_{12}}{e_{11}}\sum_\mu \alpha_\mu \frac{x_\mu^3}{6} + \frac{e_{11}}{e_{22}}\sum_\mu \alpha_\mu \frac{y_\mu^3}{6}\\
+u_{xyy}: &\sum_\mu \alpha_\mu \frac{x_\mu y_\mu^2}{2} = \frac{e_{22}}{e_{11}}\sum_\mu \alpha_\mu \frac{x_\mu^3}{6} + \frac{e_{12}}{e_{22}}\sum_\mu \alpha_\mu \frac{y_\mu^3}{6}.
+\end{align*}
+
+Запишем это в виде единой системы уравнений относительно $\alpha_\mu$:
+\begin{align*}
+u: &\sum_\mu \alpha_\mu = e_0\\
+u_x: &\sum_\mu \alpha_\mu \left(x_\mu - \frac{e_0}{e_{11}}\frac{x_\mu^3}{6}\right) = e_1\\
+u_y: &\sum_\mu \alpha_\mu \left(y_\mu - \frac{e_0}{e_{22}}\frac{y_\mu^3}{6}\right) = e_2\\
+u_{xx}: &\sum_\mu \alpha_\mu \left(\frac{x_\mu^2}{2} - \frac{e_1}{e_{11}} \frac{x_\mu^3}{6} \right) = e_{11} \\
+u_{xy}: &\sum_\mu \alpha_\mu \left(x_\mu y_\mu - \frac{e_2}{e_{11}} \frac{x_\mu^3}{6} - \frac{e_1}{e_{22}}\frac{y_\mu^3}{6}\right)= e_{12}\\
+u_{yy}: &\sum_\mu \alpha_\mu \left(\frac{y_\mu^2}{2} - \frac{e_2}{e_{22}} \frac{y_\mu^3}{6}\right) = e_{22}\\
+u_{xxy}: &\sum_\mu \alpha_\mu \left(\frac{x_\mu^2 y_\mu}{2} - \frac{e_{12}}{e_{11}}\frac{x_\mu^3}{6} - \frac{e_{11}}{e_{22}}\frac{y_\mu^3}{6}\right) = 0\\
+u_{xyy}: &\sum_\mu \alpha_\mu \left(\frac{x_\mu y_\mu^2}{2} - \frac{e_{22}}{e_{11}}\frac{x_\mu^3}{6} - \frac{e_{12}}{e_{22}}\frac{y_\mu^3}{6}\right) = 0.
+\end{align*}
+Заметим, что во все уравнения кроме первого не входит $\alpha_0$. Ее можно исключить вместе с первым уравнением в системе
+\[
+\alpha_0 = e_0 - \sum_{\mu > 0} \alpha_\mu
+\]
+Для $\beta$
+\[
+\beta = f + \sum_\mu \alpha_\mu \left(\frac{x_\mu^3f_x}{6e_{11}} + \frac{y_\mu^3f_y}{6e_{22}}\right)
+\]
+Оставшаяся система (считаем, что $\mu \neq 0$)
+\begin{align*}
+	u_x: &\sum_\mu \alpha_\mu \left(x_\mu - \frac{e_0}{e_{11}}\frac{x_\mu^3}{6}\right) = e_1\\
+	u_y: &\sum_\mu \alpha_\mu \left(y_\mu - \frac{e_0}{e_{22}}\frac{y_\mu^3}{6}\right) = e_2\\
+	u_{xx}: &\sum_\mu \alpha_\mu \left(\frac{x_\mu^2}{2} - \frac{e_1}{e_{11}} \frac{x_\mu^3}{6} \right) = e_{11} \\
+	u_{xy}: &\sum_\mu \alpha_\mu \left(x_\mu y_\mu - \frac{e_2}{e_{11}} \frac{x_\mu^3}{6} - \frac{e_1}{e_{22}}\frac{y_\mu^3}{6}\right)= e_{12}\\
+	u_{yy}: &\sum_\mu \alpha_\mu \left(\frac{y_\mu^2}{2} - \frac{e_2}{e_{22}} \frac{y_\mu^3}{6}\right) = e_{22}\\
+	u_{xxy}: &\sum_\mu \alpha_\mu \left(\frac{x_\mu^2 y_\mu}{2} - \frac{e_{12}}{e_{11}}\frac{x_\mu^3}{6} - \frac{e_{11}}{e_{22}}\frac{y_\mu^3}{6}\right) = 0\\
+	u_{xyy}: &\sum_\mu \alpha_\mu \left(\frac{x_\mu y_\mu^2}{2} - \frac{e_{22}}{e_{11}}\frac{x_\mu^3}{6} - \frac{e_{12}}{e_{22}}\frac{y_\mu^3}{6}\right) = 0.
+\end{align*}
+должна иметь неотрицательное решение $\alpha_\mu \geqslant 0$. Обозначим систему
+\[
+\mathbf{M} \boldsymbol{\alpha} = \mathbf{b}
+\]
+
+С целью оптимизации количества ненулевых коэффициентов решается следующая задача линейного программирования
+\begin{align*}
+\underset{\alpha_\mu}{\operatorname{min}}\quad&\sum_\mu \alpha_\mu (x_\mu^2 + y_\mu^2)^{3/2}\\
+\operatorname{s.t.}\quad&\mathbf{M} \boldsymbol{\alpha} = \mathbf{b}\\
+&\boldsymbol{\alpha} \geqslant \mathbf{0}
+\end{align*}
+Данная задача не всегда может иметь решение, т.к. $\mathbf{M} \boldsymbol{\alpha} = \mathbf{b}$ может не иметь решения в неотрицательных $\alpha$. В этом случае необходимо привлекать дополнительные точки $\mu$.
+
+\subsection{Аппроксимация граничных условий}
+
+Пусть на границе области заданы граничные условия
+\[
+\omega\nu_x u_x + \omega\nu_y u_y + \sigma u = \rho,
+\]
+причем вектор $\boldsymbol{\nu}$ не обязан быть коллинеарен нормали $\mathbf{n}$, но должен выходить из области.
+
+Необходимо построить аппроксимацию
+\begin{multline*}
+	\sum \alpha_\mu u_{m+\mu} - \beta_m = \rho_m - (\omega\nu_x u_x + \omega\nu_y u_y + \sigma u)_m 
+	+ \gamma \left[\mathcal{L} u_m - f_m\right]
+	+ O(h^2)
+\end{multline*}
+где $\gamma_1, \gamma_2$ --- произвольные коэффициенты порядка $O(h)$.
+\[
+\begin{aligned}
+u: &\sum_\mu \alpha_\mu = -\sigma + \gamma e_0 \\
+u_x: &\sum_\mu \alpha_\mu x_\mu = -\omega\nu_x + \gamma e_1\\
+u_y: &\sum_\mu \alpha_\mu y_\mu = -\omega\nu_y + \gamma e_2
+\end{aligned}
+\qquad
+\begin{aligned}
+u_{xx}: &\sum_\mu \alpha_\mu \frac{x_\mu^2}{2} = \gamma e_{11}\\
+u_{xy}: &\sum_\mu \alpha_\mu x_\mu y_\mu = \gamma e_{12}\\
+u_{yy}: &\sum_\mu \alpha_\mu \frac{y_\mu^2}{2} = \gamma e_{22}
+\end{aligned}
+\]
+При этом для $\beta$ имеем
+\[
+\beta = -\rho + \gamma f.
+\]
+Исключая $\gamma$ с помощью
+\[
+\gamma = \frac{1}{e_{11} + e_{22}} \sum_\mu \alpha_\mu\frac{x_\mu^2 + y_\mu^2}{2}
+\]
+\[
+\begin{aligned}
+u: &\sum_\mu \alpha_\mu = -\sigma + \gamma e_0 \\
+u_x: &\sum_\mu \alpha_\mu \left(x_\mu - e_1\frac{x_\mu^2 + y_\mu^2}{2(e_{11} + e_{22})}\right) = -\omega\nu_x\\
+u_y: &\sum_\mu \alpha_\mu \left(y_\mu - e_2\frac{x_\mu^2 + y_\mu^2}{2(e_{11} + e_{22})}\right) = -\omega\nu_y
+\end{aligned}
+\qquad
+\begin{aligned}
+u_{xy}: &\sum_\mu \alpha_\mu \left(
+x_\mu y_\mu - e_{12}\frac{x_\mu^2 + y_\mu^2}{2(e_{11} + e_{22})}
+\right)
+ = 0\\
+\Delta u: &\sum_\mu \alpha_\mu \left(e_{22} \frac{x_\mu^2}{2} - e_{11} \frac{y_\mu^2}{2}\right) = 0
+\end{aligned}
+\]
+\end{document}

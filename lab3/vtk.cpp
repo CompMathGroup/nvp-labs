@@ -20,7 +20,12 @@ void save(const std::string &prefix, int step,
         const std::vector<del_triface_t> &faces,
         const std::vector<double> &U)
 {
-    std::string filename(prefix + "." + std::to_string(step) + ".vtk");
+    std::string start(prefix);
+    std::string ext(".geom");
+    if (std::equal(ext.rbegin(), ext.rend(), start.rbegin())) {
+        start = prefix.substr(0, prefix.size() - 5);
+    }
+    std::string filename(start + "." + std::to_string(step) + ".vtk");
     std::ofstream f(filename, std::ios::binary);
 
     if (!f) {

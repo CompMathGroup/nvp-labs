@@ -12,10 +12,12 @@ endmacro()
 
 remove_cxx_c_flag("-DNDEBUG")
 
+message(STATUS "Compiler identification: ${CMAKE_CXX_COMPILER_ID}")
+
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -Wall -std=c++11 -msse2 -mfpmath=sse -fmax-errors=${max_errors}")
+	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -msse2 -mfpmath=sse -fmax-errors=${max_errors}")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -Wall -std=c++11 -msse2 -mfpmath=sse -ferror-limit=${max_errors}")
+	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -msse2 -mfpmath=sse -ferror-limit=${max_errors}")
 else()
 	message(FATAL_ERROR "Unsupported compiler")
 endif()
