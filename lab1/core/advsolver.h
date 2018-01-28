@@ -17,6 +17,7 @@ class AdvectionSolver : public Solver<double> {
 	Array<double> sol;
 private:
 	void predict();
+	void eno();
 	void step(const Alphas &scheme, const std::vector<int> &where);
 	bool checkMono(std::vector<int> &where);
 public:

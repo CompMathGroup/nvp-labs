@@ -86,7 +86,7 @@ double GDSolver::doStep(const std::vector<Alphas *> &schemes) {
 		where[j] = j;
 	int scnum = 1;
 	if (schemes.empty()) {
-		predict();
+		eno();
 		for (int j = 0; j < N; j++)
 			schemenum[j] = 0;
 	}
@@ -173,6 +173,102 @@ bool GDSolver::checkMono(std::vector<int> &where) {
 
 	return where.empty();
 }// }}}
+
+inline double sqr(double x) {
+    return x*x;
+}
+
+void eno3(
+	const Vars U[5],
+	const Matrix Omega[4],
+	const Matrix invOmega[4],
+	Vars &Uplus,
+	Vars &Uminus
+	)
+{
+	Vector dW[4];
+	Vector AdWp[4];
+	Vector AdWm[4];
+
+	Vector Up, Um;
+
+	for (int i = 0; i < 4; i++) {
+		dW[i] = Omega[i] * (U[i+1] - U[i]).to_vect();
+	}
+
+	for (int i = 0; i < 3; i++) {
+		double dmm = dW[0](i);
+		double dm  = dW[1](i);
+		double dp  = dW[2](i);
+		double dpp = dW[3](i);
+
+		double b1 = (3 * sqr(3*dm - dmm) + 13 * sqr(dm - dmm)) / 48;
+		double b2 = (3 * sqr(dm + dp) + 13 * sqr(dp - dm)) / 48;
+		double b3 = (3 * sqr(3*dp - dpp) + 13 * sqr(dpp - dp)) / 48;
+
+		int best = 0;
+		double bmin = b1;
+		if (b2 < bmin) {
+			best = 1;
+			bmin = b2;
+		}
+		if (b3 < bmin) {
+			best = 2;
+			bmin = b3;
+		}
+
+		double a[3] = {0, 0, 0};
+		a[best] = 1;
+		AdWp[0](i) = -a[0] / 3 * dmm;
+		AdWp[1](i) = (5*a[0]+a[1]) / 6 * dm;
+		AdWp[2](i) = (a[1]+2*a[2]) / 3 * dp;
+		AdWp[3](i) = -a[2] / 6 * dpp;
+
+		AdWm[0](i) = a[0] / 6 * dmm;
+		AdWm[1](i) = -(2*a[0]+a[1]) / 3 * dm;
+		AdWm[2](i) = -(a[1]+5*a[2]) / 6 * dp;
+		AdWm[3](i) = a[2] / 3 * dpp;
+	}
+
+	Up = U[2].to_vect();
+	Um = U[2].to_vect();
+
+	for (int i = 0; i < 4; i++) {
+		Up += invOmega[i] * AdWp[i];
+		Um += invOmega[i] * AdWm[i];
+	}
+
+	Uplus.rho   = Up(0);
+	Uplus.P     = Up(1);
+	Uplus.E     = Up(2);
+	Uplus.GAMMA = U[2].GAMMA;
+
+	Uminus.rho   = Um(0);
+	Uminus.P     = Um(1);
+	Uminus.E     = Um(2);
+	Uminus.GAMMA = U[2].GAMMA;
+}
+
+void euler_step(const int N, const Vars *U, Vars *Un) {
+	std::vector<Vars> Up(N), Um(N);
+	std::vector<Matrix> Omega(N+3), invOmega(N+3)
+	std::vector<Vector> lambda(N+3);	
+
+	for (int j = 0; j < N+3; j++) {
+		Vars Umid = .5 * (U[j] + U[j+1]);
+		Umid.eigen(invOmega[j], lambda[j], Omega[j]);
+	}
+
+	for (int j = 0; j < N; j++) {
+		eno3(&U[j], &Omega[j], &invOmega[j],
+			Up[j], Um[j]);
+	}
+}
+
+// {{{ ENO
+void GDSolver::eno() {
+		
+} /// }}}
 
 // {{{ predict 
 void GDSolver::predict() {

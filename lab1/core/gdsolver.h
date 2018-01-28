@@ -32,6 +32,7 @@ class GDSolver : public Solver<Vars> {
 	bool cycled;
 private:
 	void predict();
+	void eno();
 	void correct(const Alphas &scheme, const std::vector<int> &where);
 	bool checkMono(std::vector<int> &where);
 public:

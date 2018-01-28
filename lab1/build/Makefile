@@ -1,6 +1,7 @@
 .PHONY: unix32 unix64 win32 win64 osx
 
-all: unix32 unix64 win32 win64 osx
+# all: unix32 unix64 win32 win64 osx
+all: unix32 #win32 win64
 
 OSXCROSS=/home/uranix/osxcross/target/bin/
 
