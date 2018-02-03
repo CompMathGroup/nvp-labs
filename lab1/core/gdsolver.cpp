@@ -1,8 +1,6 @@
 #include "gdsolver.h"
 #include "linalg.h"
 
-#include <vector>
-
 static HalfInteger I_2(1);
 
 // {{{ doFirstStep
