@@ -1,6 +1,8 @@
 #include "gdsolver.h"
 #include "linalg.h"
 
+#include <vector>
+
 static HalfInteger I_2(1);
 
 // {{{ doFirstStep
@@ -175,65 +177,61 @@ bool GDSolver::checkMono(std::vector<int> &where) {
 }// }}}
 
 inline double sqr(double x) {
-    return x*x;
+	return x*x;
 }
 
-void eno3(
-	const Vars U[5],
-	const Matrix Omega[4],
-	const Matrix invOmega[4],
+inline void normalize(double w[2]) {
+	double wsum = w[0] + w[1];
+	w[0] /= wsum;
+	w[1] /= wsum;
+}
+
+void weno3(
+	const Vars U[3],
+	const Matrix Omega[2],
+	const Matrix invOmega[2],
 	Vars &Uplus,
 	Vars &Uminus
 	)
 {
-	Vector dW[4];
-	Vector AdWp[4];
-	Vector AdWm[4];
+	Vector dW[2];
+	Vector AdWp[2];
+	Vector AdWm[2];
 
 	Vector Up, Um;
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 2; i++) {
 		dW[i] = Omega[i] * (U[i+1] - U[i]).to_vect();
 	}
 
 	for (int i = 0; i < 3; i++) {
-		double dmm = dW[0](i);
-		double dm  = dW[1](i);
-		double dp  = dW[2](i);
-		double dpp = dW[3](i);
+		double dm  = dW[0](i);
+		double dp  = dW[1](i);
 
-		double b1 = (3 * sqr(3*dm - dmm) + 13 * sqr(dm - dmm)) / 48;
-		double b2 = (3 * sqr(dm + dp) + 13 * sqr(dp - dm)) / 48;
-		double b3 = (3 * sqr(3*dp - dpp) + 13 * sqr(dpp - dp)) / 48;
+		double b1 = 1e-6 + sqr(dm);
+		double b2 = 1e-6 + sqr(dp);
 
-		int best = 0;
-		double bmin = b1;
-		if (b2 < bmin) {
-			best = 1;
-			bmin = b2;
-		}
-		if (b3 < bmin) {
-			best = 2;
-			bmin = b3;
-		}
+		double w[2];
 
-		double a[3] = {0, 0, 0};
-		a[best] = 1;
-		AdWp[0](i) = -a[0] / 3 * dmm;
-		AdWp[1](i) = (5*a[0]+a[1]) / 6 * dm;
-		AdWp[2](i) = (a[1]+2*a[2]) / 3 * dp;
-		AdWp[3](i) = -a[2] / 6 * dpp;
+		w[0] = 1 / (3 * sqr(b1));
+		w[1] = 2 / (3 * sqr(b2));
+		normalize(w);
 
-		AdWm[0](i) = a[0] / 6 * dmm;
-		AdWm[1](i) = -(2*a[0]+a[1]) / 3 * dm;
-		AdWm[2](i) = -(a[1]+5*a[2]) / 6 * dp;
-		AdWm[3](i) = a[2] / 3 * dpp;
+		AdWp[0](i) = w[0] / 2 * dm;
+		AdWp[1](i) = w[1] / 2 * dp;
+
+		w[0] = 2 / (3 * sqr(b1));
+		w[1] = 1 / (3 * sqr(b2));
+		normalize(w);
+
+		AdWm[0](i) = -w[0] / 2 * dm;
+		AdWm[1](i) = -w[1] / 2 * dp;
 	}
 
-	Up = U[2].to_vect();
-	Um = U[2].to_vect();
+	Up = U[1].to_vect();
+	Um = U[1].to_vect();
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 2; i++) {
 		Up += invOmega[i] * AdWp[i];
 		Um += invOmega[i] * AdWm[i];
 	}
@@ -241,33 +239,56 @@ void eno3(
 	Uplus.rho   = Up(0);
 	Uplus.P     = Up(1);
 	Uplus.E     = Up(2);
-	Uplus.GAMMA = U[2].GAMMA;
+	Uplus.GAMMA = U[1].GAMMA;
 
 	Uminus.rho   = Um(0);
 	Uminus.P     = Um(1);
 	Uminus.E     = Um(2);
-	Uminus.GAMMA = U[2].GAMMA;
+	Uminus.GAMMA = U[1].GAMMA;
 }
 
-void euler_step(const int N, const Vars *U, Vars *Un) {
-	std::vector<Vars> Up(N), Um(N);
-	std::vector<Matrix> Omega(N+3), invOmega(N+3)
-	std::vector<Vector> lambda(N+3);	
+void euler_step(const int N, const Vars *U, Vars *Un, double betacou) {
+	std::vector<Vars> Up(N+2), Um(N+2);
+	std::vector<Matrix> Omega(N+3), invOmega(N+3);
+	std::vector<Vector> lambda(N+3);
+	std::vector<Vars> F(N+1);
 
 	for (int j = 0; j < N+3; j++) {
 		Vars Umid = .5 * (U[j] + U[j+1]);
 		Umid.eigen(invOmega[j], lambda[j], Omega[j]);
 	}
 
+	for (int j = 0; j < N + 2; j++) {
+		weno3(&U[j], &Omega[j], &invOmega[j], Up[j], Um[j]);
+	}
+
+	for (int j = 0; j < N+1; j++) {
+		F[j] = .5 * (Up[j].f() + Um[j+1].f());
+		Vars udiff(Up[j] - Um[j+1]);
+		double mul = betacou > 0 ? 0.5 : -0.5;
+		F[j] += mul * udiff.lmul(invOmega[j+1], lambda[j+1], Omega[j+1], AbsoluteValue());
+	}
+
 	for (int j = 0; j < N; j++) {
-		eno3(&U[j], &Omega[j], &invOmega[j],
-			Up[j], Um[j]);
+		Un[j] = U[j+2] + betacou * (F[j] - F[j+1]);
+		Un[j].fixup();
 	}
 }
 
 // {{{ ENO
 void GDSolver::eno() {
-		
+	std::vector<Vars> U0(N+4), U1(N+4), U2(N);
+	for (int j = 0; j < N+4; j++) {
+		U0[j] = u0[j-2];
+		U1[j] = u1[j-2];
+	}
+	euler_step(N, U0.data(), U2.data(), -2.0*cou);
+	for (int j = 0; j < N; j++)
+		u2[j] = 0.2 * U2[j];
+	euler_step(N, U1.data(), U2.data(),  2.0*cou);
+	for (int j = 0; j < N; j++)
+		u2[j] += 0.8 * U2[j];
+	u2.actualize();
 } /// }}}
 
 // {{{ predict 

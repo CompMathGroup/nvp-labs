@@ -31,7 +31,7 @@ double AdvectionSolver::doStep(const std::vector<Alphas *> &schemes) {
 		where[j] = j;
 
 	if (schemes.empty()) {
-		predict();
+		eno();
 		for (int j = 0; j < N; j++)
 			schemenum[j] = 0;
 	}
@@ -91,6 +91,104 @@ bool AdvectionSolver::checkMono(std::vector<int> &where) {
 
 	return where.empty();
 }// }}}
+
+inline double sqr(double x) {
+	return x*x;
+}
+
+inline void normalize(double w[2]) {
+	double wsum = w[0] + w[1];
+	w[0] /= wsum;
+	w[1] /= wsum;
+}
+
+void weno3(
+	const double U[3],
+	double &Uplus,
+	double &Uminus
+	)
+{
+	double dW[2];
+	double AdWp[2];
+	double AdWm[2];
+
+	double Up, Um;
+
+	for (int i = 0; i < 2; i++) {
+		dW[i] = U[i+1] - U[i];
+	}
+
+	{
+		double dm  = dW[0];
+		double dp  = dW[1];
+
+		double b1 = 1e-6 + sqr(dm);
+		double b2 = 1e-6 + sqr(dp);
+
+		double w[2];
+
+		w[0] = 1 / (3 * sqr(b1));
+		w[1] = 2 / (3 * sqr(b2));
+		normalize(w);
+
+		AdWp[0] = w[0] / 2 * dm;
+		AdWp[1] = w[1] / 2 * dp;
+
+		w[0] = 2 / (3 * sqr(b1));
+		w[1] = 1 / (3 * sqr(b2));
+		normalize(w);
+
+		AdWm[0] = -w[0] / 2 * dm;
+		AdWm[1] = -w[1] / 2 * dp;
+	}
+
+	Up = U[1];
+	Um = U[1];
+
+	for (int i = 0; i < 2; i++) {
+		Up += AdWp[i];
+		Um += AdWm[i];
+	}
+
+	Uplus  = Up;
+	Uminus = Um;
+}
+
+void euler_step(const int N, const double *U, double *Un, double betacou) {
+	std::vector<double> Up(N+2), Um(N+2);
+	std::vector<double> F(N+1);
+
+	for (int j = 0; j < N + 2; j++) {
+		weno3(&U[j], Up[j], Um[j]);
+	}
+
+	for (int j = 0; j < N+1; j++) {
+		if (betacou > 0)
+			F[j] = Up[j];
+		else
+			F[j] = Um[j+1];
+	}
+
+	for (int j = 0; j < N; j++)
+		Un[j] = U[j+2] + betacou * (F[j] - F[j+1]);
+}
+
+// {{{ ENO
+void AdvectionSolver::eno() {
+	std::vector<double> U0(N+4), U1(N+4), U2(N);
+	for (int j = 0; j < N+4; j++) {
+		U0[j] = u0[j-2];
+		U1[j] = u1[j-2];
+	}
+
+	euler_step(N, U0.data(), U2.data(), -2.0*cou);
+	for (int j = 0; j < N; j++)
+		u2[j] = 0.2 * U2[j];
+	euler_step(N, U1.data(), U2.data(),  2.0*cou);
+	for (int j = 0; j < N; j++)
+		u2[j] += 0.8 * U2[j];
+	u2.actualize();
+} /// }}}
 
 /* only a stub for case when no scheme is specified */
 void AdvectionSolver::predict() {
